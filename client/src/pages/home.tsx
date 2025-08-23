@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
+import VideoSection from "@/components/VideoSection";
 import FeatureCarousel from "@/components/FeatureCarousel";
 import SeminarSchedule from "@/components/SeminarSchedule";
 import ApplicationForm from "@/components/ApplicationForm";
@@ -14,6 +15,7 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Navigation />
       <HeroSection />
+      <VideoSection />
       <FeatureCarousel />
       <SeminarSchedule />
       <ApplicationForm />
