@@ -4,15 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
 export default function Navigation() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  const closeMobileMenu = () => {
     setMobileMenuOpen(false);
+  };
+
+  const navigateTo = (path: string) => {
+    setLocation(path);
+    closeMobileMenu();
+  };
+
+  const isActivePage = (path: string) => {
+    return location === path;
   };
 
   return (
@@ -21,47 +26,58 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-gray-900">TAPMOVE</h1>
+            <Link href="/">
+              <h1 className="text-2xl font-bold text-gray-900 cursor-pointer">TAPMOVE</h1>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              <button
+              <Link
                 data-testid="nav-home"
-                onClick={() => scrollToSection("home")}
-                className="text-gray-900 hover:text-primary transition-colors px-3 py-2 text-sm font-medium"
+                href="/"
+                className={`transition-colors px-3 py-2 text-sm font-medium ${
+                  isActivePage("/") 
+                    ? "text-primary font-semibold" 
+                    : "text-gray-600 hover:text-primary"
+                }`}
               >
                 홈
-              </button>
-              <button
+              </Link>
+              <Link
                 data-testid="nav-seminar"
-                onClick={() => scrollToSection("seminar")}
-                className="text-gray-600 hover:text-primary transition-colors px-3 py-2 text-sm font-medium"
+                href="/seminar"
+                className={`transition-colors px-3 py-2 text-sm font-medium ${
+                  isActivePage("/seminar") 
+                    ? "text-primary font-semibold" 
+                    : "text-gray-600 hover:text-primary"
+                }`}
               >
-                세미나 일정
-              </button>
-              <button
-                data-testid="nav-apply"
-                onClick={() => scrollToSection("apply")}
-                className="text-gray-600 hover:text-primary transition-colors px-3 py-2 text-sm font-medium"
+                세미나
+              </Link>
+              <Link
+                data-testid="nav-products"
+                href="/products"
+                className={`transition-colors px-3 py-2 text-sm font-medium ${
+                  isActivePage("/products") 
+                    ? "text-primary font-semibold" 
+                    : "text-gray-600 hover:text-primary"
+                }`}
               >
-                신청
-              </button>
-              <button
-                data-testid="nav-reviews"
-                onClick={() => scrollToSection("reviews")}
-                className="text-gray-600 hover:text-primary transition-colors px-3 py-2 text-sm font-medium"
+                제품
+              </Link>
+              <Link
+                data-testid="nav-about"
+                href="/about"
+                className={`transition-colors px-3 py-2 text-sm font-medium ${
+                  isActivePage("/about") 
+                    ? "text-primary font-semibold" 
+                    : "text-gray-600 hover:text-primary"
+                }`}
               >
-                후기
-              </button>
-              <button
-                data-testid="nav-location"
-                onClick={() => scrollToSection("location")}
-                className="text-gray-600 hover:text-primary transition-colors px-3 py-2 text-sm font-medium"
-              >
-                센터 위치
-              </button>
+                센터 정보
+              </Link>
               <Button
                 data-testid="nav-login"
                 onClick={() => setLocation("/login")}
@@ -90,44 +106,57 @@ export default function Navigation() {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 pt-2 pb-3 space-y-1">
-            <button
+            <Link
               data-testid="nav-mobile-home"
-              onClick={() => scrollToSection("home")}
-              className="block px-3 py-2 text-base font-medium text-gray-900 w-full text-left"
+              href="/"
+              onClick={closeMobileMenu}
+              className={`block px-3 py-2 text-base font-medium w-full text-left ${
+                isActivePage("/") 
+                  ? "text-primary font-semibold" 
+                  : "text-gray-600"
+              }`}
             >
               홈
-            </button>
-            <button
+            </Link>
+            <Link
               data-testid="nav-mobile-seminar"
-              onClick={() => scrollToSection("seminar")}
-              className="block px-3 py-2 text-base font-medium text-gray-600 w-full text-left"
+              href="/seminar"
+              onClick={closeMobileMenu}
+              className={`block px-3 py-2 text-base font-medium w-full text-left ${
+                isActivePage("/seminar") 
+                  ? "text-primary font-semibold" 
+                  : "text-gray-600"
+              }`}
             >
-              세미나 일정
-            </button>
-            <button
-              data-testid="nav-mobile-apply"
-              onClick={() => scrollToSection("apply")}
-              className="block px-3 py-2 text-base font-medium text-gray-600 w-full text-left"
+              세미나
+            </Link>
+            <Link
+              data-testid="nav-mobile-products"
+              href="/products"
+              onClick={closeMobileMenu}
+              className={`block px-3 py-2 text-base font-medium w-full text-left ${
+                isActivePage("/products") 
+                  ? "text-primary font-semibold" 
+                  : "text-gray-600"
+              }`}
             >
-              신청
-            </button>
-            <button
-              data-testid="nav-mobile-reviews"
-              onClick={() => scrollToSection("reviews")}
-              className="block px-3 py-2 text-base font-medium text-gray-600 w-full text-left"
+              제품
+            </Link>
+            <Link
+              data-testid="nav-mobile-about"
+              href="/about"
+              onClick={closeMobileMenu}
+              className={`block px-3 py-2 text-base font-medium w-full text-left ${
+                isActivePage("/about") 
+                  ? "text-primary font-semibold" 
+                  : "text-gray-600"
+              }`}
             >
-              후기
-            </button>
-            <button
-              data-testid="nav-mobile-location"
-              onClick={() => scrollToSection("location")}
-              className="block px-3 py-2 text-base font-medium text-gray-600 w-full text-left"
-            >
-              센터 위치
-            </button>
+              센터 정보
+            </Link>
             <Button
               data-testid="nav-mobile-login"
-              onClick={() => setLocation("/login")}
+              onClick={() => navigateTo("/login")}
               className="block px-3 py-2 text-base font-medium text-primary w-full text-left"
               variant="ghost"
             >

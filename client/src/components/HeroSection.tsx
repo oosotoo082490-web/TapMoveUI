@@ -2,11 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Calendar, ArrowRight } from "lucide-react";
 
 export default function HeroSection() {
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  const navigateToSeminar = () => {
+    window.location.href = "/seminar";
   };
 
   return (
@@ -32,7 +29,7 @@ export default function HeroSection() {
         <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
           <Button
             data-testid="button-apply-seminar"
-            onClick={() => scrollToSection("apply")}
+            onClick={navigateToSeminar}
             className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-2xl text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl"
             size="lg"
           >
@@ -41,7 +38,7 @@ export default function HeroSection() {
           </Button>
           <Button
             data-testid="button-view-schedule"
-            onClick={() => scrollToSection("seminar")}
+            onClick={navigateToSeminar}
             variant="outline"
             className="bg-white hover:bg-gray-50 text-blue-600 border-2 border-blue-600 hover:border-blue-700 px-10 py-5 rounded-2xl text-xl font-semibold transition-all duration-300 shadow-lg"
             size="lg"
