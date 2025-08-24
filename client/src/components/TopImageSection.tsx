@@ -66,11 +66,21 @@ export default function TopImageSection() {
             }`}
           >
             <p 
-              className="text-xl md:text-2xl drop-shadow-lg text-white/95"
+              className="text-xl md:text-2xl drop-shadow-lg text-white/95 mb-2"
               style={{
-                fontFamily: '"Noto Sans KR", "Inter", "Helvetica Neue", sans-serif',
+                fontFamily: '"Inter", "Helvetica Neue", sans-serif',
                 fontWeight: 300,
                 letterSpacing: '0.1em'
+              }}
+            >
+              The Future of Movement
+            </p>
+            <p 
+              className="text-lg md:text-xl drop-shadow-lg text-white/90"
+              style={{
+                fontFamily: '"Noto Sans KR", "Inter", sans-serif',
+                fontWeight: 300,
+                letterSpacing: '0.05em'
               }}
             >
               움직임의 미래
