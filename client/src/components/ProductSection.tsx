@@ -113,9 +113,6 @@ export default function ProductSection() {
             {/* 가격 안내 카드 */}
             <div className="mb-8">
               <div className="flex items-center mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-white text-lg">📌</span>
-                </div>
                 <h3 className="text-2xl font-bold text-gray-900">탭무브 상품 판매 안내</h3>
               </div>
               
