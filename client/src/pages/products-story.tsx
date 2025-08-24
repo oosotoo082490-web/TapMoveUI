@@ -1,6 +1,10 @@
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+
 export default function ProductsStoryPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-amber-50">
+      <Navigation />
       {/* Hero Section */}
       <section className="pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,6 +118,7 @@ export default function ProductsStoryPage() {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
