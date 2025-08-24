@@ -29,19 +29,19 @@ export default function HeroSection() {
         {/* Feature Highlights */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
           <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
-            <div className="text-5xl mb-4">🧘‍♀️</div>
+            <div className="text-6xl mb-4">🧘‍♀️</div>
             <h3 className="text-lg font-semibold text-white mb-3">안전한 운동</h3>
             <p className="text-stone-300 text-sm leading-relaxed">관절 부담 없이,<br />누구나 안전하게</p>
           </div>
           <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
-            <div className="text-5xl mb-4">🎓</div>
+            <div className="text-6xl mb-4">🎓</div>
             <h3 className="text-lg font-semibold text-red-400 mb-3">체계적 교육</h3>
             <p className="text-stone-300 text-sm leading-relaxed">탭무브 개발자가<br />직접 지도하는 세미나</p>
           </div>
           <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
-            <div className="text-5xl mb-4">🛡️</div>
+            <div className="text-6xl mb-4">🛡️</div>
             <h3 className="text-lg font-semibold text-emerald-400 mb-3">브랜드 공식 사용 권한</h3>
-            <p className="text-stone-300 text-sm leading-relaxed">세미나 수료자만 'TAPMOVE' 브랜드를<br />공식적으로 사용할 수 있습니다</p>
+            <p className="text-stone-300 text-sm leading-relaxed">세미나 수료자에게만 'TAPMOVE' 브랜드<br />공식 사용 권한이 주어집니다</p>
           </div>
         </div>
 
