@@ -16,13 +16,13 @@ export default function HeroSection() {
         <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight bg-gradient-to-r from-slate-800 to-emerald-700 bg-clip-text text-transparent">
           새로운 피트니스의
           <br />
-          <span className="text-amber-600">기준, 탭무브</span>
+          <span className="text-amber-600">기준 탭무브</span>
         </h1>
         
         <p className="text-xl md:text-2xl mb-12 text-gray-700 leading-relaxed max-w-3xl mx-auto">
           <strong>'높이'를 없앤 저충격 탭무브 운동.</strong>
           <br />
-          초,중고 부터 성인, 실버, 재활까지, 폭 넓게 수업에 바로 적용할 수 있습니다.
+          초중고 부터 성인 실버 재활까지 폭 넓게 수업에 바로 적용할 수 있습니다.
         </p>
 
         {/* CTA Buttons */}
