@@ -139,7 +139,7 @@ export default function ProductSection() {
                     <div className="flex justify-between items-center">
                       <div>
                         <h4 className="font-semibold text-emerald-800">일반 판매가</h4>
-                        <p className="text-sm text-emerald-600">온라인 구매가</p>
+                        <p className="text-sm text-emerald-600">네이버 스마트스토어</p>
                       </div>
                       <div className="text-right">
                         <p className="text-xl font-bold text-emerald-700">19,500원</p>
