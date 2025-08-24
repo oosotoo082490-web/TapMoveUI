@@ -69,7 +69,7 @@ export default function ProductSection() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Product Image */}
-          <div className="text-center">
+          <div className="text-center lg:sticky lg:top-24">
             <img
               src="/tapmove.jpg"
               alt="TAPMOVE 공식 매트"
