@@ -75,10 +75,11 @@ export default function ProductSection() {
               alt="TAPMOVE 공식 매트"
               className="rounded-2xl shadow-lg w-full max-w-md mx-auto"
             />
-            <div className="mt-6 flex justify-center">
+            <div className="mt-6 flex justify-center items-center gap-3">
               <Badge className="bg-gradient-to-r from-slate-700 to-slate-800 text-amber-100 px-4 py-2 rounded-full text-sm font-semibold">
                 공식 정품
               </Badge>
+              <span className="text-sm text-gray-600 font-medium">관절 부담 없이, 누구나 안전하게</span>
             </div>
           </div>
 
