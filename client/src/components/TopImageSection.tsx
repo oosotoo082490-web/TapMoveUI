@@ -1,24 +1,24 @@
 export default function TopImageSection() {
   return (
     <section className="relative w-full h-screen overflow-hidden">
-      {/* 탭무브 고화질 이미지 배경 - 실제 이미지 준비 완료 */}
+      {/* 탭무브 고화질 이미지 배경 */}
       <div className="absolute inset-0">
-        {/* 임시 고급스러운 배경 - 실제 탭무브 이미지로 교체 예정 */}
+        {/* 실제 탭무브 이미지 - client/public/tapmove.jpg 파일 넣으면 자동 적용 */}
         <div 
-          className="w-full h-full bg-gradient-to-br from-stone-900 via-red-900 to-amber-900"
+          className="w-full h-full bg-gradient-to-br from-stone-900 via-red-900 to-amber-900 flex items-center justify-center"
           style={{
-            backgroundImage: `
-              radial-gradient(circle at 30% 20%, rgba(185, 28, 28, 0.4) 0%, transparent 50%),
-              radial-gradient(circle at 70% 80%, rgba(120, 53, 15, 0.3) 0%, transparent 50%),
-              radial-gradient(circle at 20% 80%, rgba(15, 23, 42, 0.6) 0%, transparent 50%)
-            `
+            backgroundImage: 'url(/tapmove.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
           }}
         >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white/60">
-              <div className="text-8xl mb-6">🏋️‍♂️</div>
-              <p className="text-xl font-light tracking-wider">TAPMOVE 이미지 배치 예정</p>
-            </div>
+          {/* 이미지가 없을 때만 보이는 안내 */}
+          <div className="text-center text-white/70">
+            <div className="text-6xl mb-4">🏋️‍♂️</div>
+            <p className="text-lg font-light">TAPMOVE 이미지를</p>
+            <p className="text-lg font-light">client/public/tapmove.jpg</p>
+            <p className="text-lg font-light">파일로 저장하세요</p>
           </div>
         </div>
       </div>
