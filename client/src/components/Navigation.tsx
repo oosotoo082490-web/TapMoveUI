@@ -34,6 +34,9 @@ export default function Navigation() {
 
   const toggleSeminarDropdown = () => {
     setSeminarDropdownOpen(!seminarDropdownOpen);
+    if (!seminarDropdownOpen) {
+      setProductDropdownOpen(false);
+    }
   };
 
   const closeSeminarDropdown = () => {
@@ -42,6 +45,9 @@ export default function Navigation() {
 
   const toggleProductDropdown = () => {
     setProductDropdownOpen(!productDropdownOpen);
+    if (!productDropdownOpen) {
+      setSeminarDropdownOpen(false);
+    }
   };
 
   const closeProductDropdown = () => {
@@ -94,7 +100,10 @@ export default function Navigation() {
               <div 
                 ref={dropdownRef}
                 className="relative"
-                onMouseEnter={() => setSeminarDropdownOpen(true)}
+                onMouseEnter={() => {
+                  setSeminarDropdownOpen(true);
+                  setProductDropdownOpen(false);
+                }}
               >
                 <button
                   data-testid="nav-seminar"
@@ -135,7 +144,10 @@ export default function Navigation() {
               <div 
                 ref={productDropdownRef}
                 className="relative"
-                onMouseEnter={() => setProductDropdownOpen(true)}
+                onMouseEnter={() => {
+                  setProductDropdownOpen(true);
+                  setSeminarDropdownOpen(false);
+                }}
               >
                 <button
                   data-testid="nav-products"
