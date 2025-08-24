@@ -24,17 +24,17 @@ export default function SeminarSchedule() {
             <div>
               <div className="space-y-4">
                 <div className="flex items-start">
+                  <MapPin className="text-amber-600 mt-1 mr-3 h-5 w-5" />
+                  <div>
+                    <p className="font-semibold text-gray-900">장소</p>
+                    <p className="text-gray-600">대구시 북구 침산남로 172, 3층</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
                   <Calendar className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">일시</p>
                     <p className="text-gray-600">2025-11-08(토) 14:00–18:00</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Clock className="text-slate-600 mt-1 mr-3 h-5 w-5" />
-                  <div>
-                    <p className="font-semibold text-gray-900">교육시간</p>
-                    <p className="text-gray-600">4시간</p>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -68,17 +68,17 @@ export default function SeminarSchedule() {
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <MapPin className="text-amber-600 mt-1 mr-3 h-5 w-5" />
-                  <div>
-                    <p className="font-semibold text-gray-900">장소</p>
-                    <p className="text-gray-600">대구시 북구 침산남로 172, 3층</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
                   <Backpack className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">준비물</p>
                     <p className="text-gray-600">깨끗한 실내 운동화, 수건, 개인 물통</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <Clock className="text-slate-600 mt-1 mr-3 h-5 w-5" />
+                  <div>
+                    <p className="font-semibold text-gray-900">교육시간</p>
+                    <p className="text-gray-600">4시간</p>
                   </div>
                 </div>
               </div>
