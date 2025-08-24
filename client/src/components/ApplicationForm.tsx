@@ -95,14 +95,14 @@ export default function ApplicationForm() {
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="birthdate">생년월일 * (예: 900824)</Label>
+                    <Label htmlFor="birthdate">생년월일 * (예: 850315)</Label>
                     <Input
                       data-testid="input-birthdate"
                       id="birthdate"
                       type="text"
                       {...form.register("birthdate")}
                       className="mt-2"
-                      placeholder="900824"
+                      placeholder="850315"
                     />
                     {form.formState.errors.birthdate && (
                       <p className="text-sm text-red-600 mt-1">
