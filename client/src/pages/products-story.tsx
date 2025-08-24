@@ -66,21 +66,27 @@ export default function ProductsStoryPage() {
               <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
                 탭무브의 차별성
               </h3>
-              <ul className="space-y-4 text-white text-lg text-center">
+              <ul className="space-y-4 text-white text-lg">
                 <li className="flex items-start justify-center">
-                  <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                  <span className="font-medium">단 6mm의 얇은 매트 위에서<br />
-                  <strong className="text-white font-bold">안전하고 부담 없는 움직임</strong></span>
+                  <div className="flex items-start">
+                    <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-4 flex-shrink-0 shadow-lg"></span>
+                    <span className="font-medium text-center">단 6mm의 얇은 매트 위에서<br />
+                    <strong className="text-white font-bold">안전하고 부담 없는 움직임</strong></span>
+                  </div>
                 </li>
                 <li className="flex items-start justify-center">
-                  <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                  <span className="font-medium"><strong className="text-white font-bold">밸런스·순발력·유산소 효과</strong>를<br />
-                  동시에 고려한 설계</span>
+                  <div className="flex items-start">
+                    <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-4 flex-shrink-0 shadow-lg"></span>
+                    <span className="font-medium text-center"><strong className="text-white font-bold">밸런스·순발력·유산소 효과</strong>를<br />
+                    동시에 고려한 설계</span>
+                  </div>
                 </li>
                 <li className="flex items-start justify-center">
-                  <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                  <span className="font-medium">단순한 대안이 아닌,<br />
-                  <strong className="text-white font-bold">새로운 카테고리의 시작</strong></span>
+                  <div className="flex items-start">
+                    <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-4 flex-shrink-0 shadow-lg"></span>
+                    <span className="font-medium text-center">단순한 대안이 아닌,<br />
+                    <strong className="text-white font-bold">새로운 카테고리의 시작</strong></span>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -117,18 +123,24 @@ export default function ProductsStoryPage() {
               </p>
             </div>
 
-            <ul className="space-y-5 text-white text-lg text-center">
-              <li className="flex items-start">
-                <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                <span className="font-medium">무단 사용·판매 시 민형사상 엄정 대응</span>
+            <ul className="space-y-5 text-white text-lg">
+              <li className="flex items-start justify-center">
+                <div className="flex items-start">
+                  <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mt-2.5 mr-4 flex-shrink-0 shadow-lg"></span>
+                  <span className="font-medium text-center">무단 사용·판매 시 민형사상 엄정 대응</span>
+                </div>
               </li>
-              <li className="flex items-start">
-                <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                <span className="font-medium">TAPMOVE 로고가 없는 매트는 지식재산권 침해 상품</span>
+              <li className="flex items-start justify-center">
+                <div className="flex items-start">
+                  <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mt-2.5 mr-4 flex-shrink-0 shadow-lg"></span>
+                  <span className="font-medium text-center">TAPMOVE 로고가 없는 매트는 지식재산권 침해 상품</span>
+                </div>
               </li>
-              <li className="flex items-start">
-                <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                <span className="font-medium">상업적 수업 활용은 <strong className="text-white font-bold">세미나 수료자에 한정</strong></span>
+              <li className="flex items-start justify-center">
+                <div className="flex items-start">
+                  <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mt-2.5 mr-4 flex-shrink-0 shadow-lg"></span>
+                  <span className="font-medium text-center">상업적 수업 활용은 <strong className="text-white font-bold">세미나 수료자에 한정</strong></span>
+                </div>
               </li>
             </ul>
           </div>
