@@ -20,14 +20,20 @@ export default function LocationSection() {
                     <MapPin className="text-primary h-5 w-5 mr-2" />
                     <span className="font-semibold text-gray-900 text-lg">주소</span>
                   </div>
-                  <p className="text-gray-700">대구시 북구 침산남로 172 3층 운동하는코끼리</p>
+                  <div className="flex justify-center">
+                    <div className="w-5 mr-2"></div>
+                    <p className="text-gray-700">대구시 북구 침산남로 172 3층 운동하는코끼리</p>
+                  </div>
                 </div>
                 <div className="text-center">
                   <div className="flex justify-center items-center mb-2">
                     <Phone className="text-primary h-5 w-5 mr-2" />
                     <span className="font-semibold text-gray-900 text-lg">문의전화</span>
                   </div>
-                  <p className="text-gray-700">0507-1403-3006</p>
+                  <div className="flex justify-center">
+                    <div className="w-5 mr-2"></div>
+                    <p className="text-gray-700">0507-1403-3006</p>
+                  </div>
                 </div>
               </div>
             </div>
