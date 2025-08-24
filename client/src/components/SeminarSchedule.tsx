@@ -104,7 +104,7 @@ export default function SeminarSchedule() {
             </div>
             <div className="flex items-center">
               <Hash className="text-emerald-600 text-2xl mr-4 h-6 w-6" />
-              <span className="text-lg">SNS/홈트 'TAPMOVE' 명칭 사용</span>
+              <span className="text-lg">세미나 참석자 전원, TAPMOVE T-Shirt 제공</span>
             </div>
           </div>
         </div>
