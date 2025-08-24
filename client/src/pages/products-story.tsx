@@ -27,8 +27,11 @@ export default function ProductsStoryPage() {
                 새로운 운동의 탄생
               </h3>
               <p className="text-white leading-relaxed text-lg font-medium">
-                대구에서 10년 넘게 센터를 운영하며 다양한 연령대의 회원들과 함께했습니다. 
-                특히 노인복지 수업에서, <strong className="text-white font-bold">운동을 원하지만 관절의 부담 때문에 참여하지 못하는 분들</strong>이 많다는 현실을 발견했습니다.
+                대구에서 10년 넘게 센터를 운영하며<br />
+                다양한 연령대의 회원들과 함께했습니다.<br /><br />
+                특히 노인복지 수업에서,<br />
+                <strong className="text-white font-bold">운동을 원하지만 관절의 부담 때문에<br />
+                참여하지 못하는 분들</strong>이 많다는 현실을 발견했습니다.
               </p>
             </div>
 
@@ -38,8 +41,10 @@ export default function ProductsStoryPage() {
                 문제의 발견
               </h3>
               <p className="text-white leading-relaxed text-lg font-medium">
-                무릎과 발목이 약해 스텝박스조차 오르지 못하는 분들. 
-                운동의 필요성은 크지만 <strong className="text-white font-bold">마땅한 대안이 없는 상황</strong>이 안타까웠습니다.
+                무릎과 발목이 약해<br />
+                스텝박스조차 오르지 못하는 분들.<br /><br />
+                운동의 필요성은 크지만<br />
+                <strong className="text-white font-bold">마땅한 대안이 없는 상황</strong>이 안타까웠습니다.
               </p>
             </div>
 
@@ -49,8 +54,10 @@ export default function ProductsStoryPage() {
                 해답을 찾다
               </h3>
               <p className="text-white leading-relaxed text-lg font-medium">
-                누구나, 어디서든, 안전하게 할 수 있는 운동은 없을까? 
-                그 해답을 찾는 과정에서 <strong className="text-white font-bold">'탭무브'</strong>가 탄생했습니다.
+                누구나, 어디서든, 안전하게<br />
+                할 수 있는 운동은 없을까?<br /><br />
+                그 해답을 찾는 과정에서<br />
+                <strong className="text-white font-bold">'탭무브'</strong>가 탄생했습니다.
               </p>
             </div>
 
@@ -62,15 +69,18 @@ export default function ProductsStoryPage() {
               <ul className="space-y-4 text-white text-lg">
                 <li className="flex items-start">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                  <span className="font-medium">단 6mm의 얇은 매트 위에서 <strong className="text-white font-bold">안전하고 부담 없는 움직임</strong></span>
+                  <span className="font-medium">단 6mm의 얇은 매트 위에서<br />
+                  <strong className="text-white font-bold">안전하고 부담 없는 움직임</strong></span>
                 </li>
                 <li className="flex items-start">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                  <span className="font-medium"><strong className="text-white font-bold">밸런스·순발력·유산소 효과</strong>를 동시에 고려한 설계</span>
+                  <span className="font-medium"><strong className="text-white font-bold">밸런스·순발력·유산소 효과</strong>를<br />
+                  동시에 고려한 설계</span>
                 </li>
                 <li className="flex items-start">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
-                  <span className="font-medium">단순한 대안이 아닌, <strong className="text-white font-bold">새로운 카테고리의 시작</strong></span>
+                  <span className="font-medium">단순한 대안이 아닌,<br />
+                  <strong className="text-white font-bold">새로운 카테고리의 시작</strong></span>
                 </li>
               </ul>
             </div>
@@ -81,8 +91,10 @@ export default function ProductsStoryPage() {
                 함께하는 가치
               </h3>
               <p className="text-white leading-relaxed text-lg font-medium">
-                탭무브는 단순한 도구가 아닙니다. 
-                <strong className="text-white font-bold">운동의 기회를 넓히고, 누구나 자신 있게 움직일 수 있도록 돕는 새로운 문화</strong>입니다.
+                탭무브는 단순한 도구가 아닙니다.<br /><br />
+                <strong className="text-white font-bold">운동의 기회를 넓히고,<br />
+                누구나 자신 있게 움직일 수 있도록 돕는<br />
+                새로운 문화</strong>입니다.
               </p>
             </div>
           </div>
@@ -100,7 +112,8 @@ export default function ProductsStoryPage() {
             
             <div className="mb-8">
               <p className="text-white text-xl leading-relaxed mb-6 text-center font-medium">
-                ⚖️ <strong className="text-white font-bold">TAPMOVE는 상표법에 따라 정식 등록된 상표</strong>입니다.
+                ⚖️ <strong className="text-white font-bold">TAPMOVE는 상표법에 따라<br />
+                정식 등록된 상표</strong>입니다.
               </p>
             </div>
 
