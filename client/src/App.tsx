@@ -8,6 +8,7 @@ import Seminar from "@/pages/seminar";
 import SeminarSchedulePage from "@/pages/seminar-schedule";
 import SeminarApplyPage from "@/pages/seminar-apply";
 import Products from "@/pages/products";
+import ProductsStoryPage from "@/pages/products-story";
 import About from "@/pages/about";
 import Admin from "@/pages/admin";
 import Login from "@/pages/login";
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/seminar/schedule" component={SeminarSchedulePage} />
       <Route path="/seminar/apply" component={SeminarApplyPage} />
       <Route path="/products" component={Products} />
+      <Route path="/products/story" component={ProductsStoryPage} />
       <Route path="/about" component={About} />
       <Route path="/admin" component={Admin} />
       <Route path="/login" component={Login} />
