@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Volume2, VolumeX, Play } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 
 export default function VideoSection() {
   const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const savedMuteState = sessionStorage.getItem("videoMuted");
@@ -16,25 +17,28 @@ export default function VideoSection() {
     const newMutedState = !isMuted;
     setIsMuted(newMutedState);
     sessionStorage.setItem("videoMuted", newMutedState.toString());
-    // TODO: Implement actual video mute toggle when video element is added
+    
+    if (videoRef.current) {
+      videoRef.current.muted = newMutedState;
+    }
   };
 
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-stone-900">
       {/* Video Background Container */}
       <div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg h-full">
-        {/* Placeholder for vertical video - would be implemented with actual video element */}
-        <div className="w-full h-full bg-gradient-to-br from-slate-700 via-emerald-600 to-amber-500 flex items-center justify-center rounded-2xl shadow-2xl">
-          <div className="text-white text-center">
-            <Play className="mx-auto text-8xl mb-4 opacity-70" />
-            <p className="text-xl font-medium opacity-80">세로 비디오 플레이스홀더</p>
-            <p className="text-sm opacity-60 mt-2">실제 구현시 video 엘리먼트 사용</p>
-          </div>
-        </div>
-        {/* Video element would be here in actual implementation */}
-        {/* <video autoPlay muted={isMuted} loop className="w-full h-full object-cover rounded-2xl">
-          <source src="tapmove-hero-video.mp4" type="video/mp4" />
-        </video> */}
+        {/* 탭무브 세로 영상 */}
+        <video 
+          ref={videoRef}
+          autoPlay 
+          muted={isMuted} 
+          loop 
+          playsInline
+          className="w-full h-full object-cover rounded-2xl shadow-2xl"
+        >
+          <source src="/tapmove-video.mp4" type="video/mp4" />
+          브라우저가 비디오 재생을 지원하지 않습니다.
+        </video>
       </div>
 
       {/* Mute Toggle Button */}
