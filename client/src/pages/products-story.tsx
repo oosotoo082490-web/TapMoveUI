@@ -26,7 +26,7 @@ export default function ProductsStoryPage() {
               <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
                 새로운 운동의 탄생
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium">
+              <p className="text-white leading-relaxed text-lg font-medium text-center">
                 대구에서 10년 넘게 센터를 운영하며<br />
                 다양한 연령대의 회원들과 함께했습니다.<br /><br />
                 특히 노인복지 수업에서,<br />
@@ -40,7 +40,7 @@ export default function ProductsStoryPage() {
               <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
                 문제의 발견
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium">
+              <p className="text-white leading-relaxed text-lg font-medium text-center">
                 무릎과 발목이 약해<br />
                 스텝박스조차 오르지 못하는 분들.<br /><br />
                 운동의 필요성은 크지만<br />
@@ -53,7 +53,7 @@ export default function ProductsStoryPage() {
               <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
                 해답을 찾다
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium">
+              <p className="text-white leading-relaxed text-lg font-medium text-center">
                 누구나, 어디서든, 안전하게<br />
                 할 수 있는 운동은 없을까?<br /><br />
                 그 해답을 찾는 과정에서<br />
@@ -66,18 +66,18 @@ export default function ProductsStoryPage() {
               <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
                 탭무브의 차별성
               </h3>
-              <ul className="space-y-4 text-white text-lg">
-                <li className="flex items-start">
+              <ul className="space-y-4 text-white text-lg text-center">
+                <li className="flex items-start justify-center">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
                   <span className="font-medium">단 6mm의 얇은 매트 위에서<br />
                   <strong className="text-white font-bold">안전하고 부담 없는 움직임</strong></span>
                 </li>
-                <li className="flex items-start">
+                <li className="flex items-start justify-center">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
                   <span className="font-medium"><strong className="text-white font-bold">밸런스·순발력·유산소 효과</strong>를<br />
                   동시에 고려한 설계</span>
                 </li>
-                <li className="flex items-start">
+                <li className="flex items-start justify-center">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
                   <span className="font-medium">단순한 대안이 아닌,<br />
                   <strong className="text-white font-bold">새로운 카테고리의 시작</strong></span>
@@ -90,7 +90,7 @@ export default function ProductsStoryPage() {
               <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
                 함께하는 가치
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium">
+              <p className="text-white leading-relaxed text-lg font-medium text-center">
                 탭무브는 단순한 도구가 아닙니다.<br /><br />
                 <strong className="text-white font-bold">운동의 기회를 넓히고,<br />
                 누구나 자신 있게 움직일 수 있도록 돕는<br />
@@ -117,7 +117,7 @@ export default function ProductsStoryPage() {
               </p>
             </div>
 
-            <ul className="space-y-5 text-white text-lg">
+            <ul className="space-y-5 text-white text-lg text-center">
               <li className="flex items-start">
                 <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mt-2.5 mr-5 flex-shrink-0 shadow-lg"></span>
                 <span className="font-medium">무단 사용·판매 시 민형사상 엄정 대응</span>
