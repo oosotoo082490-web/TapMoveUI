@@ -57,6 +57,13 @@ export default function SeminarSchedule() {
             <div>
               <div className="space-y-4">
                 <div className="flex items-start">
+                  <DollarSign className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
+                  <div>
+                    <p className="font-semibold text-gray-900">교육비</p>
+                    <p className="text-gray-600">300,000원</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
                   <University className="text-slate-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">입금계좌</p>
@@ -65,13 +72,6 @@ export default function SeminarSchedule() {
                       <br />
                       50811-8677704
                     </p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <DollarSign className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
-                  <div>
-                    <p className="font-semibold text-gray-900">교육비</p>
-                    <p className="text-gray-600">300,000원</p>
                   </div>
                 </div>
                 <div className="flex items-start">
