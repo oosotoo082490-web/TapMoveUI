@@ -21,13 +21,32 @@ export default function HeroSection() {
           '높이'를 없앤 저충격 운동.
         </p>
         
-        <p className="text-lg md:text-xl mb-12 text-white/70 leading-relaxed max-w-3xl mx-auto">
+        <p className="text-lg md:text-xl mb-16 text-white/70 leading-relaxed max-w-3xl mx-auto">
           초등부터 실버 재활까지,<br />
           수업에 바로 적용할 수 있습니다.
         </p>
 
+        {/* Feature Highlights */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
+          <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
+            <div className="text-4xl mb-4">🧘‍♀️</div>
+            <h3 className="text-lg font-semibold text-white mb-3">안전한 운동</h3>
+            <p className="text-stone-300 text-sm leading-relaxed">관절 부담 없이,<br />누구나 안전하게</p>
+          </div>
+          <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
+            <div className="text-4xl mb-4">🎓</div>
+            <h3 className="text-lg font-semibold text-red-400 mb-3">체계적 교육</h3>
+            <p className="text-stone-300 text-sm leading-relaxed">탭무브 개발자가 직접 지도하는<br />세미나</p>
+          </div>
+          <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
+            <div className="text-4xl mb-4">🛡️</div>
+            <h3 className="text-lg font-semibold text-emerald-400 mb-3">브랜드 공식 사용 권한</h3>
+            <p className="text-stone-300 text-sm leading-relaxed">세미나 수료자에게만 'TAPMOVE' 브랜드<br />공식 사용 권한이 부여됩니다</p>
+          </div>
+        </div>
+
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+        <div className="flex flex-col sm:flex-row gap-6 justify-center">
           <Button
             data-testid="button-apply-seminar"
             onClick={navigateToSeminar}
@@ -47,25 +66,6 @@ export default function HeroSection() {
             세미나 일정 보기
             <Calendar className="ml-3 h-6 w-6" />
           </Button>
-        </div>
-
-        {/* Feature Highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
-            <div className="text-4xl mb-4">🧘‍♀️</div>
-            <h3 className="text-lg font-semibold text-white mb-3">안전한 운동</h3>
-            <p className="text-stone-300 text-sm leading-relaxed">관절 부담 없이,<br />누구나 안전하게</p>
-          </div>
-          <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
-            <div className="text-4xl mb-4">🎓</div>
-            <h3 className="text-lg font-semibold text-red-400 mb-3">체계적 교육</h3>
-            <p className="text-stone-300 text-sm leading-relaxed">탭무브 개발자가 직접 지도하는<br />세미나</p>
-          </div>
-          <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
-            <div className="text-4xl mb-4">🛡️</div>
-            <h3 className="text-lg font-semibold text-emerald-400 mb-3">브랜드 공식 사용 권한</h3>
-            <p className="text-stone-300 text-sm leading-relaxed">세미나 수료자에게만 'TAPMOVE' 브랜드<br />공식 사용 권한이 부여됩니다</p>
-          </div>
         </div>
       </div>
 
