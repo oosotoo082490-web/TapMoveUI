@@ -45,10 +45,10 @@ export default function SeminarSchedule() {
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <DollarSign className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
+                  <Clock className="text-slate-600 mt-1 mr-3 h-5 w-5" />
                   <div>
-                    <p className="font-semibold text-gray-900">교육비</p>
-                    <p className="text-gray-600">300,000원</p>
+                    <p className="font-semibold text-gray-900">교육시간</p>
+                    <p className="text-gray-600">4시간</p>
                   </div>
                 </div>
               </div>
@@ -68,17 +68,17 @@ export default function SeminarSchedule() {
                   </div>
                 </div>
                 <div className="flex items-start">
+                  <DollarSign className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
+                  <div>
+                    <p className="font-semibold text-gray-900">교육비</p>
+                    <p className="text-gray-600">300,000원</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
                   <Backpack className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">준비물</p>
                     <p className="text-gray-600">깨끗한 실내 운동화, 수건, 개인 물통</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <Clock className="text-slate-600 mt-1 mr-3 h-5 w-5" />
-                  <div>
-                    <p className="font-semibold text-gray-900">교육시간</p>
-                    <p className="text-gray-600">4시간</p>
                   </div>
                 </div>
               </div>
