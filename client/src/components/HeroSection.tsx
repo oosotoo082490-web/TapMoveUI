@@ -36,7 +36,7 @@ export default function HeroSection() {
           <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
             <div className="text-5xl mb-4">🎓</div>
             <h3 className="text-lg font-semibold text-red-400 mb-3">체계적 교육</h3>
-            <p className="text-stone-300 text-sm leading-relaxed">탭무브 개발자가 직접 지도하는<br />세미나</p>
+            <p className="text-stone-300 text-sm leading-relaxed">탭무브 개발자가<br />직접 지도하는 세미나</p>
           </div>
           <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
             <div className="text-5xl mb-4">🛡️</div>
