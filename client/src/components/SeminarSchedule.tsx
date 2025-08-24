@@ -92,7 +92,7 @@ export default function SeminarSchedule() {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-center">
               <span className="text-2xl mr-4">✅</span>
-              <span className="text-lg">탭무브 공식 수료증 발급</span>
+              <span className="text-lg">탭무브 상표 사용 권한</span>
             </div>
             <div className="flex items-center">
               <span className="text-2xl mr-4">🎓</span>
@@ -100,11 +100,11 @@ export default function SeminarSchedule() {
             </div>
             <div className="flex items-center">
               <span className="text-2xl mr-4">✅</span>
-              <span className="text-lg">탭무브 상표 사용 권한</span>
+              <span className="text-lg">탭무브 공식 수료증 발급</span>
             </div>
             <div className="flex items-center">
               <span className="text-2xl mr-4">👕</span>
-              <span className="text-lg">세미나 참석자 전원, TAPMOVE T-Shirt 제공</span>
+              <span className="text-lg">세미나 참석자 전원 TAPMOVE T-Shirt 제공</span>
             </div>
           </div>
         </div>
