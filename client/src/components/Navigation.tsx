@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -7,6 +7,7 @@ export default function Navigation() {
   const [location, setLocation] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [seminarDropdownOpen, setSeminarDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -24,6 +25,28 @@ export default function Navigation() {
   const isSeminarActive = () => {
     return location === "/seminar" || location === "/seminar/schedule" || location === "/seminar/apply";
   };
+
+  const toggleSeminarDropdown = () => {
+    setSeminarDropdownOpen(!seminarDropdownOpen);
+  };
+
+  const closeSeminarDropdown = () => {
+    setSeminarDropdownOpen(false);
+  };
+
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setSeminarDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50">
@@ -52,12 +75,13 @@ export default function Navigation() {
               </Link>
               {/* 세미나 드롭다운 메뉴 */}
               <div 
+                ref={dropdownRef}
                 className="relative"
                 onMouseEnter={() => setSeminarDropdownOpen(true)}
-                onMouseLeave={() => setSeminarDropdownOpen(false)}
               >
                 <button
                   data-testid="nav-seminar"
+                  onClick={toggleSeminarDropdown}
                   className={`transition-colors px-3 py-2 text-sm font-medium flex items-center ${
                     isSeminarActive() 
                       ? "text-primary font-semibold" 
@@ -65,7 +89,7 @@ export default function Navigation() {
                   }`}
                 >
                   세미나
-                  <ChevronDown className="ml-1 h-4 w-4" />
+                  <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${seminarDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
                 
                 {/* 드롭다운 메뉴 */}
@@ -74,6 +98,7 @@ export default function Navigation() {
                     <Link
                       data-testid="nav-seminar-schedule"
                       href="/seminar/schedule"
+                      onClick={closeSeminarDropdown}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                     >
                       세미나 일정
@@ -81,6 +106,7 @@ export default function Navigation() {
                     <Link
                       data-testid="nav-seminar-apply"
                       href="/seminar/apply"
+                      onClick={closeSeminarDropdown}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                     >
                       세미나 신청
