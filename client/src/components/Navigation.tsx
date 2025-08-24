@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 export default function Navigation() {
   const [location, setLocation] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [seminarDropdownOpen, setSeminarDropdownOpen] = useState(false);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -18,6 +19,10 @@ export default function Navigation() {
 
   const isActivePage = (path: string) => {
     return location === path;
+  };
+
+  const isSeminarActive = () => {
+    return location === "/seminar" || location === "/seminar/schedule" || location === "/seminar/apply";
   };
 
   return (
@@ -45,17 +50,44 @@ export default function Navigation() {
               >
                 홈
               </Link>
-              <Link
-                data-testid="nav-seminar"
-                href="/seminar"
-                className={`transition-colors px-3 py-2 text-sm font-medium ${
-                  isActivePage("/seminar") 
-                    ? "text-primary font-semibold" 
-                    : "text-gray-600 hover:text-primary"
-                }`}
+              {/* 세미나 드롭다운 메뉴 */}
+              <div 
+                className="relative"
+                onMouseEnter={() => setSeminarDropdownOpen(true)}
+                onMouseLeave={() => setSeminarDropdownOpen(false)}
               >
-                세미나
-              </Link>
+                <button
+                  data-testid="nav-seminar"
+                  className={`transition-colors px-3 py-2 text-sm font-medium flex items-center ${
+                    isSeminarActive() 
+                      ? "text-primary font-semibold" 
+                      : "text-gray-600 hover:text-primary"
+                  }`}
+                >
+                  세미나
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </button>
+                
+                {/* 드롭다운 메뉴 */}
+                {seminarDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                    <Link
+                      data-testid="nav-seminar-schedule"
+                      href="/seminar/schedule"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                    >
+                      세미나 일정
+                    </Link>
+                    <Link
+                      data-testid="nav-seminar-apply"
+                      href="/seminar/apply"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                    >
+                      세미나 신청
+                    </Link>
+                  </div>
+                )}
+              </div>
               <Link
                 data-testid="nav-products"
                 href="/products"
@@ -118,18 +150,34 @@ export default function Navigation() {
             >
               홈
             </Link>
-            <Link
-              data-testid="nav-mobile-seminar"
-              href="/seminar"
-              onClick={closeMobileMenu}
-              className={`block px-3 py-2 text-base font-medium w-full text-left ${
-                isActivePage("/seminar") 
+            {/* 모바일 세미나 메뉴 */}
+            <div className="space-y-1">
+              <div className={`px-3 py-2 text-base font-medium ${
+                isSeminarActive() 
                   ? "text-primary font-semibold" 
                   : "text-gray-600"
-              }`}
-            >
-              세미나
-            </Link>
+              }`}>
+                세미나
+              </div>
+              <div className="pl-6 space-y-1">
+                <Link
+                  data-testid="nav-mobile-seminar-schedule"
+                  href="/seminar/schedule"
+                  onClick={closeMobileMenu}
+                  className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
+                >
+                  세미나 일정
+                </Link>
+                <Link
+                  data-testid="nav-mobile-seminar-apply"
+                  href="/seminar/apply"
+                  onClick={closeMobileMenu}
+                  className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
+                >
+                  세미나 신청
+                </Link>
+              </div>
+            </div>
             <Link
               data-testid="nav-mobile-products"
               href="/products"
