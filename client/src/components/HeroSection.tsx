@@ -17,12 +17,12 @@ export default function HeroSection() {
           새로운 피트니스의 기준, 탭무브
         </h1>
         
-        <p className="text-2xl md:text-3xl mb-4 text-white/80 leading-relaxed max-w-3xl mx-auto drop-shadow-md font-medium">
-          '높이'를 없앤 저충격 운동.
+        <p className="text-2xl md:text-3xl mb-4 text-white/80 leading-loose max-w-3xl mx-auto drop-shadow-md font-medium">
+          '높이'를 없앤 저충격 운동
         </p>
         
-        <p className="text-lg md:text-xl mb-16 text-white/70 leading-relaxed max-w-3xl mx-auto">
-          초등부터 실버 재활까지,<br />
+        <p className="text-lg md:text-xl mb-16 text-white/70 leading-loose max-w-3xl mx-auto">
+          ✅ 초등부터 실버 재활까지,<br />
           수업에 바로 적용할 수 있습니다.
         </p>
 
