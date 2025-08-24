@@ -11,7 +11,6 @@ export default function Home() {
       <Navigation />
       <TopImageSection />
       <HeroSection />
-      <VideoSection />
       <FeatureCarousel />
       <Footer />
     </div>
