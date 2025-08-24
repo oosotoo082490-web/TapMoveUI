@@ -40,7 +40,15 @@ export default function TopImageSection() {
       <div className="absolute inset-0 flex items-end justify-center pb-16 z-10">
         <div className="text-center text-white">
           {/* 타자기 효과 TAPMOVE 텍스트 */}
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-wide drop-shadow-2xl min-h-[1.2em] flex items-center justify-center">
+          <h2 
+            className="text-5xl md:text-7xl mb-6 drop-shadow-2xl min-h-[1.2em] flex items-center justify-center"
+            style={{
+              fontFamily: '"Inter", "Helvetica Neue", "Arial Black", sans-serif',
+              fontWeight: 900,
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
+            }}
+          >
             <span className="inline-block">
               {displayedText}
               {displayedText.length < targetText.length && (
@@ -57,7 +65,14 @@ export default function TopImageSection() {
                 : 'opacity-0 translate-y-4'
             }`}
           >
-            <p className="text-xl md:text-2xl font-light tracking-wider drop-shadow-lg text-white/95">
+            <p 
+              className="text-xl md:text-2xl drop-shadow-lg text-white/95"
+              style={{
+                fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+                fontWeight: 300,
+                letterSpacing: '0.1em'
+              }}
+            >
               The Future of Movement
             </p>
           </div>
