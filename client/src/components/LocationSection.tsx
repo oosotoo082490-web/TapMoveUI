@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Train, Car, Phone, ExternalLink, Clock } from "lucide-react";
+import { MapPin, Phone, ExternalLink } from "lucide-react";
 
 export default function LocationSection() {
   return (
@@ -8,7 +8,7 @@ export default function LocationSection() {
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">센터 위치</h2>
-          <p className="text-xl text-gray-600">TAPMOVE 교육센터로 오시는 길</p>
+          <p className="text-xl text-gray-600">운동하는코끼리</p>
         </div>
 
         <Card className="shadow-lg">
@@ -22,28 +22,14 @@ export default function LocationSection() {
                     <MapPin className="text-primary text-xl mt-1 mr-4 h-6 w-6" />
                     <div>
                       <p className="font-semibold text-gray-900 text-lg">주소</p>
-                      <p className="text-gray-700">대구시 북구 침산남로 172, 3층</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <Train className="text-primary text-xl mt-1 mr-4 h-6 w-6" />
-                    <div>
-                      <p className="font-semibold text-gray-900 text-lg">대중교통</p>
-                      <p className="text-gray-700">지하철 3호선 명덕역 3번 출구 도보 5분</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <Car className="text-primary text-xl mt-1 mr-4 h-6 w-6" />
-                    <div>
-                      <p className="font-semibold text-gray-900 text-lg">주차</p>
-                      <p className="text-gray-700">건물 지하 주차장 이용 가능</p>
+                      <p className="text-gray-700">대구시 북구 침산남로 172 3층</p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <Phone className="text-primary text-xl mt-1 mr-4 h-6 w-6" />
                     <div>
                       <p className="font-semibold text-gray-900 text-lg">문의전화</p>
-                      <p className="text-gray-700">053-XXX-XXXX</p>
+                      <p className="text-gray-700">0507-1403-3006</p>
                     </div>
                   </div>
                 </div>
@@ -73,27 +59,6 @@ export default function LocationSection() {
               </div>
             </div>
 
-            {/* Operating Hours */}
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <Clock className="mr-2 h-5 w-5" />
-                운영시간
-              </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <p className="font-semibold text-gray-900">평일</p>
-                  <p className="text-gray-700">오전 9:00 - 오후 6:00</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">토요일</p>
-                  <p className="text-gray-700">오전 9:00 - 오후 5:00</p>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">일요일/공휴일</p>
-                  <p className="text-gray-700">휴무</p>
-                </div>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
