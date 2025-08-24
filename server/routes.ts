@@ -6,6 +6,20 @@ import { storage } from "./storage";
 import { insertApplicationSchema, insertReviewSchema, insertOrderSchema } from "@shared/schema";
 import { filterProfanity } from "../client/src/lib/profanity-filter";
 
+// Extend express-session types
+declare module 'express-session' {
+  interface SessionData {
+    user?: {
+      id: string;
+      email: string;
+      name: string;
+      role: string;
+    };
+    reviewAccess?: boolean;
+    bulkAccess?: boolean;
+  }
+}
+
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
