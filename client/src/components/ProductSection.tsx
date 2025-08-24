@@ -75,12 +75,9 @@ export default function ProductSection() {
               alt="TAPMOVE 공식 매트"
               className="rounded-2xl shadow-lg w-full max-w-md mx-auto"
             />
-            <div className="mt-6">
+            <div className="mt-6 flex justify-center">
               <Badge className="bg-gradient-to-r from-slate-700 to-slate-800 text-amber-100 px-4 py-2 rounded-full text-sm font-semibold">
                 공식 정품
-              </Badge>
-              <Badge className="bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold ml-2">
-                6mm 두께
               </Badge>
             </div>
           </div>
