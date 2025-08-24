@@ -54,7 +54,7 @@ export default function HeroSection() {
           <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
             <div className="text-4xl mb-4">🛡️</div>
             <h3 className="text-lg font-semibold text-white mb-3">안전한 운동</h3>
-            <p className="text-stone-300 text-sm leading-relaxed">높이 부담 없는<br />새로운 피트니스 경험</p>
+            <p className="text-stone-300 text-sm leading-relaxed">관절 부담 없이,<br />누구나 안전하게</p>
           </div>
           <div className="bg-stone-900/80 rounded-2xl p-8 shadow-xl border border-stone-700 text-center">
             <div className="text-4xl mb-4">🎓</div>
