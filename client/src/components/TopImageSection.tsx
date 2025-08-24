@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export default function TopImageSection() {
   const [displayedText, setDisplayedText] = useState('');
   const [showSubtitle, setShowSubtitle] = useState(false);
-  const targetText = 'TAPMOVE';
+  const targetText = '탭무브';
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
