@@ -20,7 +20,7 @@ export default function ProductSection() {
   });
 
   const product = products[0]; // Get first product
-  const unitPrice = product?.price || 19500;
+  const unitPrice = 17500; // 세미나 회원가 적용 (세미나 참석자 전용)
   const totalPrice = unitPrice * quantity;
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
@@ -107,6 +107,82 @@ export default function ProductSection() {
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
                 <span>친환경 소재 사용</span>
+              </div>
+            </div>
+
+            {/* 가격 안내 카드 */}
+            <div className="mb-8">
+              <div className="flex items-center mb-6">
+                <div className="w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-lg flex items-center justify-center mr-3">
+                  <span className="text-white text-lg">📌</span>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900">탭무브 상품 판매 안내</h3>
+              </div>
+              
+              <div className="grid gap-4 mb-6">
+                {/* 정상가 */}
+                <Card className="border border-gray-200 hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-gray-900">정상가</h4>
+                        <p className="text-sm text-gray-600">기본 가격</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xl font-bold text-gray-600 line-through">22,500원</p>
+                        <p className="text-sm text-gray-500">-</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* 일반 판매가 */}
+                <Card className="border border-emerald-200 bg-emerald-50 hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-emerald-800">일반 판매가</h4>
+                        <p className="text-sm text-emerald-600">온라인 구매가</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xl font-bold text-emerald-700">19,500원</p>
+                        <Badge className="bg-emerald-100 text-emerald-800">13% 할인</Badge>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* 세미나 회원가 */}
+                <Card className="border-2 border-amber-300 bg-gradient-to-r from-amber-50 to-amber-100 hover:shadow-lg transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-amber-800">세미나 회원가</h4>
+                        <p className="text-sm text-amber-600">세미나 참석자 전용 특별 혜택</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xl font-bold text-amber-700">17,500원</p>
+                        <Badge className="bg-amber-200 text-amber-800">22.2% 할인</Badge>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* 배송비 */}
+                <Card className="border border-slate-200 bg-slate-50 hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h4 className="font-semibold text-slate-800">배송비</h4>
+                        <p className="text-sm text-slate-600">10개당 부과</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xl font-bold text-slate-700">3,200원</p>
+                        <p className="text-sm text-slate-500">-</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
