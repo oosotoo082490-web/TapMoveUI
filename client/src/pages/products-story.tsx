@@ -22,77 +22,77 @@ export default function ProductsStoryPage() {
           {/* 스토리 섹션들 */}
           <div className="space-y-12">
             {/* 섹션 1 */}
-            <div className="bg-gradient-to-br from-stone-800/90 to-stone-700/90 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-amber-500/20 hover:border-amber-400/30 transition-all duration-300">
-              <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-gray-200 hover:shadow-3xl transition-all duration-300">
+              <h3 className="text-center text-2xl font-bold text-gray-800 mb-8">
                 새로운 운동의 탄생
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium text-center">
+              <p className="text-gray-700 leading-relaxed text-lg font-medium text-center">
                 대구에서 10년 넘게 센터를 운영하며<br />
                 다양한 연령대의 회원들과 함께했습니다.<br /><br />
                 특히 노인복지 수업에서,<br />
-                <strong className="text-white font-bold">운동을 원하지만 관절의 부담 때문에<br />
+                <strong className="text-gray-900 font-bold">운동을 원하지만 관절의 부담 때문에<br />
                 참여하지 못하는 분들</strong>이 많다는 현실을 발견했습니다.
               </p>
             </div>
 
             {/* 섹션 2 */}
-            <div className="bg-gradient-to-br from-stone-800/90 to-stone-700/90 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-amber-500/20 hover:border-amber-400/30 transition-all duration-300">
-              <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-gray-200 hover:shadow-3xl transition-all duration-300">
+              <h3 className="text-center text-2xl font-bold text-gray-800 mb-8">
                 문제의 발견
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium text-center">
+              <p className="text-gray-700 leading-relaxed text-lg font-medium text-center">
                 무릎과 발목이 약해<br />
                 스텝박스조차 오르지 못하는 분들.<br /><br />
                 운동의 필요성은 크지만<br />
-                <strong className="text-white font-bold">마땅한 대안이 없는 상황</strong>이 안타까웠습니다.
+                <strong className="text-gray-900 font-bold">마땅한 대안이 없는 상황</strong>이 안타까웠습니다.
               </p>
             </div>
 
             {/* 섹션 3 */}
-            <div className="bg-gradient-to-br from-stone-800/90 to-stone-700/90 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-amber-500/20 hover:border-amber-400/30 transition-all duration-300">
-              <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-gray-200 hover:shadow-3xl transition-all duration-300">
+              <h3 className="text-center text-2xl font-bold text-gray-800 mb-8">
                 해답을 찾다
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium text-center">
+              <p className="text-gray-700 leading-relaxed text-lg font-medium text-center">
                 누구나, 어디서든, 안전하게<br />
                 할 수 있는 운동은 없을까?<br /><br />
                 그 해답을 찾는 과정에서<br />
-                <strong className="text-white font-bold">'탭무브'</strong>가 탄생했습니다.
+                <strong className="text-gray-900 font-bold">'탭무브'</strong>가 탄생했습니다.
               </p>
             </div>
 
             {/* 섹션 4 */}
-            <div className="bg-gradient-to-br from-stone-800/90 to-stone-700/90 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-amber-500/20 hover:border-amber-400/30 transition-all duration-300">
-              <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-gray-200 hover:shadow-3xl transition-all duration-300">
+              <h3 className="text-center text-2xl font-bold text-gray-800 mb-8">
                 탭무브의 차별성
               </h3>
-              <ul className="space-y-4 text-white text-lg text-center">
+              <ul className="space-y-4 text-gray-700 text-lg text-center">
                 <li className="font-medium">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mr-3 align-middle shadow-lg"></span>
                   단 6mm의 얇은 매트 위에서<br />
-                  <strong className="text-white font-bold">안전하고 부담 없는 움직임</strong>
+                  <strong className="text-gray-900 font-bold">안전하고 부담 없는 움직임</strong>
                 </li>
                 <li className="font-medium">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mr-3 align-middle shadow-lg"></span>
-                  <strong className="text-white font-bold">밸런스·순발력·유산소 효과</strong>를<br />
+                  <strong className="text-gray-900 font-bold">밸런스·순발력·유산소 효과</strong>를<br />
                   동시에 고려한 설계
                 </li>
                 <li className="font-medium">
                   <span className="inline-block w-3 h-3 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full mr-3 align-middle shadow-lg"></span>
                   단순한 대안이 아닌,<br />
-                  <strong className="text-white font-bold">새로운 카테고리의 시작</strong>
+                  <strong className="text-gray-900 font-bold">새로운 카테고리의 시작</strong>
                 </li>
               </ul>
             </div>
 
             {/* 섹션 5 */}
-            <div className="bg-gradient-to-br from-stone-800/90 to-stone-700/90 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-amber-500/20 hover:border-amber-400/30 transition-all duration-300">
-              <h3 className="text-center text-2xl font-bold text-white mb-8 drop-shadow-lg">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-gray-200 hover:shadow-3xl transition-all duration-300">
+              <h3 className="text-center text-2xl font-bold text-gray-800 mb-8">
                 함께하는 가치
               </h3>
-              <p className="text-white leading-relaxed text-lg font-medium text-center">
+              <p className="text-gray-700 leading-relaxed text-lg font-medium text-center">
                 탭무브는 단순한 도구가 아닙니다.<br /><br />
-                <strong className="text-white font-bold">운동의 기회를 넓히고,<br />
+                <strong className="text-gray-900 font-bold">운동의 기회를 넓히고,<br />
                 누구나 자신 있게 움직일 수 있도록 돕는<br />
                 새로운 문화</strong>입니다.
               </p>
@@ -105,30 +105,30 @@ export default function ProductsStoryPage() {
           </div>
 
           {/* 법적 안내 */}
-          <div className="bg-gradient-to-br from-stone-900/60 to-stone-800/60 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-stone-500/30">
-            <h2 className="text-center text-3xl font-bold text-white mb-10 drop-shadow-lg">
+          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-gray-200 hover:shadow-3xl transition-all duration-300">
+            <h2 className="text-center text-3xl font-bold text-gray-800 mb-10">
               법적 안내
             </h2>
             
             <div className="mb-8">
-              <p className="text-white text-xl leading-relaxed mb-6 text-center font-medium">
-                ⚖️ <strong className="text-white font-bold">TAPMOVE는 상표법에 따라<br />
+              <p className="text-gray-700 text-xl leading-relaxed mb-6 text-center font-medium">
+                ⚖️ <strong className="text-gray-900 font-bold">TAPMOVE는 상표법에 따라<br />
                 정식 등록된 상표</strong>입니다.
               </p>
             </div>
 
-            <ul className="space-y-5 text-white text-lg text-center">
+            <ul className="space-y-5 text-gray-700 text-lg text-center">
               <li className="font-medium">
-                <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mr-3 align-middle shadow-lg"></span>
+                <span className="inline-block w-3 h-3 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full mr-3 align-middle shadow-lg"></span>
                 무단 사용·판매 시 민형사상 엄정 대응
               </li>
               <li className="font-medium">
-                <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mr-3 align-middle shadow-lg"></span>
+                <span className="inline-block w-3 h-3 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full mr-3 align-middle shadow-lg"></span>
                 TAPMOVE 로고가 없는 매트는 지식재산권 침해 상품
               </li>
               <li className="font-medium">
-                <span className="inline-block w-3 h-3 bg-gradient-to-r from-stone-500 to-stone-600 rounded-full mr-3 align-middle shadow-lg"></span>
-                상업적 수업 활용은 <strong className="text-white font-bold">세미나 수료자에 한정</strong>
+                <span className="inline-block w-3 h-3 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full mr-3 align-middle shadow-lg"></span>
+                상업적 수업 활용은 <strong className="text-gray-900 font-bold">세미나 수료자에 한정</strong>
               </li>
             </ul>
           </div>
