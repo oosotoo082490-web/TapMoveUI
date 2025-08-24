@@ -20,11 +20,11 @@ export default function VideoSection() {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-stone-900">
       {/* Video Background Container */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="relative w-full max-w-sm md:max-w-md lg:max-w-lg h-full">
         {/* Placeholder for vertical video - would be implemented with actual video element */}
-        <div className="w-full h-full bg-gradient-to-br from-slate-700 via-emerald-600 to-amber-500 flex items-center justify-center">
+        <div className="w-full h-full bg-gradient-to-br from-slate-700 via-emerald-600 to-amber-500 flex items-center justify-center rounded-2xl shadow-2xl">
           <div className="text-white text-center">
             <Play className="mx-auto text-8xl mb-4 opacity-70" />
             <p className="text-xl font-medium opacity-80">세로 비디오 플레이스홀더</p>
@@ -32,7 +32,7 @@ export default function VideoSection() {
           </div>
         </div>
         {/* Video element would be here in actual implementation */}
-        {/* <video autoPlay muted={isMuted} loop className="w-full h-full object-cover">
+        {/* <video autoPlay muted={isMuted} loop className="w-full h-full object-cover rounded-2xl">
           <source src="tapmove-hero-video.mp4" type="video/mp4" />
         </video> */}
       </div>
@@ -49,7 +49,7 @@ export default function VideoSection() {
       </Button>
 
       {/* Optional overlay gradient for better text readability */}
-      <div className="absolute inset-0 bg-black/20 z-10"></div>
+      <div className="absolute inset-0 bg-black/20 z-10 rounded-2xl"></div>
     </section>
   );
 }
