@@ -1,4 +1,4 @@
-import { MapPin, Phone, Car } from "lucide-react";
+import { MapPin, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -14,10 +14,6 @@ export default function Footer() {
             <p className="flex items-center justify-center">
               <Phone className="mr-2 h-4 w-4" />
               0507-1403-3006
-            </p>
-            <p className="flex items-center justify-center">
-              <Car className="mr-2 h-4 w-4" />
-              건물 지하 주차장 이용 가능
             </p>
           </div>
         </div>
