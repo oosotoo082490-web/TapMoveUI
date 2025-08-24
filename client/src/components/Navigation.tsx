@@ -7,7 +7,9 @@ export default function Navigation() {
   const [location, setLocation] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [seminarDropdownOpen, setSeminarDropdownOpen] = useState(false);
+  const [productDropdownOpen, setProductDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const productDropdownRef = useRef<HTMLDivElement>(null);
 
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -26,6 +28,10 @@ export default function Navigation() {
     return location === "/seminar" || location === "/seminar/schedule" || location === "/seminar/apply";
   };
 
+  const isProductActive = () => {
+    return location === "/products" || location === "/products/tapmove" || location === "/products/story";
+  };
+
   const toggleSeminarDropdown = () => {
     setSeminarDropdownOpen(!seminarDropdownOpen);
   };
@@ -34,11 +40,22 @@ export default function Navigation() {
     setSeminarDropdownOpen(false);
   };
 
+  const toggleProductDropdown = () => {
+    setProductDropdownOpen(!productDropdownOpen);
+  };
+
+  const closeProductDropdown = () => {
+    setProductDropdownOpen(false);
+  };
+
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setSeminarDropdownOpen(false);
+      }
+      if (productDropdownRef.current && !productDropdownRef.current.contains(event.target as Node)) {
+        setProductDropdownOpen(false);
       }
     };
 
@@ -114,17 +131,47 @@ export default function Navigation() {
                   </div>
                 )}
               </div>
-              <Link
-                data-testid="nav-products"
-                href="/products"
-                className={`transition-colors px-3 py-2 text-sm font-medium ${
-                  isActivePage("/products") 
-                    ? "text-primary font-semibold" 
-                    : "text-gray-600 hover:text-primary"
-                }`}
+              {/* 제품 드롭다운 메뉴 */}
+              <div 
+                ref={productDropdownRef}
+                className="relative"
+                onMouseEnter={() => setProductDropdownOpen(true)}
               >
-                제품
-              </Link>
+                <button
+                  data-testid="nav-products"
+                  onClick={toggleProductDropdown}
+                  className={`transition-colors px-3 py-2 text-sm font-medium flex items-center ${
+                    isProductActive() 
+                      ? "text-primary font-semibold" 
+                      : "text-gray-600 hover:text-primary"
+                  }`}
+                >
+                  제품
+                  <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${productDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {/* 드롭다운 메뉴 */}
+                {productDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                    <Link
+                      data-testid="nav-products-tapmove"
+                      href="/products"
+                      onClick={closeProductDropdown}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                    >
+                      TAPMOVE
+                    </Link>
+                    <Link
+                      data-testid="nav-products-story"
+                      href="/products/story"
+                      onClick={closeProductDropdown}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                    >
+                      TAPMOVE Story
+                    </Link>
+                  </div>
+                )}
+              </div>
               <Link
                 data-testid="nav-about"
                 href="/about"
@@ -204,18 +251,34 @@ export default function Navigation() {
                 </Link>
               </div>
             </div>
-            <Link
-              data-testid="nav-mobile-products"
-              href="/products"
-              onClick={closeMobileMenu}
-              className={`block px-3 py-2 text-base font-medium w-full text-left ${
-                isActivePage("/products") 
+            {/* 모바일 제품 메뉴 */}
+            <div className="space-y-1">
+              <div className={`px-3 py-2 text-base font-medium ${
+                isProductActive() 
                   ? "text-primary font-semibold" 
                   : "text-gray-600"
-              }`}
-            >
-              제품
-            </Link>
+              }`}>
+                제품
+              </div>
+              <div className="pl-6 space-y-1">
+                <Link
+                  data-testid="nav-mobile-products-tapmove"
+                  href="/products"
+                  onClick={closeMobileMenu}
+                  className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
+                >
+                  TAPMOVE
+                </Link>
+                <Link
+                  data-testid="nav-mobile-products-story"
+                  href="/products/story"
+                  onClick={closeMobileMenu}
+                  className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
+                >
+                  TAPMOVE Story
+                </Link>
+              </div>
+            </div>
             <Link
               data-testid="nav-mobile-about"
               href="/about"
