@@ -91,19 +91,19 @@ export default function SeminarSchedule() {
           <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">참가 혜택</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-center">
-              <Tag className="text-emerald-600 text-2xl mr-4 h-6 w-6" />
+              <span className="text-2xl mr-4">✅</span>
               <span className="text-lg">탭무브 공식 수료증 발급</span>
             </div>
             <div className="flex items-center">
-              <Hash className="text-amber-600 text-2xl mr-4 h-6 w-6" />
+              <span className="text-2xl mr-4">🎓</span>
+              <span className="text-lg">실제 수업에 최적화된 실용 교육</span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl mr-4">✅</span>
               <span className="text-lg">탭무브 상표 사용 권한</span>
             </div>
             <div className="flex items-center">
-              <Presentation className="text-slate-600 text-2xl mr-4 h-6 w-6" />
-              <span className="text-lg">수업에 바로 적용 가능</span>
-            </div>
-            <div className="flex items-center">
-              <Hash className="text-emerald-600 text-2xl mr-4 h-6 w-6" />
+              <span className="text-2xl mr-4">👕</span>
               <span className="text-lg">세미나 참석자 전원, TAPMOVE T-Shirt 제공</span>
             </div>
           </div>
