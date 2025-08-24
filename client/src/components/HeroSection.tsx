@@ -14,8 +14,8 @@ export default function HeroSection() {
     >
       {/* Main Content */}
       <div className="container mx-auto px-4 text-center max-w-5xl">
-        <h1 className="text-5xl md:text-7xl font-bold mb-12 leading-tight text-white drop-shadow-lg">
-          새로운 피트니스의 기준 탭무브
+        <h1 className="text-5xl md:text-7xl font-bold mb-12 leading-tight text-white drop-shadow-lg text-center">
+          새로운 피트니스의 기준
         </h1>
         
         {/* 탭무브 동영상 */}
