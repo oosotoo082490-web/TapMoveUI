@@ -150,7 +150,7 @@ export default function ApplicationForm() {
                     id="address"
                     {...form.register("address")}
                     className="mt-2"
-                    placeholder="서울시 강남구 테헤란로 123"
+                    placeholder="서울시 ○○구 ○○로 000"
                   />
                   {form.formState.errors.address && (
                     <p className="text-sm text-red-600 mt-1">
