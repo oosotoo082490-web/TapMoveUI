@@ -14,7 +14,7 @@ export default function SeminarSchedule() {
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">세미나 일정</h2>
-          <p className="text-xl text-gray-600">전문가와 함께하는 TAPMOVE 세미나에 참여하세요</p>
+          <p className="text-xl text-gray-600">다가오는 TAPMOVE 세미나 일정을 확인하고 빠르게 준비하세요</p>
         </div>
 
         {/* Seminar Info Card */}
