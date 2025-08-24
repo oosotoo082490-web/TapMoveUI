@@ -67,9 +67,9 @@ export default function ProductSection() {
           <p className="text-xl text-gray-600">공식 TAPMOVE 매트를 만나보세요</p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Product Image */}
-          <div className="text-center lg:sticky lg:top-24">
+          <div className="text-center lg:sticky lg:top-20">
             <img
               src="/tapmove.jpg"
               alt="TAPMOVE 공식 매트"
