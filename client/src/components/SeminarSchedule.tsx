@@ -19,9 +19,9 @@ export default function SeminarSchedule() {
 
         {/* Seminar Info Card */}
         <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">세미나 정보</h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">세미나 정보</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <Calendar className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
