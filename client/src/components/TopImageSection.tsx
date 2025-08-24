@@ -57,12 +57,12 @@ export default function TopImageSection() {
             </span>
           </h2>
           
-          {/* 페이드인 부제목 */}
+          {/* 슥 나타나는 부제목 */}
           <div 
-            className={`transition-all duration-1000 ${
+            className={`transition-all duration-500 ease-out ${
               showSubtitle 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 translate-y-4'
+                ? 'opacity-100 translate-y-0 scale-100' 
+                : 'opacity-0 translate-y-6 scale-95'
             }`}
           >
             <p 
