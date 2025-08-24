@@ -60,61 +60,74 @@ export default function ProductSection() {
   }
 
   return (
-    <section id="product" className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">제품 구매</h2>
-          <p className="text-xl text-gray-600">공식 TAPMOVE 매트를 만나보세요</p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Product Image */}
-          <div className="text-center">
-            <img
-              src={product.imageUrl || "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=600"}
-              alt="TAPMOVE 공식 매트"
-              className="rounded-2xl shadow-lg w-full max-w-md mx-auto"
-            />
-            <div className="mt-6">
-              <Badge className="bg-gradient-to-r from-slate-700 to-slate-800 text-amber-100 px-4 py-2 rounded-full text-sm font-semibold">
-                공식 정품
-              </Badge>
-              <Badge className="bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold ml-2">
-                6mm 두께
-              </Badge>
-            </div>
+    <section id="product" className="relative">
+      {/* 배경 이미지 */}
+      <div className="absolute inset-0">
+        <img 
+          src="/tapmove.jpg"
+          alt="TAPMOVE 피트니스 센터"
+          className="w-full h-full object-cover object-center"
+        />
+        {/* 어두운 오버레이로 텍스트 가독성 향상 */}
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
+      
+      {/* 컨텐츠 */}
+      <div className="relative z-10 py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">제품 구매</h2>
+            <p className="text-xl text-white/90">공식 TAPMOVE 매트를 만나보세요</p>
           </div>
 
-          {/* Product Info */}
-          <div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h3>
-            <p className="text-xl text-gray-600 mb-6">{product.description}</p>
-
-            {/* Features */}
-            <div className="space-y-3 mb-8">
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
-                <span>논슬립 소재로 안전한 운동</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
-                <span>6mm 두께로 관절 보호</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
-                <span>공식 TAPMOVE 로고</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
-                <span>친환경 소재 사용</span>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Product Image */}
+            <div className="text-center">
+              <img
+                src={product.imageUrl || "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&h=600"}
+                alt="TAPMOVE 공식 매트"
+                className="rounded-2xl shadow-lg w-full max-w-md mx-auto"
+              />
+              <div className="mt-6">
+                <Badge className="bg-gradient-to-r from-slate-700 to-slate-800 text-amber-100 px-4 py-2 rounded-full text-sm font-semibold">
+                  공식 정품
+                </Badge>
+                <Badge className="bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold ml-2">
+                  6mm 두께
+                </Badge>
               </div>
             </div>
 
-            {/* 가격 안내 카드 */}
-            <div className="mb-8">
-              <div className="flex items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900">탭무브 상품 판매 안내</h3>
+            {/* Product Info */}
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-4">{product.name}</h3>
+              <p className="text-xl text-white/90 mb-6">{product.description}</p>
+
+              {/* Features */}
+              <div className="space-y-3 mb-8">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-3"></div>
+                  <span className="text-white/90">논슬립 소재로 안전한 운동</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-3"></div>
+                  <span className="text-white/90">6mm 두께로 관절 보호</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-3"></div>
+                  <span className="text-white/90">공식 TAPMOVE 로고</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-3"></div>
+                  <span className="text-white/90">친환경 소재 사용</span>
+                </div>
               </div>
+
+              {/* 가격 안내 카드 */}
+              <div className="mb-8">
+                <div className="flex items-center mb-6">
+                  <h3 className="text-2xl font-bold text-white">탭무브 상품 판매 안내</h3>
+                </div>
               
               <div className="grid gap-4 mb-6">
                 {/* 정상가 */}
@@ -254,16 +267,17 @@ export default function ProductSection() {
               </CardContent>
             </Card>
 
-            {/* Shipping Info */}
-            <div className="text-sm text-gray-600 space-y-1">
-              <p className="flex items-center">
-                <Truck className="mr-2 h-4 w-4" />
-                배송기간: 주문 후 2-3일
-              </p>
-              <p className="flex items-center">
-                <Package className="mr-2 h-4 w-4" />
-                배송비: 3,000원 (3만원 이상 무료)
-              </p>
+              {/* Shipping Info */}
+              <div className="text-sm text-white/80 space-y-1">
+                <p className="flex items-center">
+                  <Truck className="mr-2 h-4 w-4" />
+                  배송기간: 주문 후 2-3일
+                </p>
+                <p className="flex items-center">
+                  <Package className="mr-2 h-4 w-4" />
+                  배송비: 3,000원 (3만원 이상 무료)
+                </p>
+              </div>
             </div>
           </div>
         </div>
