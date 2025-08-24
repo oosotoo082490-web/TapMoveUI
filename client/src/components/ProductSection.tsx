@@ -3,16 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Minus, ShoppingCart, CreditCard, Users, Truck, Package } from "lucide-react";
-import BulkPurchaseModal from "./modals/BulkPurchaseModal";
-import type { Product } from "@shared/schema";
+import { Plus, Minus, CreditCard, Truck, Package } from "lucide-react";
+import SeminarVerificationModal from "./modals/SeminarVerificationModal";
+import type { Product, User } from "@shared/schema";
 
 export default function ProductSection() {
-  const [quantity, setQuantity] = useState(1);
-  const [showBulkModal, setShowBulkModal] = useState(false);
+  const [quantity, setQuantity] = useState(10);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
 
   const { data: products = [], isLoading } = useQuery<Product[]>({
     queryKey: ["/api/products"],
+  });
+
+  const { data: user } = useQuery<User>({
+    queryKey: ["/api/auth/me"],
   });
 
   const product = products[0]; // Get first product
@@ -20,7 +24,7 @@ export default function ProductSection() {
   const totalPrice = unitPrice * quantity;
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
-  const decreaseQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
+  const decreaseQuantity = () => setQuantity((prev) => Math.max(10, prev - 1));
 
   if (isLoading) {
     return (
@@ -109,6 +113,12 @@ export default function ProductSection() {
             {/* Price and Purchase */}
             <Card className="border-2 border-gray-200 mb-6">
               <CardContent className="p-6">
+                {/* 대량구매 전용 안내 */}
+                <div className="text-center mb-6">
+                  <h4 className="text-lg font-bold text-amber-700 mb-2">대량구매 (세미나 참석자 전용)</h4>
+                  <p className="text-sm text-gray-600">최소 10개부터 구매 가능합니다</p>
+                </div>
+                
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-lg font-semibold">개수</span>
                   <div className="flex items-center border border-gray-300 rounded-xl">
@@ -118,6 +128,7 @@ export default function ProductSection() {
                       variant="ghost"
                       size="sm"
                       className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                      disabled={quantity <= 10}
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
@@ -142,32 +153,30 @@ export default function ProductSection() {
                   </span>
                 </div>
 
-                {/* Purchase Buttons */}
+                {/* Purchase Button */}
                 <div className="space-y-3">
-                  <Button
-                    data-testid="button-add-to-cart"
-                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
-                  >
-                    장바구니에 담기
-                    <ShoppingCart className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button
-                    data-testid="button-buy-now"
-                    variant="secondary"
-                    className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
-                  >
-                    바로 구매하기
-                    <CreditCard className="ml-2 h-5 w-5" />
-                  </Button>
-                  <Button
-                    data-testid="button-bulk-purchase"
-                    onClick={() => setShowBulkModal(true)}
-                    variant="outline"
-                    className="w-full border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
-                  >
-                    대량구매 (수료자 전용)
-                    <Users className="ml-2 h-5 w-5" />
-                  </Button>
+                  {!user ? (
+                    <div className="text-center py-4">
+                      <p className="text-gray-600 mb-2">제품을 구매하려면 로그인이 필요합니다</p>
+                      <Button
+                        data-testid="button-need-login"
+                        onClick={() => window.location.href = "/login"}
+                        variant="outline"
+                        className="px-8 py-2 rounded-xl"
+                      >
+                        로그인하러 가기
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      data-testid="button-buy-now"
+                      onClick={() => setShowVerificationModal(true)}
+                      className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
+                    >
+                      바로 구매하기
+                      <CreditCard className="ml-2 h-5 w-5" />
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -187,10 +196,11 @@ export default function ProductSection() {
         </div>
       </div>
 
-      <BulkPurchaseModal
-        isOpen={showBulkModal}
-        onClose={() => setShowBulkModal(false)}
-        unitPrice={unitPrice}
+      <SeminarVerificationModal
+        isOpen={showVerificationModal}
+        onClose={() => setShowVerificationModal(false)}
+        quantity={quantity}
+        totalPrice={totalPrice}
       />
     </section>
   );

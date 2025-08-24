@@ -37,6 +37,12 @@ export function initializeDatabase() {
       depositor_name TEXT NOT NULL,
       uniform_size TEXT CHECK (uniform_size IN ('S', 'M', 'L', 'XL', 'XXL')),
       class_plan TEXT CHECK (class_plan IN ('plan', 'no')),
+      class_type_infant INTEGER DEFAULT 0,
+      class_type_elementary INTEGER DEFAULT 0,
+      class_type_middle_high INTEGER DEFAULT 0,
+      class_type_adult INTEGER DEFAULT 0,
+      class_type_senior INTEGER DEFAULT 0,
+      class_type_rehab INTEGER DEFAULT 0,
       privacy_agreement INTEGER DEFAULT 1 NOT NULL,
       status TEXT DEFAULT 'pending' NOT NULL CHECK (status IN ('pending', 'approved', 'rejected')),
       created_at INTEGER DEFAULT (unixepoch()) NOT NULL
@@ -207,6 +213,16 @@ export class SqliteStorage implements IStorage {
 
   async updateApplicationStatus(id: string, status: 'pending' | 'approved' | 'rejected'): Promise<void> {
     db.update(applications).set({ status }).where(eq(applications.id, id)).run();
+  }
+
+  async getApplicationByEmail(email: string): Promise<Application | undefined> {
+    const result = db.select().from(applications).where(eq(applications.email, email)).get();
+    return result || undefined;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const result = db.select().from(users).where(eq(users.email, email)).get();
+    return result || undefined;
   }
 
   async createReview(insertReview: InsertReview): Promise<Review> {

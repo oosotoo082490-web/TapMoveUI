@@ -317,6 +317,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Verify seminar attendee endpoint
+  app.post('/api/verify-seminar-attendee', strictLimiter, async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ message: '이메일과 비밀번호를 입력해주세요.' });
+      }
+
+      // Check if user has an approved seminar application with this email
+      const application = await storage.getApplicationByEmail(email);
+      if (!application || application.status !== 'approved') {
+        return res.status(401).json({ success: false, message: '세미나 참석자가 아닙니다.' });
+      }
+
+      // Verify user password (check if user with this email exists and password matches)
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(401).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
+      }
+
+      const bcrypt = require('bcryptjs');
+      const passwordValid = await bcrypt.compare(password, user.password);
+      if (!passwordValid) {
+        return res.status(401).json({ success: false, message: '비밀번호가 올바르지 않습니다.' });
+      }
+
+      res.json({ success: true, message: '세미나 참석자 인증이 완료되었습니다.' });
+    } catch (error) {
+      console.error('Seminar attendee verification error:', error);
+      res.status(500).json({ success: false, message: '인증 처리 중 오류가 발생했습니다.' });
+    }
+  });
+
   app.get('/api/orders', requireAdmin, async (req, res) => {
     try {
       const orders = await storage.getOrders();
