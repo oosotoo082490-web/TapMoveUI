@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
-import type { Application, Review, Order } from "@shared/schema";
+import type { Application, Review, Order, User } from "@shared/schema";
 
 export default function Admin() {
   const [, setLocation] = useLocation();
@@ -15,7 +15,7 @@ export default function Admin() {
   const queryClient = useQueryClient();
 
   // Check authentication
-  const { data: user, isLoading: userLoading } = useQuery({
+  const { data: user, isLoading: userLoading } = useQuery<User>({
     queryKey: ["/api/auth/me"],
   });
 
@@ -147,6 +147,24 @@ export default function Admin() {
                         <p className="text-gray-600">입금자: {app.depositorName}</p>
                         {app.uniformSize && (
                           <p className="text-gray-600">유니폼 사이즈: {app.uniformSize}</p>
+                        )}
+                        {app.classPlan && (
+                          <p className="text-gray-600">
+                            수업 진행: {app.classPlan === "plan" ? "진행 예정" : "하지 않음"}
+                          </p>
+                        )}
+                        {app.classPlan === "plan" && (
+                          <div className="text-gray-600">
+                            <p>수업 대상:</p>
+                            <div className="flex flex-wrap gap-2 mt-1">
+                              {app.classTypeInfant && <Badge variant="outline">유아</Badge>}
+                              {app.classTypeElementary && <Badge variant="outline">초등</Badge>}
+                              {app.classTypeMiddleHigh && <Badge variant="outline">중고등</Badge>}
+                              {app.classTypeAdult && <Badge variant="outline">성인</Badge>}
+                              {app.classTypeSenior && <Badge variant="outline">시니어</Badge>}
+                              {app.classTypeRehab && <Badge variant="outline">재활</Badge>}
+                            </div>
+                          </div>
                         )}
                         <p className="text-sm text-gray-500">
                           신청일: {new Date(app.createdAt).toLocaleDateString()}

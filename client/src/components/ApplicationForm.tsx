@@ -30,6 +30,12 @@ export default function ApplicationForm() {
       depositorName: "",
       uniformSize: undefined,
       classPlan: undefined,
+      classTypeInfant: false,
+      classTypeElementary: false,
+      classTypeMiddleHigh: false,
+      classTypeAdult: false,
+      classTypeSenior: false,
+      classTypeRehab: false,
       privacyAgreement: false,
     },
   });
@@ -245,6 +251,42 @@ export default function ApplicationForm() {
                       </Label>
                     </div>
                   </RadioGroup>
+                  
+                  {/* Class Types - Show only when "진행 예정" is selected */}
+                  {form.watch("classPlan") === "plan" && (
+                    <div className="mt-6 pl-4">
+                      <Label className="text-sm font-semibold text-gray-700 mb-3 block">
+                        수업 대상 (중복 선택 가능)
+                      </Label>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {[
+                          { key: "classTypeInfant", label: "유아" },
+                          { key: "classTypeElementary", label: "초등" },
+                          { key: "classTypeMiddleHigh", label: "중고등" },
+                          { key: "classTypeAdult", label: "성인" },
+                          { key: "classTypeSenior", label: "시니어" },
+                          { key: "classTypeRehab", label: "재활" },
+                        ].map(({ key, label }) => (
+                          <div key={key} className="flex items-center space-x-2">
+                            <Checkbox
+                              data-testid={`checkbox-${key}`}
+                              id={key}
+                              checked={form.watch(key as keyof InsertApplication) as boolean}
+                              onCheckedChange={(checked) =>
+                                form.setValue(key as keyof InsertApplication, checked as any)
+                              }
+                            />
+                            <Label
+                              htmlFor={key}
+                              className="text-sm cursor-pointer"
+                            >
+                              {label}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -274,6 +316,9 @@ export default function ApplicationForm() {
                     >
                       약관보기
                     </Button>
+                    <p className="text-xs text-gray-600 mt-2">
+                      세미나와 관련되지 않은 어떠한 곳에도 수집한 개인정보는 사용되지 않습니다.
+                    </p>
                   </div>
                 </div>
                 {form.formState.errors.privacyAgreement && (
