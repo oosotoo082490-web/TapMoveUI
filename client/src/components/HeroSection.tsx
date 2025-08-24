@@ -9,14 +9,14 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative pt-20 pb-20 min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-blue-50 to-purple-50"
+      className="relative pt-20 pb-20 min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-amber-50 to-emerald-50"
     >
       {/* Main Content */}
       <div className="container mx-auto px-4 text-center max-w-5xl">
-        <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight bg-gradient-to-r from-slate-800 to-emerald-700 bg-clip-text text-transparent">
           새로운 피트니스의
           <br />
-          <span className="text-yellow-500">혁신을 경험하세요</span>
+          <span className="text-amber-600">혁신을 경험하세요</span>
         </h1>
         
         <p className="text-xl md:text-2xl mb-12 text-gray-700 leading-relaxed max-w-3xl mx-auto">
@@ -30,7 +30,7 @@ export default function HeroSection() {
           <Button
             data-testid="button-apply-seminar"
             onClick={navigateToSeminar}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-2xl text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl"
+            className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 px-10 py-5 rounded-2xl text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl"
             size="lg"
           >
             세미나 신청하기
@@ -40,7 +40,7 @@ export default function HeroSection() {
             data-testid="button-view-schedule"
             onClick={navigateToSeminar}
             variant="outline"
-            className="bg-white hover:bg-gray-50 text-blue-600 border-2 border-blue-600 hover:border-blue-700 px-10 py-5 rounded-2xl text-xl font-semibold transition-all duration-300 shadow-lg"
+            className="bg-gradient-to-r from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 text-slate-800 border-2 border-amber-600 hover:border-amber-700 px-10 py-5 rounded-2xl text-xl font-semibold transition-all duration-300 shadow-lg"
             size="lg"
           >
             세미나 일정 보기
@@ -50,25 +50,25 @@ export default function HeroSection() {
 
         {/* Feature Highlights */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">안전한 운동</h3>
-            <p className="text-gray-600">높이 부담 없는 새로운 피트니스 경험</p>
+          <div className="bg-gradient-to-br from-slate-50 to-slate-100 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-slate-200">
+            <h3 className="text-lg font-semibold text-slate-800 mb-2">안전한 운동</h3>
+            <p className="text-slate-600">높이 부담 없는 새로운 피트니스 경험</p>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">체계적 교육</h3>
-            <p className="text-gray-600">전문가 직접 지도하는 세미나</p>
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-amber-200">
+            <h3 className="text-lg font-semibold text-amber-800 mb-2">체계적 교육</h3>
+            <p className="text-amber-700">전문가 직접 지도하는 세미나</p>
           </div>
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">실용적 제품</h3>
-            <p className="text-gray-600">검증된 TAPMOVE 전용 장비</p>
+          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-emerald-200">
+            <h3 className="text-lg font-semibold text-emerald-800 mb-2">실용적 제품</h3>
+            <p className="text-emerald-700">검증된 TAPMOVE 전용 장비</p>
           </div>
         </div>
       </div>
 
       {/* Decorative Elements */}
-      <div className="absolute top-20 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-30 animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-32 h-32 bg-purple-200 rounded-full opacity-20 animate-pulse delay-1000"></div>
-      <div className="absolute top-1/3 right-20 w-16 h-16 bg-yellow-200 rounded-full opacity-25 animate-pulse delay-500"></div>
+      <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-slate-300 to-slate-400 rounded-full opacity-30 animate-pulse"></div>
+      <div className="absolute bottom-20 right-10 w-32 h-32 bg-gradient-to-br from-emerald-300 to-emerald-400 rounded-full opacity-20 animate-pulse delay-1000"></div>
+      <div className="absolute top-1/3 right-20 w-16 h-16 bg-gradient-to-br from-amber-300 to-amber-400 rounded-full opacity-25 animate-pulse delay-500"></div>
     </section>
   );
 }

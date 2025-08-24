@@ -49,7 +49,7 @@ export default function ReviewsSection() {
           <Button
             data-testid="button-write-review"
             onClick={() => setShowPasscodeModal(true)}
-            className="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-lg"
+            className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-8 py-3 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-xl"
           >
             후기 작성하기
             <Pen className="ml-2 h-5 w-5" />
@@ -123,7 +123,7 @@ export default function ReviewsSection() {
               data-testid="button-load-more"
               onClick={loadMore}
               variant="outline"
-              className="px-8 py-3 rounded-2xl font-semibold"
+              className="px-8 py-3 rounded-2xl font-semibold border-2 border-slate-600 text-slate-700 hover:bg-slate-600 hover:text-white transition-all duration-300"
             >
               더보기
               <ChevronDown className="ml-2 h-5 w-5" />

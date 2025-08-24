@@ -8,24 +8,24 @@ const features = [
     title: "안전한 운동",
     description: "스텝박스가 부담스러운 분들까지 안전하게 운동할 수 있는 혁신적인 솔루션입니다.",
     icon: Shield,
-    gradient: "from-blue-500 to-blue-600",
-    iconBg: "bg-white/20",
+    gradient: "from-slate-700 to-slate-800",
+    iconBg: "bg-white/30",
   },
   {
     id: 1,
     title: "새로운 카테고리",
     description: "단순 대안이 아닌, '높이'를 없앤 완전히 새로운 피트니스 카테고리를 만들었습니다.",
     icon: Rocket,
-    gradient: "from-purple-500 to-purple-600",
-    iconBg: "bg-white/20",
+    gradient: "from-amber-600 to-amber-700",
+    iconBg: "bg-white/30",
   },
   {
     id: 2,
     title: "즉시 적용",
     description: "세미나에서 배운 그대로, 수업에 바로 적용할 수 있는 실용적인 교육을 제공합니다.",
     icon: GraduationCap,
-    gradient: "from-green-500 to-green-600",
-    iconBg: "bg-white/20",
+    gradient: "from-emerald-600 to-emerald-700",
+    iconBg: "bg-white/30",
   },
 ];
 
@@ -100,7 +100,7 @@ export default function FeatureCarousel() {
           <Button
             data-testid="button-prev-slide"
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg"
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-slate-100/90 hover:bg-slate-200 text-slate-800 p-3 rounded-full shadow-xl border border-slate-300"
             size="sm"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -108,7 +108,7 @@ export default function FeatureCarousel() {
           <Button
             data-testid="button-next-slide"
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-slate-100/90 hover:bg-slate-200 text-slate-800 p-3 rounded-full shadow-xl border border-slate-300"
             size="sm"
           >
             <ChevronRight className="h-5 w-5" />
@@ -123,8 +123,8 @@ export default function FeatureCarousel() {
                 onClick={() => goToSlide(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
                   index === currentSlide
-                    ? "bg-primary"
-                    : "bg-gray-300 hover:bg-gray-400"
+                    ? "bg-emerald-600"
+                    : "bg-slate-300 hover:bg-slate-400"
                 }`}
               />
             ))}

@@ -72,10 +72,10 @@ export default function ProductSection() {
               className="rounded-2xl shadow-lg w-full max-w-md mx-auto"
             />
             <div className="mt-6">
-              <Badge className="bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold">
+              <Badge className="bg-gradient-to-r from-slate-700 to-slate-800 text-amber-100 px-4 py-2 rounded-full text-sm font-semibold">
                 공식 정품
               </Badge>
-              <Badge className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold ml-2">
+              <Badge className="bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold ml-2">
                 6mm 두께
               </Badge>
             </div>
@@ -89,19 +89,19 @@ export default function ProductSection() {
             {/* Features */}
             <div className="space-y-3 mb-8">
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
                 <span>논슬립 소재로 안전한 운동</span>
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
                 <span>6mm 두께로 관절 보호</span>
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
                 <span>공식 TAPMOVE 로고</span>
               </div>
               <div className="flex items-center">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                <div className="w-2 h-2 bg-emerald-600 rounded-full mr-3"></div>
                 <span>친환경 소재 사용</span>
               </div>
             </div>
@@ -137,7 +137,7 @@ export default function ProductSection() {
                 </div>
                 <div className="flex items-center justify-between mb-6">
                   <span className="text-lg font-semibold">총 상품 금액</span>
-                  <span data-testid="text-total-price" className="text-2xl font-bold text-primary">
+                  <span data-testid="text-total-price" className="text-2xl font-bold text-emerald-700">
                     {totalPrice.toLocaleString()}원
                   </span>
                 </div>
@@ -146,7 +146,7 @@ export default function ProductSection() {
                 <div className="space-y-3">
                   <Button
                     data-testid="button-add-to-cart"
-                    className="w-full py-4 text-lg font-semibold rounded-2xl"
+                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
                   >
                     장바구니에 담기
                     <ShoppingCart className="ml-2 h-5 w-5" />
@@ -154,7 +154,7 @@ export default function ProductSection() {
                   <Button
                     data-testid="button-buy-now"
                     variant="secondary"
-                    className="w-full bg-gray-900 hover:bg-gray-800 text-white py-4 text-lg font-semibold rounded-2xl"
+                    className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
                   >
                     바로 구매하기
                     <CreditCard className="ml-2 h-5 w-5" />
@@ -163,7 +163,7 @@ export default function ProductSection() {
                     data-testid="button-bulk-purchase"
                     onClick={() => setShowBulkModal(true)}
                     variant="outline"
-                    className="w-full border-2 border-primary text-primary hover:bg-primary hover:text-white py-4 text-lg font-semibold rounded-2xl"
+                    className="w-full border-2 border-amber-600 text-amber-700 hover:bg-amber-600 hover:text-white py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
                   >
                     대량구매 (수료자 전용)
                     <Users className="ml-2 h-5 w-5" />

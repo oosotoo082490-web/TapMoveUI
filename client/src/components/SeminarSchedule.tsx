@@ -24,28 +24,28 @@ export default function SeminarSchedule() {
               <h3 className="text-2xl font-bold text-gray-900 mb-6">세미나 정보</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <Calendar className="text-primary mt-1 mr-3 h-5 w-5" />
+                  <Calendar className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">일시</p>
                     <p className="text-gray-600">2025-11-08(토) 14:00–18:00</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Clock className="text-primary mt-1 mr-3 h-5 w-5" />
+                  <Clock className="text-slate-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">교육시간</p>
                     <p className="text-gray-600">4시간</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <AlertTriangle className="text-amber-500 mt-1 mr-3 h-5 w-5" />
+                  <AlertTriangle className="text-amber-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">접수마감</p>
                     <p className="text-gray-600">2025-10-31(금) 19:00</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <DollarSign className="text-primary mt-1 mr-3 h-5 w-5" />
+                  <DollarSign className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">교육비</p>
                     <p className="text-gray-600">300,000원</p>
@@ -57,7 +57,7 @@ export default function SeminarSchedule() {
             <div>
               <div className="space-y-4">
                 <div className="flex items-start">
-                  <University className="text-primary mt-1 mr-3 h-5 w-5" />
+                  <University className="text-slate-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">입금계좌</p>
                     <p className="text-gray-600">
@@ -68,14 +68,14 @@ export default function SeminarSchedule() {
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <MapPin className="text-primary mt-1 mr-3 h-5 w-5" />
+                  <MapPin className="text-amber-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">장소</p>
                     <p className="text-gray-600">대구시 북구 침산남로 172, 3층</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Backpack className="text-primary mt-1 mr-3 h-5 w-5" />
+                  <Backpack className="text-emerald-600 mt-1 mr-3 h-5 w-5" />
                   <div>
                     <p className="font-semibold text-gray-900">준비물</p>
                     <p className="text-gray-600">깨끗한 실내 운동화, 수건, 개인 물통</p>
@@ -91,19 +91,19 @@ export default function SeminarSchedule() {
           <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">참가 혜택</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-center">
-              <Tag className="text-green-500 text-2xl mr-4 h-6 w-6" />
+              <Tag className="text-emerald-600 text-2xl mr-4 h-6 w-6" />
               <span className="text-lg">탭무브 공식 수료증 발급</span>
             </div>
             <div className="flex items-center">
-              <Hash className="text-green-500 text-2xl mr-4 h-6 w-6" />
+              <Hash className="text-amber-600 text-2xl mr-4 h-6 w-6" />
               <span className="text-lg">탭무브 상표 사용 권한</span>
             </div>
             <div className="flex items-center">
-              <Presentation className="text-green-500 text-2xl mr-4 h-6 w-6" />
+              <Presentation className="text-slate-600 text-2xl mr-4 h-6 w-6" />
               <span className="text-lg">수업에 바로 적용 가능</span>
             </div>
             <div className="flex items-center">
-              <Hash className="text-green-500 text-2xl mr-4 h-6 w-6" />
+              <Hash className="text-emerald-600 text-2xl mr-4 h-6 w-6" />
               <span className="text-lg">SNS/홈트 'TAPMOVE' 명칭 사용</span>
             </div>
           </div>
@@ -114,7 +114,7 @@ export default function SeminarSchedule() {
           <Button
             data-testid="button-apply-now"
             onClick={() => scrollToSection("apply")}
-            className="bg-primary hover:bg-blue-700 text-white px-12 py-4 rounded-2xl text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-900 text-amber-50 px-12 py-4 rounded-2xl text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl"
             size="lg"
           >
             지금 신청하기

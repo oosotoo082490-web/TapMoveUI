@@ -24,7 +24,7 @@ export default function VideoSection() {
       {/* Video Background Container */}
       <div className="absolute inset-0 w-full h-full">
         {/* Placeholder for vertical video - would be implemented with actual video element */}
-        <div className="w-full h-full bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 flex items-center justify-center">
+        <div className="w-full h-full bg-gradient-to-br from-slate-700 via-emerald-600 to-amber-500 flex items-center justify-center">
           <div className="text-white text-center">
             <Play className="mx-auto text-8xl mb-4 opacity-70" />
             <p className="text-xl font-medium opacity-80">세로 비디오 플레이스홀더</p>
@@ -41,7 +41,7 @@ export default function VideoSection() {
       <Button
         data-testid="button-mute-toggle"
         onClick={toggleMute}
-        className="absolute bottom-6 right-6 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition-all duration-300 z-20"
+        className="absolute bottom-6 right-6 bg-slate-800/40 backdrop-blur-sm text-amber-100 p-3 rounded-full hover:bg-slate-800/60 transition-all duration-300 z-20 border border-amber-300/30"
         size="sm"
       >
         {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}

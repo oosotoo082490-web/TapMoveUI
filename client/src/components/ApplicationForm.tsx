@@ -270,7 +270,7 @@ export default function ApplicationForm() {
                       variant="ghost"
                       size="sm"
                       onClick={() => setShowPrivacyModal(true)}
-                      className="text-primary hover:underline ml-2 p-0 h-auto"
+                      className="text-emerald-600 hover:text-emerald-700 hover:underline ml-2 p-0 h-auto"
                     >
                       약관보기
                     </Button>
@@ -287,7 +287,7 @@ export default function ApplicationForm() {
               <Button
                 data-testid="button-submit-application"
                 type="submit"
-                className="w-full py-4 text-lg font-semibold rounded-2xl"
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-4 text-lg font-semibold rounded-2xl transition-all duration-300 shadow-xl"
                 disabled={applicationMutation.isPending}
               >
                 {applicationMutation.isPending ? (

@@ -81,7 +81,7 @@ export default function Navigation() {
               <Button
                 data-testid="nav-login"
                 onClick={() => setLocation("/login")}
-                className="bg-primary text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700"
+                className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300"
               >
                 로그인
               </Button>
