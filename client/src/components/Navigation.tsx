@@ -120,7 +120,7 @@ export default function Navigation() {
                 
                 {/* 드롭다운 메뉴 */}
                 {seminarDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                  <div className="absolute top-full left-0 mt-1 w-32 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
                     <Link
                       data-testid="nav-seminar-schedule"
                       href="/seminar/schedule"
@@ -164,7 +164,7 @@ export default function Navigation() {
                 
                 {/* 드롭다운 메뉴 */}
                 {productDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
+                  <div className="absolute top-full left-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
                     <Link
                       data-testid="nav-products-tapmove"
                       href="/products"
