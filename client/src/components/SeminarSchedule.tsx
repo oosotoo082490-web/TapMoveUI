@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, AlertTriangle, DollarSign, University, MapPin, Backpack, CheckCircle, Hash, Presentation, Tag, Phone } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function SeminarSchedule() {
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+  const [, setLocation] = useLocation();
+  
+  const navigateToApply = () => {
+    setLocation("/seminar/apply");
   };
 
   return (
@@ -113,7 +113,7 @@ export default function SeminarSchedule() {
         <div className="text-center space-y-4">
           <Button
             data-testid="button-apply-now"
-            onClick={() => scrollToSection("apply")}
+            onClick={navigateToApply}
             className="bg-gradient-to-r from-emerald-700 to-emerald-800 hover:from-emerald-800 hover:to-emerald-900 text-amber-50 px-12 py-4 rounded-2xl text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl"
             size="lg"
           >
