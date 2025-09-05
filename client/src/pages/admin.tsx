@@ -21,7 +21,7 @@ export default function Admin() {
 
   useEffect(() => {
     if (!userLoading && (!user || user.role !== "admin")) {
-      setLocation("/login");
+      setLocation("/admin/login");
     }
   }, [user, userLoading, setLocation]);
 

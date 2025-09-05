@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useRouter } from 'wouter';
+import { useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,7 +26,7 @@ interface Order {
 }
 
 export default function CheckoutPage() {
-  const [, navigate] = useRouter();
+  const navigate = (path: string) => window.location.href = path;
   const [location] = useLocation();
   const queryParams = new URLSearchParams(location.split('?')[1]);
   const orderId = queryParams.get('orderId');

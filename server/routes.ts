@@ -240,7 +240,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/reviews/all', requireAdmin, async (req, res) => {
     try {
-      const reviews = await storage.getAllReviews();
+      const reviews = await storage.getReviews();
       res.json(reviews);
     } catch (error) {
       console.error('Get all reviews error:', error);

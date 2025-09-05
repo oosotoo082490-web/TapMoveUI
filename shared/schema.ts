@@ -71,6 +71,7 @@ export const orders = sqliteTable("orders", {
   customerEmail: text("customer_email").notNull(),
   customerPhone: text("customer_phone").notNull(),
   shippingAddress: text("shipping_address").notNull(),
+  customerType: text("customer_type", { enum: ["guest", "member"] }).default("guest").notNull(),
   orderType: text("order_type", { enum: ["regular", "member", "bulk"] }).default("regular").notNull(),
   paymentStatus: text("payment_status", { enum: ["waiting", "success", "failed"] }).default("waiting").notNull(),
   shippingStatus: text("shipping_status", { enum: ["preparing", "shipped"] }).default("preparing").notNull(),

@@ -4,19 +4,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Minus, CreditCard, Truck, Package } from "lucide-react";
-import SeminarVerificationModal from "./modals/SeminarVerificationModal";
-import type { Product, User } from "@shared/schema";
+import GuestInfoModal from "./modals/GuestInfoModal";
+import type { Product } from "@shared/schema";
 
 export default function ProductSection() {
   const [quantity, setQuantity] = useState(10);
-  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [showGuestInfoModal, setShowGuestInfoModal] = useState(false);
 
   const { data: products = [], isLoading } = useQuery<Product[]>({
     queryKey: ["/api/products"],
-  });
-
-  const { data: user } = useQuery<User>({
-    queryKey: ["/api/auth/me"],
   });
 
   const product = products[0]; // Get first product
@@ -226,28 +222,14 @@ export default function ProductSection() {
 
                 {/* Purchase Button */}
                 <div className="space-y-3">
-                  {!user ? (
-                    <div className="text-center py-4">
-                      <p className="text-gray-600 mb-2">제품을 구매하려면 로그인이 필요합니다</p>
-                      <Button
-                        data-testid="button-need-login"
-                        onClick={() => window.location.href = "/login"}
-                        variant="outline"
-                        className="px-8 py-2 rounded-xl"
-                      >
-                        로그인하러 가기
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      data-testid="button-buy-now"
-                      onClick={() => setShowVerificationModal(true)}
-                      className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
-                    >
-                      바로 구매하기
-                      <CreditCard className="ml-2 h-5 w-5" />
-                    </Button>
-                  )}
+                  <Button
+                    data-testid="button-buy-now"
+                    onClick={() => setShowGuestInfoModal(true)}
+                    className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
+                  >
+                    결제하기
+                    <CreditCard className="ml-2 h-5 w-5" />
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -267,9 +249,9 @@ export default function ProductSection() {
         </div>
       </div>
 
-      <SeminarVerificationModal
-        isOpen={showVerificationModal}
-        onClose={() => setShowVerificationModal(false)}
+      <GuestInfoModal
+        isOpen={showGuestInfoModal}
+        onClose={() => setShowGuestInfoModal(false)}
         quantity={quantity}
         totalPrice={totalPrice}
       />

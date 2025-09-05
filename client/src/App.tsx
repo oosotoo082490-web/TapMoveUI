@@ -14,6 +14,7 @@ import PaymentSuccessPage from "@/pages/payment-success";
 import PaymentFailPage from "@/pages/payment-fail";
 import About from "@/pages/about";
 import Admin from "@/pages/admin";
+import AdminLogin from "@/pages/admin-login";
 import Login from "@/pages/login";
 import NotFound from "@/pages/not-found";
 
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/payment-fail" component={PaymentFailPage} />
       <Route path="/about" component={About} />
       <Route path="/admin" component={Admin} />
+      <Route path="/admin/login" component={AdminLogin} />
       <Route path="/login" component={Login} />
       <Route component={NotFound} />
     </Switch>
