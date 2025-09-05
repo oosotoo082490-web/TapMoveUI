@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Shield, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -69,10 +69,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-            <Shield className="h-6 w-6 text-slate-700" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900">TAPMOVE 관리자</h2>
+          <h2 className="text-3xl font-bold text-gray-900">관리자페이지입니다.</h2>
           <p className="mt-2 text-gray-600">관리자 계정으로 로그인하세요</p>
         </div>
 
@@ -90,7 +87,6 @@ export default function AdminLoginPage() {
                   type="email"
                   {...form.register("email")}
                   className="mt-2"
-                  placeholder="admin@tapmove.com"
                 />
                 {form.formState.errors.email && (
                   <p className="text-sm text-red-600 mt-1">
@@ -107,7 +103,6 @@ export default function AdminLoginPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     {...form.register("password")}
-                    placeholder="비밀번호를 입력하세요"
                   />
                   <Button
                     type="button"
@@ -153,18 +148,6 @@ export default function AdminLoginPage() {
           </CardContent>
         </Card>
 
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
-            일반 사용자는 로그인 없이{" "}
-            <button
-              onClick={() => setLocation("/")}
-              className="text-primary hover:underline"
-            >
-              홈페이지
-            </button>
-            에서 세미나 신청 및 제품 구매가 가능합니다.
-          </p>
-        </div>
       </div>
     </div>
   );
