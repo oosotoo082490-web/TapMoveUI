@@ -1,5 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import trademark1 from "@assets/KakaoTalk_Photo_2025-08-26-16-07-35 001_1757055031223.png";
+import trademark2 from "@assets/KakaoTalk_Photo_2025-08-26-16-07-35 002_1757055031223.png";
 
 export default function ProductsStoryPage() {
   return (
@@ -136,14 +138,14 @@ export default function ProductsStoryPage() {
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
                 <img 
-                  src="/attached_assets/KakaoTalk_Photo_2025-08-26-16-07-35 001_1757055031223.png" 
+                  src={trademark1} 
                   alt="TAPMOVE 상표등록증 1" 
                   className="w-full h-auto rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                 />
               </div>
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
                 <img 
-                  src="/attached_assets/KakaoTalk_Photo_2025-08-26-16-07-35 002_1757055031223.png" 
+                  src={trademark2} 
                   alt="TAPMOVE 상표등록증 2" 
                   className="w-full h-auto rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                 />
