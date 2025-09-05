@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,16 +26,15 @@ export default function SeminarVerificationModal({
   const [password, setPassword] = useState("");
   const [verificationStep, setVerificationStep] = useState<"verify" | "payment">("verify");
   const [error, setError] = useState("");
-  const [, setLocation] = useRouter();
   const { toast } = useToast();
 
   const verificationMutation = useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
-      const response = await apiRequest("POST", "/api/verify-seminar-attendee", {
+      const response = await apiRequest("/api/verify-seminar-attendee", "POST", {
         email,
         password,
       });
-      return response.json();
+      return response;
     },
     onSuccess: (data) => {
       if (data.success) {
@@ -55,36 +53,28 @@ export default function SeminarVerificationModal({
     },
   });
 
-  const handleVerify = () => {
-    if (!email || !password) {
-      setError("이메일과 비밀번호를 모두 입력해주세요");
-      return;
-    }
-    setError("");
-    verificationMutation.mutate({ email, password });
-  };
-
   // 주문 생성 뮤테이션
   const createOrderMutation = useMutation({
     mutationFn: async () => {
-      return await apiRequest('/api/orders', 'POST', {
-        productName: 'TAPMOVE 공식 매트',
+      return await apiRequest("/api/orders", "POST", {
+        productName: "TAPMOVE 공식 매트",
         quantity,
         unitPrice: 17500, // 세미나 회원가
         shippingFee: 3000,
         totalAmount: totalPrice + 3000,
-        customerName: email.split('@')[0], // 임시로 이메일 앞부분을 이름으로 사용
+        customerName: email.split("@")[0], // 임시로 이메일 앞부분을 이름으로 사용
         customerEmail: email,
-        customerPhone: '010-0000-0000', // 임시 번호
-        shippingAddress: '배송지 미입력', // 실제로는 별도 입력 받아야 함
-        orderType: 'member'
+        customerPhone: "010-0000-0000", // 임시 번호
+        shippingAddress: "배송지 미입력", // 실제로는 별도 입력 받아야 함
+        orderType: "member",
       });
     },
     onSuccess: (response: any) => {
       const data = response;
-      const orderId = data.order?.orderNo || data.orderNo || 'test-order-' + Date.now();
+      const orderId = data.order?.orderNo || data.orderNo || "test-order-" + Date.now();
       handleClose();
-      setLocation(`/checkout?orderId=${orderId}`);
+      // 페이지 이동을 위해 window.location 사용
+      window.location.href = `/checkout?orderId=${orderId}`;
       toast({
         title: "주문 생성 완료",
         description: "결제 페이지로 이동합니다.",
@@ -94,10 +84,19 @@ export default function SeminarVerificationModal({
       toast({
         title: "주문 생성 실패",
         description: error.message || "주문 생성 중 오류가 발생했습니다.",
-        variant: "destructive"
+        variant: "destructive",
       });
-    }
+    },
   });
+
+  const handleVerify = () => {
+    if (!email || !password) {
+      setError("이메일과 비밀번호를 모두 입력해주세요");
+      return;
+    }
+    setError("");
+    verificationMutation.mutate({ email, password });
+  };
 
   const handlePayment = () => {
     createOrderMutation.mutate();
@@ -199,9 +198,7 @@ export default function SeminarVerificationModal({
                 </div>
                 <div className="flex justify-between font-bold text-lg">
                   <span>총 결제 금액</span>
-                  <span className="text-emerald-700">
-                    {totalPrice.toLocaleString()}원
-                  </span>
+                  <span className="text-emerald-700">{totalPrice.toLocaleString()}원</span>
                 </div>
               </CardContent>
             </Card>
