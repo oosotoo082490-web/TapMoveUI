@@ -117,7 +117,7 @@ export default function ProductsStoryPage() {
               </p>
             </div>
 
-            <ul className="space-y-5 text-gray-700 text-lg text-center">
+            <ul className="space-y-5 text-gray-700 text-lg text-center mb-12">
               <li className="font-medium">
                 <span className="inline-block w-3 h-3 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full mr-3 align-middle shadow-lg"></span>
                 무단 사용·판매 시 민형사상 엄정 대응
@@ -131,6 +131,24 @@ export default function ProductsStoryPage() {
                 상업적 수업 활용은 <strong className="text-gray-900 font-bold">세미나 수료자에 한정</strong>
               </li>
             </ul>
+
+            {/* 상표등록증 이미지들 */}
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <img 
+                  src="/attached_assets/KakaoTalk_Photo_2025-08-26-16-07-35 001_1757055031223.png" 
+                  alt="TAPMOVE 상표등록증 1" 
+                  className="w-full h-auto rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                />
+              </div>
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <img 
+                  src="/attached_assets/KakaoTalk_Photo_2025-08-26-16-07-35 002_1757055031223.png" 
+                  alt="TAPMOVE 상표등록증 2" 
+                  className="w-full h-auto rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
