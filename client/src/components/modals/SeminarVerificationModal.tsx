@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, CreditCard } from "lucide-react";
 
 interface SeminarVerificationModalProps {
   isOpen: boolean;
@@ -26,6 +27,7 @@ export default function SeminarVerificationModal({
   const [password, setPassword] = useState("");
   const [verificationStep, setVerificationStep] = useState<"verify" | "payment">("verify");
   const [error, setError] = useState("");
+  const [location, navigate] = useRouter();
   const { toast } = useToast();
 
   const verificationMutation = useMutation({
@@ -62,12 +64,43 @@ export default function SeminarVerificationModal({
     verificationMutation.mutate({ email, password });
   };
 
+  // 주문 생성 뮤테이션
+  const createOrderMutation = useMutation({
+    mutationFn: async () => {
+      return await apiRequest('/api/orders', 'POST', {
+        productName: 'TAPMOVE 공식 매트',
+        quantity,
+        unitPrice: 17500, // 세미나 회원가
+        shippingFee: 3000,
+        totalAmount: totalPrice + 3000,
+        customerName: email.split('@')[0], // 임시로 이메일 앞부분을 이름으로 사용
+        customerEmail: email,
+        customerPhone: '010-0000-0000', // 임시 번호
+        shippingAddress: '배송지 미입력', // 실제로는 별도 입력 받아야 함
+        orderType: 'member'
+      });
+    },
+    onSuccess: (response: any) => {
+      const data = response;
+      const orderId = data.order?.orderNo || data.orderNo || 'test-order-' + Date.now();
+      handleClose();
+      navigate(`/checkout?orderId=${orderId}`);
+      toast({
+        title: "주문 생성 완료",
+        description: "결제 페이지로 이동합니다.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "주문 생성 실패",
+        description: error.message || "주문 생성 중 오류가 발생했습니다.",
+        variant: "destructive"
+      });
+    }
+  });
+
   const handlePayment = () => {
-    // TODO: 실제 결제 연동 구현
-    toast({
-      title: "결제 준비",
-      description: "결제 시스템이 곧 연동될 예정입니다.",
-    });
+    createOrderMutation.mutate();
   };
 
   const handleClose = () => {
@@ -185,9 +218,17 @@ export default function SeminarVerificationModal({
               <Button
                 data-testid="button-proceed-payment"
                 onClick={handlePayment}
+                disabled={createOrderMutation.isPending}
                 className="flex-1 bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100"
               >
-                결제하기
+                {createOrderMutation.isPending ? (
+                  "주문 생성 중..."
+                ) : (
+                  <>
+                    결제하기
+                    <CreditCard className="ml-2 h-4 w-4" />
+                  </>
+                )}
               </Button>
             </div>
           </div>

@@ -5,6 +5,7 @@ import rateLimit from "express-rate-limit";
 import { storage } from "./storage";
 import { insertApplicationSchema, insertReviewSchema, insertOrderSchema } from "@shared/schema";
 import { filterProfanity } from "../client/src/lib/profanity-filter";
+import { tossPayments } from "./toss-payments";
 
 // Extend express-session types
 declare module 'express-session' {
@@ -375,12 +376,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Toss Payments routes
+  app.post('/api/payments/confirm', async (req, res) => {
+    try {
+      const { paymentKey, orderId, amount } = req.body;
+      
+      if (!paymentKey || !orderId || !amount) {
+        return res.status(400).json({ message: '필수 결제 정보가 누락되었습니다.' });
+      }
+
+      // 주문 확인
+      const order = await storage.getOrderByOrderNo(orderId);
+      if (!order) {
+        return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
+      }
+
+      // 금액 검증
+      if (order.totalAmount !== amount) {
+        return res.status(400).json({ message: '결제 금액이 일치하지 않습니다.' });
+      }
+
+      // Toss 결제 승인 요청
+      const paymentResult = await tossPayments.confirmPayment({
+        paymentKey,
+        orderId,
+        amount
+      });
+
+      // 결제 성공 시 주문 상태 업데이트
+      if (paymentResult.status === 'DONE') {
+        await storage.updateOrderPaymentStatus(order.id, 'success', paymentKey);
+      }
+
+      res.json({ 
+        success: true, 
+        payment: paymentResult,
+        message: '결제가 완료되었습니다.' 
+      });
+    } catch (error) {
+      console.error('Payment confirmation error:', error);
+      res.status(400).json({ 
+        message: '결제 승인 중 오류가 발생했습니다.',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // 결제 웹훅 처리
+  app.post('/api/payments/webhook', async (req, res) => {
+    try {
+      await tossPayments.handleWebhook(req.body);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Payment webhook error:', error);
+      res.status(500).json({ message: '웹훅 처리 중 오류가 발생했습니다.' });
+    }
+  });
+
+  // 결제 조회
+  app.get('/api/payments/:paymentKey', async (req, res) => {
+    try {
+      const { paymentKey } = req.params;
+      const payment = await tossPayments.getPayment(paymentKey);
+      res.json(payment);
+    } catch (error) {
+      console.error('Payment lookup error:', error);
+      res.status(404).json({ message: '결제 정보를 찾을 수 없습니다.' });
+    }
+  });
+
   app.patch('/api/orders/:id/payment', async (req, res) => {
     try {
       const { id } = req.params;
       const { status, tossPaymentKey } = req.body;
       
-      if (!['pending', 'paid', 'failed'].includes(status)) {
+      if (!['waiting', 'success', 'failed'].includes(status)) {
         return res.status(400).json({ message: '잘못된 결제 상태값입니다.' });
       }
 
@@ -401,7 +471,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Don't send passcodes to client
-      const { reviewPasscode, bulkPurchasePasscode, ...safeSettings } = settings;
+      const { reviewPasscode, bulkPurchasePasscode, memberDiscountCode, ...safeSettings } = settings;
       res.json(safeSettings);
     } catch (error) {
       console.error('Get settings error:', error);

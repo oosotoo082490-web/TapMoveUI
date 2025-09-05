@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { eq, desc } from "drizzle-orm";
+import { migrate } from "drizzle-orm/better-sqlite3/migrator";
+import { eq, desc, and } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "crypto";
 import {
@@ -44,9 +45,7 @@ export function initializeDatabase() {
       class_type_senior INTEGER DEFAULT 0,
       class_type_rehab INTEGER DEFAULT 0,
       privacy_agreement INTEGER DEFAULT 1 NOT NULL,
-      status TEXT DEFAULT 'waiting' NOT NULL CHECK (status IN ('waiting', 'confirmed', 'rejected')),
-      payment_status TEXT DEFAULT 'unpaid' NOT NULL CHECK (payment_status IN ('unpaid', 'paid', 'failed')),
-      admin_memo TEXT,
+      status TEXT DEFAULT 'pending' NOT NULL CHECK (status IN ('pending', 'approved', 'rejected')),
       created_at INTEGER DEFAULT (unixepoch()) NOT NULL
     );
     
@@ -70,21 +69,15 @@ export function initializeDatabase() {
     
     CREATE TABLE IF NOT EXISTS orders (
       id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
-      order_no TEXT NOT NULL UNIQUE,
       product_id TEXT NOT NULL REFERENCES products(id),
-      product_name TEXT NOT NULL,
       quantity INTEGER NOT NULL,
-      unit_price REAL NOT NULL,
-      shipping_fee REAL DEFAULT 0 NOT NULL,
       total_amount REAL NOT NULL,
       customer_name TEXT NOT NULL,
       customer_email TEXT NOT NULL,
       customer_phone TEXT NOT NULL,
       shipping_address TEXT NOT NULL,
-      order_type TEXT DEFAULT 'regular' NOT NULL CHECK (order_type IN ('regular', 'member', 'bulk')),
-      payment_status TEXT DEFAULT 'waiting' NOT NULL CHECK (payment_status IN ('waiting', 'success', 'failed')),
-      shipping_status TEXT DEFAULT 'preparing' NOT NULL CHECK (shipping_status IN ('preparing', 'shipped')),
-      tracking_no TEXT,
+      order_type TEXT DEFAULT 'regular' NOT NULL CHECK (order_type IN ('regular', 'bulk')),
+      payment_status TEXT DEFAULT 'pending' NOT NULL CHECK (payment_status IN ('pending', 'paid', 'failed')),
       toss_payment_key TEXT,
       created_at INTEGER DEFAULT (unixepoch()) NOT NULL
     );
@@ -133,39 +126,33 @@ export function initializeDatabase() {
     );
   `);
 
-  // Insert default admin user if not exists
-  const adminExists = sqlite.prepare("SELECT * FROM users WHERE email = 'admin@tapmove.com'").get();
-  if (!adminExists) {
-    const hashedPassword = bcrypt.hashSync('admin123!', 10);
+  // Insert default admin user and settings if they don't exist
+  const existingAdmin = sqlite.prepare("SELECT id FROM users WHERE role = 'admin' LIMIT 1").get();
+  if (!existingAdmin) {
+    const hashedPassword = bcrypt.hashSync("admin123", 10);
     sqlite.prepare(`
-      INSERT INTO users (email, password, name, role)
-      VALUES ('admin@tapmove.com', ?, 'TAPMOVE 관리자', 'admin')
+      INSERT INTO users (email, password, name, role) 
+      VALUES ('admin@tapmove.kr', ?, 'TAPMOVE 관리자', 'admin')
     `).run(hashedPassword);
-    console.log('Default admin user created: admin@tapmove.com / admin123!');
   }
 
-  // Insert default settings if not exists
-  const settingsExists = sqlite.prepare("SELECT * FROM settings LIMIT 1").get();
-  if (!settingsExists) {
-    const reviewPasscode = bcrypt.hashSync('1234', 10);
-    const bulkPasscode = bcrypt.hashSync('5678', 10);
-    const memberCode = bcrypt.hashSync('MEMBER2024', 10);
-    
+  const existingSettings = sqlite.prepare("SELECT id FROM settings LIMIT 1").get();
+  if (!existingSettings) {
+    const reviewPasscode = bcrypt.hashSync("1234", 10);
+    const bulkPasscode = bcrypt.hashSync("5678", 10);
     sqlite.prepare(`
-      INSERT INTO settings (review_passcode, bulk_purchase_passcode, member_discount_code)
-      VALUES (?, ?, ?)
-    `).run(reviewPasscode, bulkPasscode, memberCode);
-    console.log('Default settings created with passcodes: 1234 (review), 5678 (bulk), MEMBER2024 (member)');
+      INSERT INTO settings (review_passcode, bulk_purchase_passcode, seminar_date) 
+      VALUES (?, ?, '2025-11-08')
+    `).run(reviewPasscode, bulkPasscode);
   }
 
-  // Insert sample product if not exists
-  const productExists = sqlite.prepare("SELECT * FROM products LIMIT 1").get();
-  if (!productExists) {
+  // Insert default product if it doesn't exist
+  const existingProduct = sqlite.prepare("SELECT id FROM products LIMIT 1").get();
+  if (!existingProduct) {
     sqlite.prepare(`
-      INSERT INTO products (name, description, price, in_stock)
-      VALUES ('TAPMOVE 매트', 'TAPMOVE 공식 매트입니다. 고품질 재료로 제작되었으며 다양한 운동에 활용할 수 있습니다.', 19500, 1)
+      INSERT INTO products (name, description, price, image_url) 
+      VALUES ('TAPMOVE 공식 매트', '정식 로고가 새겨진 6mm 매트로 최적의 운동 경험을 제공합니다.', 19500, 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b')
     `).run();
-    console.log('Sample product created');
   }
 }
 
@@ -179,15 +166,12 @@ export interface IStorage {
   // Applications
   createApplication(application: InsertApplication): Promise<Application>;
   getApplications(): Promise<Application[]>;
-  getApplicationById(id: string): Promise<Application | undefined>;
-  getApplicationByEmail(email: string): Promise<Application | undefined>;
-  updateApplicationStatus(id: string, status: 'waiting' | 'confirmed' | 'rejected'): Promise<void>;
-  updateApplicationPaymentStatus(id: string, paymentStatus: 'unpaid' | 'paid' | 'failed'): Promise<void>;
+  updateApplicationStatus(id: string, status: 'pending' | 'approved' | 'rejected'): Promise<void>;
 
   // Reviews
   createReview(review: InsertReview): Promise<Review>;
-  getReviews(): Promise<Review[]>;
   getApprovedReviews(): Promise<Review[]>;
+  getAllReviews(): Promise<Review[]>;
   updateReviewStatus(id: string, status: 'pending' | 'approved' | 'hidden_by_filter'): Promise<void>;
 
   // Products
@@ -197,24 +181,12 @@ export interface IStorage {
   // Orders
   createOrder(order: InsertOrder): Promise<Order>;
   getOrders(): Promise<Order[]>;
-  getOrderById(id: string): Promise<Order | undefined>;
-  getOrderByOrderNo(orderNo: string): Promise<Order | undefined>;
-  updateOrderPaymentStatus(id: string, status: 'waiting' | 'success' | 'failed', tossPaymentKey?: string): Promise<void>;
-  updateOrderShippingStatus(id: string, status: 'preparing' | 'shipped', trackingNo?: string): Promise<void>;
+  updateOrderPaymentStatus(id: string, status: 'pending' | 'paid' | 'failed', tossPaymentKey?: string): Promise<void>;
 
   // Settings
   getSettings(): Promise<Settings | undefined>;
   updateSettings(settings: Partial<InsertSettings>): Promise<void>;
-  verifyPasscode(type: 'review' | 'bulk' | 'member', passcode: string): Promise<boolean>;
-
-  // SMS Logs
-  createSmsLog(smsLog: InsertSmsLog): Promise<SmsLog>;
-  getSmsLogs(): Promise<SmsLog[]>;
-  getFailedSmsCount(): Promise<number>;
-
-  // Audit Logs
-  createAuditLog(auditLog: InsertAuditLog): Promise<AuditLog>;
-  getAuditLogs(): Promise<AuditLog[]>;
+  verifyPasscode(type: 'review' | 'bulk', passcode: string): Promise<boolean>;
 }
 
 export class SqliteStorage implements IStorage {
@@ -261,10 +233,7 @@ export class SqliteStorage implements IStorage {
     const application: Application = {
       id,
       ...insertApplication,
-      uniformSize: insertApplication.uniformSize || null,
-      status: "waiting",
-      paymentStatus: "unpaid",
-      adminMemo: null,
+      status: "pending",
       createdAt: new Date(),
     };
 
@@ -276,9 +245,8 @@ export class SqliteStorage implements IStorage {
     return db.select().from(applications).orderBy(desc(applications.createdAt)).all();
   }
 
-  async getApplicationById(id: string): Promise<Application | undefined> {
-    const result = db.select().from(applications).where(eq(applications.id, id)).get();
-    return result || undefined;
+  async updateApplicationStatus(id: string, status: 'pending' | 'approved' | 'rejected'): Promise<void> {
+    db.update(applications).set({ status }).where(eq(applications.id, id)).run();
   }
 
   async getApplicationByEmail(email: string): Promise<Application | undefined> {
@@ -286,12 +254,9 @@ export class SqliteStorage implements IStorage {
     return result || undefined;
   }
 
-  async updateApplicationStatus(id: string, status: 'waiting' | 'confirmed' | 'rejected'): Promise<void> {
-    db.update(applications).set({ status }).where(eq(applications.id, id)).run();
-  }
-
-  async updateApplicationPaymentStatus(id: string, paymentStatus: 'unpaid' | 'paid' | 'failed'): Promise<void> {
-    db.update(applications).set({ paymentStatus }).where(eq(applications.id, id)).run();
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const result = db.select().from(users).where(eq(users.email, email)).get();
+    return result || undefined;
   }
 
   async createReview(insertReview: InsertReview): Promise<Review> {
@@ -299,9 +264,7 @@ export class SqliteStorage implements IStorage {
     const review: Review = {
       id,
       ...insertReview,
-      authorName: insertReview.authorName || '익명',
-      rating: insertReview.rating || 5,
-      status: 'pending',
+      status: "pending",
       createdAt: new Date(),
     };
 
@@ -309,15 +272,15 @@ export class SqliteStorage implements IStorage {
     return review;
   }
 
-  async getReviews(): Promise<Review[]> {
-    return db.select().from(reviews).orderBy(desc(reviews.createdAt)).all();
-  }
-
   async getApprovedReviews(): Promise<Review[]> {
     return db.select().from(reviews)
-      .where(eq(reviews.status, 'approved'))
+      .where(eq(reviews.status, "approved"))
       .orderBy(desc(reviews.createdAt))
       .all();
+  }
+
+  async getAllReviews(): Promise<Review[]> {
+    return db.select().from(reviews).orderBy(desc(reviews.createdAt)).all();
   }
 
   async updateReviewStatus(id: string, status: 'pending' | 'approved' | 'hidden_by_filter'): Promise<void> {
@@ -335,16 +298,10 @@ export class SqliteStorage implements IStorage {
 
   async createOrder(insertOrder: InsertOrder): Promise<Order> {
     const id = randomUUID();
-    const orderNo = `TM${Date.now()}${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
-    
     const order: Order = {
       id,
-      orderNo,
       ...insertOrder,
-      shippingFee: insertOrder.shippingFee || 0,
-      paymentStatus: "waiting",
-      shippingStatus: "preparing",
-      trackingNo: null,
+      paymentStatus: "pending",
       tossPaymentKey: null,
       createdAt: new Date(),
     };
@@ -357,28 +314,10 @@ export class SqliteStorage implements IStorage {
     return db.select().from(orders).orderBy(desc(orders.createdAt)).all();
   }
 
-  async getOrderById(id: string): Promise<Order | undefined> {
-    const result = db.select().from(orders).where(eq(orders.id, id)).get();
-    return result || undefined;
-  }
-
-  async getOrderByOrderNo(orderNo: string): Promise<Order | undefined> {
-    const result = db.select().from(orders).where(eq(orders.orderNo, orderNo)).get();
-    return result || undefined;
-  }
-
-  async updateOrderPaymentStatus(id: string, status: 'waiting' | 'success' | 'failed', tossPaymentKey?: string): Promise<void> {
+  async updateOrderPaymentStatus(id: string, status: 'pending' | 'paid' | 'failed', tossPaymentKey?: string): Promise<void> {
     const updateData: any = { paymentStatus: status };
     if (tossPaymentKey) {
       updateData.tossPaymentKey = tossPaymentKey;
-    }
-    db.update(orders).set(updateData).where(eq(orders.id, id)).run();
-  }
-
-  async updateOrderShippingStatus(id: string, status: 'preparing' | 'shipped', trackingNo?: string): Promise<void> {
-    const updateData: any = { shippingStatus: status };
-    if (trackingNo) {
-      updateData.trackingNo = trackingNo;
     }
     db.update(orders).set(updateData).where(eq(orders.id, id)).run();
   }
@@ -412,18 +351,13 @@ export class SqliteStorage implements IStorage {
   }
 
   // SMS Log methods
-  async createSmsLog(insertSmsLog: InsertSmsLog): Promise<SmsLog> {
-    const id = randomUUID();
-    const smsLog: SmsLog = {
-      id,
-      ...insertSmsLog,
-      provider: insertSmsLog.provider || 'coolsms',
-      errorMessage: insertSmsLog.errorMessage || null,
-      relatedId: insertSmsLog.relatedId || null,
-      createdAt: new Date()
+  async createSmsLog(smsLog: InsertSmsLog): Promise<SmsLog> {
+    const logData = {
+      ...smsLog,
+      id: randomUUID()
     };
-    db.insert(smsLogs).values(smsLog).run();
-    return smsLog;
+    db.insert(smsLogs).values(logData).run();
+    return logData as SmsLog;
   }
 
   async getSmsLogs(): Promise<SmsLog[]> {
@@ -431,26 +365,19 @@ export class SqliteStorage implements IStorage {
   }
 
   async getFailedSmsCount(): Promise<number> {
-    const result = db.select().from(smsLogs)
+    const result = db.select({ count: 1 }).from(smsLogs)
       .where(eq(smsLogs.status, 'failed')).all();
     return result.length;
   }
 
   // Audit Log methods
-  async createAuditLog(insertAuditLog: InsertAuditLog): Promise<AuditLog> {
-    const id = randomUUID();
-    const auditLog: AuditLog = {
-      id,
-      ...insertAuditLog,
-      userId: insertAuditLog.userId || null,
-      oldValues: insertAuditLog.oldValues || null,
-      newValues: insertAuditLog.newValues || null,
-      ipAddress: insertAuditLog.ipAddress || null,
-      userAgent: insertAuditLog.userAgent || null,
-      createdAt: new Date()
+  async createAuditLog(auditLog: InsertAuditLog): Promise<AuditLog> {
+    const logData = {
+      ...auditLog,
+      id: randomUUID()
     };
-    db.insert(auditLogs).values(auditLog).run();
-    return auditLog;
+    db.insert(auditLogs).values(logData).run();
+    return logData as AuditLog;
   }
 
   async getAuditLogs(): Promise<AuditLog[]> {

@@ -9,6 +9,9 @@ import SeminarSchedulePage from "@/pages/seminar-schedule";
 import SeminarApplyPage from "@/pages/seminar-apply";
 import Products from "@/pages/products";
 import ProductsStoryPage from "@/pages/products-story";
+import CheckoutPage from "@/pages/checkout";
+import PaymentSuccessPage from "@/pages/payment-success";
+import PaymentFailPage from "@/pages/payment-fail";
 import About from "@/pages/about";
 import Admin from "@/pages/admin";
 import Login from "@/pages/login";
@@ -23,6 +26,9 @@ function Router() {
       <Route path="/seminar/apply" component={SeminarApplyPage} />
       <Route path="/products" component={Products} />
       <Route path="/products/story" component={ProductsStoryPage} />
+      <Route path="/checkout" component={CheckoutPage} />
+      <Route path="/payment-success" component={PaymentSuccessPage} />
+      <Route path="/payment-fail" component={PaymentFailPage} />
       <Route path="/about" component={About} />
       <Route path="/admin" component={Admin} />
       <Route path="/login" component={Login} />
