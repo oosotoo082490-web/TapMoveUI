@@ -27,7 +27,7 @@ export default function SeminarVerificationModal({
   const [password, setPassword] = useState("");
   const [verificationStep, setVerificationStep] = useState<"verify" | "payment">("verify");
   const [error, setError] = useState("");
-  const [location, navigate] = useRouter();
+  const [, setLocation] = useRouter();
   const { toast } = useToast();
 
   const verificationMutation = useMutation({
@@ -84,7 +84,7 @@ export default function SeminarVerificationModal({
       const data = response;
       const orderId = data.order?.orderNo || data.orderNo || 'test-order-' + Date.now();
       handleClose();
-      navigate(`/checkout?orderId=${orderId}`);
+      setLocation(`/checkout?orderId=${orderId}`);
       toast({
         title: "주문 생성 완료",
         description: "결제 페이지로 이동합니다.",
