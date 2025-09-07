@@ -196,11 +196,11 @@ export default function Navigation() {
                 센터 정보
               </Link>
               <Button
-                data-testid="nav-admin"
-                onClick={() => setLocation("/admin")}
+                data-testid="nav-login"
+                onClick={() => setLocation("/login")}
                 className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300"
               >
-                관리자
+                로그인
               </Button>
             </div>
           </div>
@@ -304,12 +304,12 @@ export default function Navigation() {
               센터 정보
             </Link>
             <Button
-              data-testid="nav-mobile-admin"
-              onClick={() => navigateTo("/admin")}
+              data-testid="nav-mobile-login"
+              onClick={() => navigateTo("/login")}
               className="block px-3 py-2 text-base font-medium text-primary w-full text-left"
               variant="ghost"
             >
-              관리자
+              로그인
             </Button>
           </div>
         </div>

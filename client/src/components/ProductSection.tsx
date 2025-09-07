@@ -4,12 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Minus, CreditCard, Truck, Package } from "lucide-react";
-import GuestInfoModal from "./modals/GuestInfoModal";
 import type { Product } from "@shared/schema";
 
 export default function ProductSection() {
   const [quantity, setQuantity] = useState(10);
-  const [showGuestInfoModal, setShowGuestInfoModal] = useState(false);
 
   const { data: products = [], isLoading } = useQuery<Product[]>({
     queryKey: ["/api/products"],
@@ -224,10 +222,10 @@ export default function ProductSection() {
                 <div className="space-y-3">
                   <Button
                     data-testid="button-buy-now"
-                    onClick={() => setShowGuestInfoModal(true)}
-                    className="w-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 py-4 text-lg font-semibold rounded-2xl transition-all duration-300"
+                    disabled
+                    className="w-full bg-gray-400 cursor-not-allowed py-4 text-lg font-semibold rounded-2xl"
                   >
-                    결제하기
+                    준비중입니다
                     <CreditCard className="ml-2 h-5 w-5" />
                   </Button>
                 </div>
@@ -249,12 +247,6 @@ export default function ProductSection() {
         </div>
       </div>
 
-      <GuestInfoModal
-        isOpen={showGuestInfoModal}
-        onClose={() => setShowGuestInfoModal(false)}
-        quantity={quantity}
-        totalPrice={totalPrice}
-      />
     </section>
   );
 }
