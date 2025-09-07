@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useRouter } from 'wouter';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,10 @@ export default function PaymentSuccessPage() {
   const [location] = useLocation();
   const queryParams = new URLSearchParams(location.split('?')[1]);
   const orderId = queryParams.get('orderId');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!orderId) {
     return (

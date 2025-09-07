@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import trademark1 from "@assets/KakaoTalk_Photo_2025-08-26-16-07-35 001_1757055031223.png";
 import trademark2 from "@assets/KakaoTalk_Photo_2025-08-26-16-07-35 002_1757055031223.png";
 
 export default function ProductsStoryPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-900 via-stone-800 to-amber-900">
       <Navigation />
