@@ -205,7 +205,7 @@ export default function Navigation() {
               </Link>
               <Button
                 data-testid="nav-admin"
-                onClick={() => setLocation("/login")}
+                onClick={() => setLocation("/admin/login")}
                 className="bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-900 hover:to-black text-amber-100 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300"
               >
                 관리자
@@ -321,7 +321,7 @@ export default function Navigation() {
             </Link>
             <Button
               data-testid="nav-mobile-admin"
-              onClick={() => navigateTo("/login")}
+              onClick={() => navigateTo("/admin/login")}
               className="block px-3 py-2 text-base font-medium text-primary w-full text-left"
               variant="ghost"
             >

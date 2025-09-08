@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import Navigation from "@/components/Navigation";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -58,8 +59,10 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="pt-20 flex items-center justify-center px-4 min-h-screen">
+        <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">TAPMOVE 로그인</CardTitle>
         </CardHeader>
@@ -108,9 +111,10 @@ export default function Login() {
             >
               홈으로 돌아가기
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
