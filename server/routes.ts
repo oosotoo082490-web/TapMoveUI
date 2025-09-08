@@ -390,7 +390,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Check if user has an approved seminar application with this email
       const application = await storage.getApplicationByEmail(email);
-      if (!application || application.status !== 'approved') {
+      if (!application || application.status !== 'confirmed') {
         return res.status(401).json({ success: false, message: '세미나 참석자가 아닙니다.' });
       }
 
