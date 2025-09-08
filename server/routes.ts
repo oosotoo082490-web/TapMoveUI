@@ -6,6 +6,7 @@ import { storage } from "./storage";
 import { insertApplicationSchema, insertReviewSchema, insertOrderSchema } from "@shared/schema";
 import { filterProfanity } from "../client/src/lib/profanity-filter";
 import { tossPayments } from "./toss-payments";
+import { sendEmail, getApplicationNotificationEmail, getApplicationApprovalEmail } from "./sendgrid.js";
 
 // Extend express-session types
 declare module 'express-session' {
@@ -120,10 +121,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // 관리자에게 이메일 알림 발송
       try {
-        const { sendEmail, getApplicationNotificationEmail } = require('./sendgrid');
         const emailContent = getApplicationNotificationEmail(validatedData);
         
-        await sendEmail({
+        const emailSent = await sendEmail({
           to: 'oosotoo@naver.com',
           from: 'noreply@tapmove.com',
           subject: emailContent.subject,
@@ -131,7 +131,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           text: emailContent.text,
         });
         
-        console.log('Admin notification email sent successfully');
+        if (emailSent) {
+          console.log('✅ Admin notification email sent successfully to oosotoo@naver.com');
+        } else {
+          console.error('❌ Failed to send admin notification email');
+        }
       } catch (emailError) {
         console.error('Failed to send admin notification email:', emailError);
         // 이메일 실패해도 신청은 정상 처리
@@ -184,10 +188,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // 승인 시 신청자에게 확인 이메일 발송
       if (status === 'confirmed') {
         try {
-          const { sendEmail, getApplicationApprovalEmail } = require('./sendgrid');
           const emailContent = getApplicationApprovalEmail(application);
           
-          await sendEmail({
+          const emailSent = await sendEmail({
             to: application.email,
             from: 'noreply@tapmove.com',
             subject: emailContent.subject,
@@ -195,7 +198,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             text: emailContent.text,
           });
           
-          console.log('Approval email sent to:', application.email);
+          if (emailSent) {
+            console.log('✅ Approval email sent successfully to:', application.email);
+          } else {
+            console.error('❌ Failed to send approval email to:', application.email);
+          }
         } catch (emailError) {
           console.error('Failed to send approval email:', emailError);
           // 이메일 실패해도 상태 업데이트는 정상 처리
