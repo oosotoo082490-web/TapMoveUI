@@ -118,6 +118,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = insertApplicationSchema.parse(req.body);
       const application = await storage.createApplication(validatedData);
       
+      // 관리자에게 이메일 알림 발송
+      try {
+        const { sendEmail, getApplicationNotificationEmail } = require('./sendgrid');
+        const emailContent = getApplicationNotificationEmail(validatedData);
+        
+        await sendEmail({
+          to: 'oosotoo@naver.com',
+          from: 'noreply@tapmove.com',
+          subject: emailContent.subject,
+          html: emailContent.html,
+          text: emailContent.text,
+        });
+        
+        console.log('Admin notification email sent successfully');
+      } catch (emailError) {
+        console.error('Failed to send admin notification email:', emailError);
+        // 이메일 실패해도 신청은 정상 처리
+      }
+      
       res.json({ 
         success: true, 
         message: '세미나 신청이 접수되었습니다.', 
