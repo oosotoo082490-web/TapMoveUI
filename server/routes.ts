@@ -169,7 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { id } = req.params;
       const { status } = req.body;
       
-      if (!['pending', 'approved', 'rejected'].includes(status)) {
+      if (!['waiting', 'confirmed', 'rejected'].includes(status)) {
         return res.status(400).json({ message: '잘못된 상태값입니다.' });
       }
 
@@ -182,7 +182,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await storage.updateApplicationStatus(id, status);
       
       // 승인 시 신청자에게 확인 이메일 발송
-      if (status === 'approved') {
+      if (status === 'confirmed') {
         try {
           const { sendEmail, getApplicationApprovalEmail } = require('./sendgrid');
           const emailContent = getApplicationApprovalEmail(application);
