@@ -259,18 +259,17 @@ export class SqliteStorage implements IStorage {
 
   async createApplication(insertApplication: InsertApplication): Promise<Application> {
     const id = randomUUID();
-    const application: Application = {
+    const application = {
       id,
       ...insertApplication,
       uniformSize: insertApplication.uniformSize || null,
-      status: "waiting",
-      paymentStatus: "unpaid",
+      status: "waiting" as const,
       adminMemo: null,
       createdAt: new Date(),
     };
 
     db.insert(applications).values(application).run();
-    return application;
+    return application as Application;
   }
 
   async getApplications(): Promise<Application[]> {
@@ -291,9 +290,10 @@ export class SqliteStorage implements IStorage {
     db.update(applications).set({ status }).where(eq(applications.id, id)).run();
   }
 
-  async updateApplicationPaymentStatus(id: string, paymentStatus: 'unpaid' | 'paid' | 'failed'): Promise<void> {
-    db.update(applications).set({ paymentStatus }).where(eq(applications.id, id)).run();
-  }
+  // Commented out until paymentStatus column is available
+  // async updateApplicationPaymentStatus(id: string, paymentStatus: 'unpaid' | 'paid' | 'failed'): Promise<void> {
+  //   db.update(applications).set({ paymentStatus }).where(eq(applications.id, id)).run();
+  // }
 
   async createReview(insertReview: InsertReview): Promise<Review> {
     const id = randomUUID();
