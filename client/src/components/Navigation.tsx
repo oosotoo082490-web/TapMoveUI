@@ -143,7 +143,7 @@ export default function Navigation() {
                       onClick={closeSeminarDropdown}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                     >
-                      세미나 현황
+                      신청현황
                     </Link>
                   </div>
                 )}
@@ -275,7 +275,7 @@ export default function Navigation() {
                   onClick={closeMobileMenu}
                   className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
                 >
-                  세미나 현황
+                  신청현황
                 </Link>
               </div>
             </div>
