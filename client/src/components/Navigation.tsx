@@ -137,6 +137,14 @@ export default function Navigation() {
                     >
                       세미나 신청
                     </Link>
+                    <Link
+                      data-testid="nav-seminar-status"
+                      href="/seminar/status"
+                      onClick={closeSeminarDropdown}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
+                    >
+                      세미나 신청현황
+                    </Link>
                   </div>
                 )}
               </div>
@@ -260,6 +268,14 @@ export default function Navigation() {
                   className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
                 >
                   세미나 신청
+                </Link>
+                <Link
+                  data-testid="nav-mobile-seminar-status"
+                  href="/seminar/status"
+                  onClick={closeMobileMenu}
+                  className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
+                >
+                  세미나 신청현황
                 </Link>
               </div>
             </div>
