@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
+import Navigation from "@/components/Navigation";
 
 const loginSchema = z.object({
   email: z.string().email("올바른 이메일 주소를 입력해주세요"),
@@ -70,8 +71,10 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      <div className="pt-20 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900">관리자페이지입니다.</h2>
           <p className="mt-2 text-gray-600">관리자 계정으로 로그인하세요</p>
@@ -152,6 +155,7 @@ export default function AdminLoginPage() {
           </CardContent>
         </Card>
 
+        </div>
       </div>
     </div>
   );

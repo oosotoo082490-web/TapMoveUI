@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+import Navigation from "@/components/Navigation";
 import type { Application, Review, Order, User } from "@shared/schema";
 
 export default function Admin() {
@@ -85,6 +86,7 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Navigation />
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
@@ -106,7 +108,7 @@ export default function Admin() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28">
         <Tabs defaultValue="applications" className="space-y-8">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="applications">세미나 신청</TabsTrigger>
