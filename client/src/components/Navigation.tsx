@@ -135,7 +135,7 @@ export default function Navigation() {
                       onClick={closeSeminarDropdown}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors"
                     >
-                      세미나 신청
+                      세미나신청
                     </Link>
                     <Link
                       data-testid="nav-seminar-status"
@@ -267,7 +267,7 @@ export default function Navigation() {
                   onClick={closeMobileMenu}
                   className="block px-3 py-2 text-sm text-gray-600 hover:text-primary"
                 >
-                  세미나 신청
+                  세미나신청
                 </Link>
                 <Link
                   data-testid="nav-mobile-seminar-status"
