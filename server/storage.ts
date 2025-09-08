@@ -287,9 +287,16 @@ export class SqliteStorage implements IStorage {
   }
 
   async getApplicationByNameAndPhone(name: string, phone: string): Promise<Application | undefined> {
-    const result = db.select().from(applications)
-      .where(and(eq(applications.name, name), eq(applications.phone, phone)))
-      .get();
+    // 전화번호에서 숫자만 추출하여 비교
+    const normalizePhone = (phone: string) => phone.replace(/[^0-9]/g, '');
+    const searchPhone = normalizePhone(phone);
+    
+    // 모든 신청을 가져와서 이름과 정규화된 전화번호로 비교
+    const allApplications = db.select().from(applications).all();
+    const result = allApplications.find(app => 
+      app.name === name && normalizePhone(app.phone) === searchPhone
+    );
+    
     return result || undefined;
   }
 

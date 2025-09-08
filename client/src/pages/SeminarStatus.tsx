@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, CheckCircle, Clock, XCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import Navigation from "@/components/Navigation";
 
 const statusFormSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
@@ -127,8 +128,10 @@ export default function SeminarStatus() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pt-20">
-      <div className="max-w-2xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <Navigation />
+      <div className="pt-20">
+        <div className="max-w-2xl mx-auto px-4 py-12">
         <Card className="shadow-xl">
           <CardHeader className="text-center bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-t-lg">
             <CardTitle className="text-3xl font-bold">세미나 신청현황</CardTitle>
@@ -210,6 +213,7 @@ export default function SeminarStatus() {
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
   );
