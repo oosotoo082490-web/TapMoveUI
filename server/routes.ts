@@ -173,7 +173,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: '잘못된 상태값입니다.' });
       }
 
+      // 신청자 정보 조회 (승인 이메일 발송용)
+      const application = await storage.getApplicationById(id);
+      if (!application) {
+        return res.status(404).json({ message: '신청을 찾을 수 없습니다.' });
+      }
+
       await storage.updateApplicationStatus(id, status);
+      
+      // 승인 시 신청자에게 확인 이메일 발송
+      if (status === 'approved') {
+        try {
+          const { sendEmail, getApplicationApprovalEmail } = require('./sendgrid');
+          const emailContent = getApplicationApprovalEmail(application);
+          
+          await sendEmail({
+            to: application.email,
+            from: 'noreply@tapmove.com',
+            subject: emailContent.subject,
+            html: emailContent.html,
+            text: emailContent.text,
+          });
+          
+          console.log('Approval email sent to:', application.email);
+        } catch (emailError) {
+          console.error('Failed to send approval email:', emailError);
+          // 이메일 실패해도 상태 업데이트는 정상 처리
+        }
+      }
+      
       res.json({ success: true, message: '신청 상태가 업데이트되었습니다.' });
     } catch (error) {
       console.error('Update application status error:', error);
