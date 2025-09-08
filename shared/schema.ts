@@ -135,6 +135,8 @@ export const insertUserSchema = createInsertSchema(users).omit({
 export const insertApplicationSchema = createInsertSchema(applications).omit({
   id: true,
   status: true,
+  // paymentStatus: true,
+  adminMemo: true,
   createdAt: true,
 });
 
