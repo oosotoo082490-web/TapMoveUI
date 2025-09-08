@@ -24,6 +24,12 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
   }
 
   try {
+    console.log('Attempting to send email:', {
+      to: params.to,
+      from: params.from,
+      subject: params.subject
+    });
+    
     await mailService.send({
       to: params.to,
       from: params.from,
@@ -31,10 +37,14 @@ export async function sendEmail(params: EmailParams): Promise<boolean> {
       text: params.text || '',
       html: params.html || '',
     });
+    
     console.log('Email sent successfully to:', params.to);
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error('SendGrid email error:', error);
+    if (error.response?.body?.errors) {
+      console.error('SendGrid detailed errors:', error.response.body.errors);
+    }
     return false;
   }
 }
