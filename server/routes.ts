@@ -185,29 +185,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       await storage.updateApplicationStatus(id, status);
       
-      // 승인 시 신청자에게 확인 이메일 발송
-      if (status === 'confirmed') {
-        try {
-          const emailContent = getApplicationApprovalEmail(application);
-          
-          const emailSent = await sendEmail({
-            to: application.email,
-            from: 'oosotoo@naver.com', // 검증된 이메일 주소 사용
-            subject: emailContent.subject,
-            html: emailContent.html,
-            text: emailContent.text,
-          });
-          
-          if (emailSent) {
-            console.log('✅ Approval email sent successfully to:', application.email);
-          } else {
-            console.error('❌ Failed to send approval email to:', application.email);
-          }
-        } catch (emailError) {
-          console.error('Failed to send approval email:', emailError);
-          // 이메일 실패해도 상태 업데이트는 정상 처리
-        }
-      }
+      // 관리자가 승인해도 신청자에게는 별도 이메일 발송하지 않음
       
       res.json({ success: true, message: '신청 상태가 업데이트되었습니다.' });
     } catch (error) {

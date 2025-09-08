@@ -47,7 +47,10 @@ export default function ApplicationForm() {
     },
     onSuccess: (data) => {
       if (data.success) {
-        toast({ title: "신청 완료", description: "세미나 신청이 접수되었습니다." });
+        toast({ 
+          title: "신청이 완료되었습니다", 
+          description: "입금 확인 후 최종 확정됩니다.\n감사합니다." 
+        });
         form.reset();
       }
     },
@@ -340,7 +343,7 @@ export default function ApplicationForm() {
                   "신청 중..."
                 ) : (
                   <>
-                    신청 완료하기
+                    신청하기
                     <Send className="ml-2 h-5 w-5" />
                   </>
                 )}
