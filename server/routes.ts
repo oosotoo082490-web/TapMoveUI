@@ -125,7 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const emailSent = await sendEmail({
           to: 'oosotoo@naver.com',
-          from: 'noreply@tapmove.com',
+          from: 'oosotoo@naver.com', // 검증된 이메일 주소 사용
           subject: emailContent.subject,
           html: emailContent.html,
           text: emailContent.text,
@@ -192,7 +192,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           const emailSent = await sendEmail({
             to: application.email,
-            from: 'noreply@tapmove.com',
+            from: 'oosotoo@naver.com', // 검증된 이메일 주소 사용
             subject: emailContent.subject,
             html: emailContent.html,
             text: emailContent.text,
