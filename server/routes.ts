@@ -158,6 +158,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // 신청현황 조회 API (이름과 전화번호로 조회)
+  app.post('/api/applications/status', strictLimiter, async (req, res) => {
+    try {
+      const { name, phone } = req.body;
+      
+      if (!name || !phone) {
+        return res.status(400).json({ message: '이름과 전화번호를 모두 입력해주세요.' });
+      }
+
+      const application = await storage.getApplicationByNameAndPhone(name, phone);
+      
+      if (!application) {
+        return res.status(404).json({ message: '신청 정보를 찾을 수 없습니다.' });
+      }
+
+      res.json({ 
+        status: application.status,
+        name: application.name 
+      });
+    } catch (error) {
+      console.error('Get application status error:', error);
+      res.status(500).json({ message: '신청 현황을 조회할 수 없습니다.' });
+    }
+  });
+
   app.get('/api/applications', requireAdmin, async (req, res) => {
     try {
       const applications = await storage.getApplications();

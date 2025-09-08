@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "crypto";
 import {
@@ -283,6 +283,13 @@ export class SqliteStorage implements IStorage {
 
   async getApplicationByEmail(email: string): Promise<Application | undefined> {
     const result = db.select().from(applications).where(eq(applications.email, email)).get();
+    return result || undefined;
+  }
+
+  async getApplicationByNameAndPhone(name: string, phone: string): Promise<Application | undefined> {
+    const result = db.select().from(applications)
+      .where(and(eq(applications.name, name), eq(applications.phone, phone)))
+      .get();
     return result || undefined;
   }
 
