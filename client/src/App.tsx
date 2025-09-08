@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import Seminar from "@/pages/seminar";
 import SeminarSchedulePage from "@/pages/seminar-schedule";
 import SeminarApplyPage from "@/pages/seminar-apply";
+import SeminarStatus from "@/pages/SeminarStatus";
 import Products from "@/pages/products";
 import ProductsStoryPage from "@/pages/products-story";
 import CheckoutPage from "@/pages/checkout";
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/seminar" component={Seminar} />
       <Route path="/seminar/schedule" component={SeminarSchedulePage} />
       <Route path="/seminar/apply" component={SeminarApplyPage} />
+      <Route path="/seminar/status" component={SeminarStatus} />
       <Route path="/products" component={Products} />
       <Route path="/products/story" component={ProductsStoryPage} />
       <Route path="/checkout" component={CheckoutPage} />
