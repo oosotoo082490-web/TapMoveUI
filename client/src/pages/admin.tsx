@@ -93,7 +93,7 @@ export default function Admin() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">TAPMOVE 관리자</h1>
-              <p className="text-gray-600">안녕하세요, {user.name}님</p>
+              <p className="text-gray-800">안녕하세요, {user.name}님</p>
             </div>
             <Button
               data-testid="button-logout"
