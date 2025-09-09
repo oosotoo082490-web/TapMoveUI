@@ -20,7 +20,8 @@ export function initializeDatabase() {
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
-      email TEXT NOT NULL UNIQUE,
+      username TEXT UNIQUE,
+      email TEXT UNIQUE,
       password TEXT NOT NULL,
       name TEXT NOT NULL,
       role TEXT DEFAULT 'user' NOT NULL CHECK (role IN ('admin', 'user')),
@@ -168,14 +169,28 @@ export function initializeDatabase() {
     `).run();
     console.log('Sample product created');
   }
+
+  // Create admin user if not exists
+  const adminExists = sqlite.prepare("SELECT * FROM users WHERE role = 'admin' LIMIT 1").get();
+  if (!adminExists) {
+    const hashedPassword = bcrypt.hashSync('admin123!', 10);
+    const adminId = randomUUID();
+    sqlite.prepare(`
+      INSERT INTO users (id, username, email, password, name, role)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(adminId, 'tap_admin', 'admin@tapmove.com', hashedPassword, '관리자', 'admin');
+    console.log('Admin account created: tap_admin / admin123!');
+  }
 }
 
 export interface IStorage {
   // Users
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   verifyUser(email: string, password: string): Promise<User | null>;
+  verifyUserByUsername(username: string, password: string): Promise<User | null>;
 
   // Applications
   createApplication(application: InsertApplication): Promise<Application>;
@@ -235,6 +250,11 @@ export class SqliteStorage implements IStorage {
     return result || undefined;
   }
 
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = db.select().from(users).where(eq(users.username, username)).get();
+    return result || undefined;
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const hashedPassword = bcrypt.hashSync(insertUser.password, 10);
     const id = randomUUID();
@@ -253,6 +273,14 @@ export class SqliteStorage implements IStorage {
 
   async verifyUser(email: string, password: string): Promise<User | null> {
     const user = await this.getUserByEmail(email);
+    if (!user) return null;
+    
+    const isValid = bcrypt.compareSync(password, user.password);
+    return isValid ? user : null;
+  }
+
+  async verifyUserByUsername(username: string, password: string): Promise<User | null> {
+    const user = await this.getUserByUsername(username);
     if (!user) return null;
     
     const isValid = bcrypt.compareSync(password, user.password);

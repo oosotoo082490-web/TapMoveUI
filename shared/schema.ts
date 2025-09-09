@@ -6,7 +6,8 @@ import { z } from "zod";
 // Users table
 export const users = sqliteTable("users", {
   id: text("id").primaryKey().default(sql`(lower(hex(randomblob(16))))`),
-  email: text("email").notNull().unique(),
+  username: text("username").unique(),
+  email: text("email").unique(),
   password: text("password").notNull(),
   name: text("name").notNull(),
   role: text("role", { enum: ["admin", "user"] }).default("user").notNull(),
