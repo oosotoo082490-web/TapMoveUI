@@ -63,7 +63,7 @@ export default function Admin() {
   });
 
   // Password change form - hooks must be called before any early returns
-  const form = useForm<PasswordChangeData>({
+  const passwordForm = useForm<PasswordChangeData>({
     resolver: zodResolver(passwordChangeSchema),
     defaultValues: {
       currentPassword: "",
@@ -109,7 +109,7 @@ export default function Admin() {
     },
     onSuccess: () => {
       toast({ title: "성공", description: "비밀번호가 변경되었습니다." });
-      form.reset();
+      passwordForm.reset();
     },
     onError: (error: any) => {
       toast({ 
@@ -340,10 +340,10 @@ export default function Admin() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmitPasswordChange)} className="space-y-4">
+                  <Form {...passwordForm}>
+                    <form onSubmit={passwordForm.handleSubmit(onSubmitPasswordChange)} className="space-y-4">
                       <FormField
-                        control={form.control}
+                        control={passwordForm.control}
                         name="currentPassword"
                         render={({ field }) => (
                           <FormItem>
@@ -357,7 +357,7 @@ export default function Admin() {
                       />
                       
                       <FormField
-                        control={form.control}
+                        control={passwordForm.control}
                         name="newPassword"
                         render={({ field }) => (
                           <FormItem>
@@ -371,7 +371,7 @@ export default function Admin() {
                       />
 
                       <FormField
-                        control={form.control}
+                        control={passwordForm.control}
                         name="confirmPassword"
                         render={({ field }) => (
                           <FormItem>
