@@ -25,12 +25,12 @@ declare module 'express-session' {
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: process.env.NODE_ENV === 'development' ? 1000 : 100, // 개발환경에서는 더 관대하게
 });
 
 const strictLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs for sensitive endpoints
+  max: process.env.NODE_ENV === 'development' ? 100 : 5, // 개발환경에서는 더 관대하게
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
