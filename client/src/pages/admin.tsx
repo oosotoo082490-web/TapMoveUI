@@ -62,6 +62,16 @@ export default function Admin() {
     enabled: !!user && user.role === "admin",
   });
 
+  // Password change form - hooks must be called before any early returns
+  const form = useForm<PasswordChangeData>({
+    resolver: zodResolver(passwordChangeSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+
   // Mutations
   const updateApplicationMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string }) => {
@@ -89,6 +99,28 @@ export default function Admin() {
     },
   });
 
+  const passwordChangeMutation = useMutation({
+    mutationFn: async (data: PasswordChangeData) => {
+      const response = await apiRequest("POST", "/api/auth/change-password", {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({ title: "성공", description: "비밀번호가 변경되었습니다." });
+      form.reset();
+    },
+    onError: (error: any) => {
+      toast({ 
+        title: "오류", 
+        description: error.message || "비밀번호 변경에 실패했습니다.", 
+        variant: "destructive" 
+      });
+    },
+  });
+
+  // Early returns after all hooks
   if (userLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -119,36 +151,6 @@ export default function Admin() {
     await apiRequest("POST", "/api/auth/logout", {});
     setLocation("/");
   };
-
-  const form = useForm<PasswordChangeData>({
-    resolver: zodResolver(passwordChangeSchema),
-    defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    },
-  });
-
-  const passwordChangeMutation = useMutation({
-    mutationFn: async (data: PasswordChangeData) => {
-      const response = await apiRequest("POST", "/api/auth/change-password", {
-        currentPassword: data.currentPassword,
-        newPassword: data.newPassword,
-      });
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({ title: "성공", description: "비밀번호가 변경되었습니다." });
-      form.reset();
-    },
-    onError: (error: any) => {
-      toast({ 
-        title: "오류", 
-        description: error.message || "비밀번호 변경에 실패했습니다.", 
-        variant: "destructive" 
-      });
-    },
-  });
 
   const onSubmitPasswordChange = (data: PasswordChangeData) => {
     passwordChangeMutation.mutate(data);
