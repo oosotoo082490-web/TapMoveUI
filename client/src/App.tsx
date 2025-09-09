@@ -35,7 +35,7 @@ function Router() {
       <Route path="/payment-fail" component={PaymentFailPage} />
       <Route path="/about" component={About} />
       <Route path="/admin" component={Admin} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/dashboard" component={Admin} />
       <Route path="/admin/applications" component={Admin} />
       <Route path="/admin/settings" component={Admin} />
       <Route path="/admin/login" component={AdminLogin} />
