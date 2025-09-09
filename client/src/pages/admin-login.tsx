@@ -64,7 +64,7 @@ export default function AdminLoginPage() {
           title: "로그인 성공",
           description: "관리자 대시보드로 이동합니다.",
         });
-        setLocation("/admin");
+        setLocation("/admin/dashboard");
       } else {
         toast({
           title: "접근 권한 없음",
