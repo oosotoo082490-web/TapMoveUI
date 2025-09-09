@@ -40,6 +40,10 @@ export default function AdminLoginPage() {
 
   // 페이지 로드 시 저장된 정보 불러오기
   useEffect(() => {
+    // 이전 캐시 정리
+    localStorage.removeItem('tapmove_admin_username');
+    localStorage.removeItem('tapmove_admin_remember');
+    
     const savedUsername = localStorage.getItem('tapmove_admin_username');
     const savedRememberMe = localStorage.getItem('tapmove_admin_remember') === 'true';
     
@@ -114,7 +118,7 @@ export default function AdminLoginPage() {
                   id="username"
                   {...form.register("username")}
                   className="mt-2"
-                  placeholder="tap_admin"
+                  placeholder="아이디를 입력하세요"
                 />
                 {form.formState.errors.username && (
                   <p className="text-sm text-red-600 mt-1">
