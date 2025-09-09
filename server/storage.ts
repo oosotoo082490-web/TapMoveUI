@@ -284,6 +284,11 @@ export class SqliteStorage implements IStorage {
     return isValid ? user : null;
   }
 
+  async updateUserPassword(userId: string, newPassword: string): Promise<void> {
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    db.update(users).set({ password: hashedPassword }).where(eq(users.id, userId)).run();
+  }
+
   async createApplication(insertApplication: InsertApplication): Promise<Application> {
     const id = randomUUID();
     const application = {

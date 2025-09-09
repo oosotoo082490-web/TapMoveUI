@@ -2,18 +2,35 @@ import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
-import Navigation from "@/components/Navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Users, UserCheck, Clock, CheckCircle, Settings, LogOut, Search, Eye } from "lucide-react";
 import type { Application, Review, Order, User } from "@shared/schema";
 
+const passwordChangeSchema = z.object({
+  currentPassword: z.string().min(1, "현재 비밀번호를 입력해주세요"),
+  newPassword: z.string().min(8, "새 비밀번호는 8자 이상이어야 합니다"),
+  confirmPassword: z.string().min(1, "비밀번호 확인을 입력해주세요"),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "비밀번호가 일치하지 않습니다",
+  path: ["confirmPassword"],
+});
+
+type PasswordChangeData = z.infer<typeof passwordChangeSchema>;
+
 export default function Admin() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Check authentication
   const { data: user, isLoading: userLoading } = useQuery<User>({
@@ -84,280 +101,322 @@ export default function Admin() {
     return null;
   }
 
+  // Determine current tab based on location
+  const currentTab = location.includes('/admin/applications') ? 'applications' : 
+                    location.includes('/admin/settings') ? 'settings' : 'applications';
+
+  // Filter applications based on search
+  const filteredApplications = applications.filter(app => 
+    app.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    app.phone.includes(searchTerm) ||
+    app.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleLogout = async () => {
+    await apiRequest("POST", "/api/auth/logout", {});
+    setLocation("/");
+  };
+
+  const form = useForm<PasswordChangeData>({
+    resolver: zodResolver(passwordChangeSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+
+  const passwordChangeMutation = useMutation({
+    mutationFn: async (data: PasswordChangeData) => {
+      const response = await apiRequest("POST", "/api/auth/change-password", {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({ title: "성공", description: "비밀번호가 변경되었습니다." });
+      form.reset();
+    },
+    onError: (error: any) => {
+      toast({ 
+        title: "오류", 
+        description: error.message || "비밀번호 변경에 실패했습니다.", 
+        variant: "destructive" 
+      });
+    },
+  });
+
+  const onSubmitPasswordChange = (data: PasswordChangeData) => {
+    passwordChangeMutation.mutate(data);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navigation />
-      
-      <div className="pt-20 bg-white border-b">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">TAPMOVE 관리자</h1>
-              <p className="text-gray-800">안녕하세요, {user.name}님</p>
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-4">
+              <h1 className="text-2xl font-bold text-gray-900">TAPMOVE 관리자</h1>
+              <span className="text-gray-500">|</span>
+              <span className="text-gray-600">{currentTab === 'applications' ? '신청자 관리' : '설정'}</span>
             </div>
-            <Button
-              data-testid="button-logout"
-              onClick={async () => {
-                await apiRequest("POST", "/api/auth/logout");
-                setLocation("/");
-              }}
-              variant="outline"
-            >
-              로그아웃
-            </Button>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600">안녕하세요, {user.name}님</span>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                size="sm"
+                className="flex items-center space-x-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>로그아웃</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Tabs defaultValue="applications" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="applications">세미나 신청</TabsTrigger>
-            <TabsTrigger value="reviews">후기 관리</TabsTrigger>
-            <TabsTrigger value="orders">주문 관리</TabsTrigger>
-            <TabsTrigger value="settings">설정</TabsTrigger>
-          </TabsList>
+      {/* Navigation */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex space-x-8">
+            <button 
+              className={`py-4 px-2 border-b-2 font-medium ${
+                location.includes('/admin/dashboard') 
+                  ? 'border-blue-500 text-blue-600' 
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => setLocation("/admin/dashboard")}
+            >
+              📋 대시보드
+            </button>
+            <button 
+              className={`py-4 px-2 border-b-2 font-medium ${
+                currentTab === 'applications' 
+                  ? 'border-blue-500 text-blue-600' 
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => setLocation("/admin/applications")}
+            >
+              📁 신청자 관리
+            </button>
+            <button 
+              className={`py-4 px-2 border-b-2 font-medium ${
+                currentTab === 'settings' 
+                  ? 'border-blue-500 text-blue-600' 
+                  : 'border-transparent text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => setLocation("/admin/settings")}
+            >
+              🛠️ 설정
+            </button>
+          </div>
+        </div>
+      </div>
 
-          <TabsContent value="applications" className="space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{currentTab === 'applications' ? (
+          // Applications Management Tab
+          <div>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">신청자 관리</h2>
+              <p className="text-gray-600">세미나 신청자를 관리하고 상태를 업데이트하세요</p>
+            </div>
+
+            {/* Search Bar */}
+            <div className="mb-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="이름, 전화번호, 이메일로 검색..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+            </div>
+
+            {/* Applications Table */}
             <Card>
               <CardHeader>
-                <CardTitle>세미나 신청 관리</CardTitle>
+                <CardTitle className="flex items-center justify-between">
+                  <span>신청자 목록</span>
+                  <Badge variant="secondary">{filteredApplications.length}명</Badge>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {applications.map((app) => (
-                    <div
-                      key={app.id}
-                      className="bg-gray-50 rounded-2xl p-6 flex justify-between items-start"
-                    >
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-3">
-                          <h3 className="font-semibold text-lg">{app.name}</h3>
-                          <Badge
-                            variant={
-                              app.status === "approved"
-                                ? "default"
-                                : app.status === "rejected"
-                                ? "destructive"
-                                : "secondary"
-                            }
-                          >
-                            {app.status === "approved" ? "승인됨" : app.status === "rejected" ? "거부됨" : "대기중"}
-                          </Badge>
+                  {filteredApplications.map((application) => (
+                    <div key={application.id} className="bg-gray-50 rounded-lg p-4">
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                        <div>
+                          <p className="font-medium text-gray-900">{application.name}</p>
+                          <p className="text-sm text-gray-500">{application.phone}</p>
                         </div>
-                        <p className="text-gray-600">{app.email} • {app.phone}</p>
-                        <p className="text-gray-600">주소: {app.address}</p>
-                        <p className="text-gray-600">입금자: {app.depositorName}</p>
-                        {app.uniformSize && (
-                          <p className="text-gray-600">유니폼 사이즈: {app.uniformSize}</p>
-                        )}
-                        {app.classPlan && (
-                          <p className="text-gray-600">
-                            수업 진행: {app.classPlan === "plan" ? "진행 예정" : "하지 않음"}
+                        <div>
+                          <p className="text-sm text-gray-600">{application.email}</p>
+                          <p className="text-xs text-gray-500">
+                            {new Date(application.createdAt).toLocaleDateString('ko-KR')}
                           </p>
-                        )}
-                        {app.classPlan === "plan" && (
-                          <div className="text-gray-600">
-                            <p>수업 대상:</p>
-                            <div className="flex flex-wrap gap-2 mt-1">
-                              {app.classTypeInfant && <Badge variant="outline">유아</Badge>}
-                              {app.classTypeElementary && <Badge variant="outline">초등</Badge>}
-                              {app.classTypeMiddleHigh && <Badge variant="outline">중고등</Badge>}
-                              {app.classTypeAdult && <Badge variant="outline">성인</Badge>}
-                              {app.classTypeSenior && <Badge variant="outline">시니어</Badge>}
-                              {app.classTypeRehab && <Badge variant="outline">재활</Badge>}
-                            </div>
-                          </div>
-                        )}
-                        <p className="text-sm text-gray-500">
-                          신청일: {new Date(app.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          data-testid={`button-approve-${app.id}`}
-                          size="sm"
-                          onClick={() =>
-                            updateApplicationMutation.mutate({ id: app.id, status: "approved" })
-                          }
-                          disabled={updateApplicationMutation.isPending}
-                        >
-                          승인
-                        </Button>
-                        <Button
-                          data-testid={`button-reject-${app.id}`}
-                          size="sm"
-                          variant="destructive"
-                          onClick={() =>
-                            updateApplicationMutation.mutate({ id: app.id, status: "rejected" })
-                          }
-                          disabled={updateApplicationMutation.isPending}
-                        >
-                          거부
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                  {applications.length === 0 && (
-                    <div className="text-center py-12 text-gray-500">
-                      아직 신청이 없습니다.
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="reviews" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>후기 관리</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {allReviews.map((review) => (
-                    <div
-                      key={review.id}
-                      className="bg-gray-50 rounded-2xl p-6 flex justify-between items-start"
-                    >
-                      <div className="space-y-2 flex-1">
-                        <div className="flex items-center gap-3">
-                          <h3 className="font-semibold">{review.authorName}</h3>
-                          <Badge
+                        </div>
+                        <div>
+                          <Badge 
                             variant={
-                              review.status === "approved"
-                                ? "default"
-                                : review.status === "hidden_by_filter"
-                                ? "destructive"
-                                : "secondary"
+                              application.status === "confirmed" ? "default" : 
+                              application.status === "waiting" ? "secondary" : 
+                              "destructive"
                             }
                           >
-                            {review.status === "approved"
-                              ? "승인됨"
-                              : review.status === "hidden_by_filter"
-                              ? "필터됨"
-                              : "대기중"}
+                            {application.status === "confirmed" ? "최종 확정" : 
+                             application.status === "waiting" ? "입금 확인 대기" : 
+                             application.status === "rejected" ? "반려" : "대기"}
                           </Badge>
-                          <div className="flex">
-                            {Array.from({ length: review.rating }, (_, i) => (
-                              <span key={i} className="text-yellow-400">★</span>
-                            ))}
-                          </div>
                         </div>
-                        <p className="text-gray-700 leading-relaxed max-w-2xl">
-                          {review.reviewBody}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          작성일: {new Date(review.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="flex gap-2 ml-4">
-                        <Button
-                          data-testid={`button-approve-review-${review.id}`}
-                          size="sm"
-                          onClick={() =>
-                            updateReviewMutation.mutate({ id: review.id, status: "approved" })
-                          }
-                          disabled={updateReviewMutation.isPending}
-                        >
-                          승인
-                        </Button>
-                        <Button
-                          data-testid={`button-hide-review-${review.id}`}
-                          size="sm"
-                          variant="destructive"
-                          onClick={() =>
-                            updateReviewMutation.mutate({ id: review.id, status: "hidden_by_filter" })
-                          }
-                          disabled={updateReviewMutation.isPending}
-                        >
-                          숨김
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                  {allReviews.length === 0 && (
-                    <div className="text-center py-12 text-gray-500">
-                      아직 후기가 없습니다.
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="orders" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>주문 관리</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {orders.map((order) => (
-                    <div
-                      key={order.id}
-                      className="bg-gray-50 rounded-2xl p-6 flex justify-between items-start"
-                    >
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-3">
-                          <h3 className="font-semibold text-lg">{order.customerName}</h3>
-                          <Badge
-                            variant={order.orderType === "bulk" ? "secondary" : "outline"}
-                          >
-                            {order.orderType === "bulk" ? "대량구매" : "일반구매"}
-                          </Badge>
-                          <Badge
-                            variant={
-                              order.paymentStatus === "paid"
-                                ? "default"
-                                : order.paymentStatus === "failed"
-                                ? "destructive"
-                                : "secondary"
+                        <div className="flex space-x-2">
+                          <Select
+                            value={application.status}
+                            onValueChange={(newStatus) => 
+                              updateApplicationMutation.mutate({ id: application.id, status: newStatus })
                             }
                           >
-                            {order.paymentStatus === "paid"
-                              ? "결제완료"
-                              : order.paymentStatus === "failed"
-                              ? "결제실패"
-                              : "결제대기"}
-                          </Badge>
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="waiting">대기중</SelectItem>
+                              <SelectItem value="confirmed">최종 확정</SelectItem>
+                              <SelectItem value="rejected">반려</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              // Show application details
+                              toast({
+                                title: "신청자 정보",
+                                description: `${application.name} (${application.phone})의 상세 정보를 확인합니다.`,
+                              });
+                            }}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
                         </div>
-                        <p className="text-gray-600">{order.customerEmail} • {order.customerPhone}</p>
-                        <p className="text-gray-600">배송지: {order.shippingAddress}</p>
-                        <p className="text-gray-600">
-                          수량: {order.quantity}개 • 총액: {order.totalAmount.toLocaleString()}원
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          주문일: {new Date(order.createdAt).toLocaleDateString()}
-                        </p>
                       </div>
                     </div>
                   ))}
-                  {orders.length === 0 && (
-                    <div className="text-center py-12 text-gray-500">
-                      아직 주문이 없습니다.
+                  {filteredApplications.length === 0 && (
+                    <div className="text-center py-8">
+                      <p className="text-gray-500">
+                        {searchTerm ? '검색 결과가 없습니다.' : '아직 신청자가 없습니다.'}
+                      </p>
                     </div>
                   )}
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+          </div>
+        ) : (
+          // Settings Tab
+          <div>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">관리자 설정</h2>
+              <p className="text-gray-600">계정 설정을 관리하세요</p>
+            </div>
 
-          <TabsContent value="settings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>시스템 설정</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-gray-600">
-                    비밀번호 변경 및 기타 설정은 추후 구현됩니다.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Password Change */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Settings className="h-5 w-5" />
+                    <span>비밀번호 변경</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmitPasswordChange)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="currentPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>현재 비밀번호</FormLabel>
+                            <FormControl>
+                              <Input type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="newPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>새 비밀번호</FormLabel>
+                            <FormControl>
+                              <Input type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>비밀번호 확인</FormLabel>
+                            <FormControl>
+                              <Input type="password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button 
+                        type="submit" 
+                        className="w-full"
+                        disabled={passwordChangeMutation.isPending}
+                      >
+                        {passwordChangeMutation.isPending ? "변경 중..." : "비밀번호 변경"}
+                      </Button>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
+
+              {/* Account Information */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <UserCheck className="h-5 w-5" />
+                    <span>계정 정보</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">관리자 이름</label>
+                    <p className="text-lg font-medium">{user.name}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">사용자 아이디</label>
+                    <p className="text-lg font-medium">{user.username}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-500">권한</label>
+                    <Badge className="ml-2">관리자</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

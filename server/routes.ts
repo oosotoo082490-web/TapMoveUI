@@ -16,6 +16,7 @@ declare module 'express-session' {
       email: string;
       name: string;
       role: string;
+      username: string | null;
     };
     reviewAccess?: boolean;
     bulkAccess?: boolean;
@@ -79,10 +80,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       req.session.user = {
         id: user.id,
-        username: user.username,
         email: user.email || '',
         name: user.name,
-        role: user.role
+        role: user.role,
+        username: user.username
       };
 
       res.json({ 
@@ -97,6 +98,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error('Login error:', error);
+      res.status(500).json({ message: '서버 오류가 발생했습니다.' });
+    }
+  });
+
+  app.post('/api/auth/change-password', requireAuth, strictLimiter, async (req, res) => {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({ message: '현재 비밀번호와 새 비밀번호를 입력해주세요.' });
+      }
+
+      if (newPassword.length < 8) {
+        return res.status(400).json({ message: '새 비밀번호는 8자 이상이어야 합니다.' });
+      }
+
+      const userId = req.session.user!.id;
+      const username = req.session.user!.username;
+
+      // 현재 비밀번호 확인
+      const user = await storage.verifyUserByUsername(username, currentPassword);
+      if (!user) {
+        return res.status(401).json({ message: '현재 비밀번호가 올바르지 않습니다.' });
+      }
+
+      // 비밀번호 변경
+      await storage.updateUserPassword(userId, newPassword);
+
+      res.json({ 
+        success: true, 
+        message: '비밀번호가 성공적으로 변경되었습니다.' 
+      });
+    } catch (error) {
+      console.error('Password change error:', error);
       res.status(500).json({ message: '서버 오류가 발생했습니다.' });
     }
   });
