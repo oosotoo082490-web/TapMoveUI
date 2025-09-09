@@ -182,8 +182,10 @@ export interface IStorage {
   getApplications(): Promise<Application[]>;
   getApplicationById(id: string): Promise<Application | undefined>;
   getApplicationByEmail(email: string): Promise<Application | undefined>;
+  getApplicationByNameAndPhone(name: string, phone: string): Promise<Application | undefined>;
   updateApplicationStatus(id: string, status: 'waiting' | 'confirmed' | 'rejected'): Promise<void>;
   updateApplicationPaymentStatus(id: string, paymentStatus: 'unpaid' | 'paid' | 'failed'): Promise<void>;
+  updateApplicationName(id: string, newName: string): Promise<void>;
 
   // Reviews
   createReview(review: InsertReview): Promise<Review>;
@@ -302,6 +304,10 @@ export class SqliteStorage implements IStorage {
 
   async updateApplicationStatus(id: string, status: 'waiting' | 'confirmed' | 'rejected'): Promise<void> {
     db.update(applications).set({ status }).where(eq(applications.id, id)).run();
+  }
+
+  async updateApplicationName(id: string, newName: string): Promise<void> {
+    db.update(applications).set({ name: newName }).where(eq(applications.id, id)).run();
   }
 
   // Commented out until paymentStatus column is available

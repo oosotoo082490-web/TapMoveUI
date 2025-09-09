@@ -175,11 +175,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json({ 
         status: application.status,
-        name: application.name 
+        name: application.name,
+        id: application.id
       });
     } catch (error) {
       console.error('Get application status error:', error);
       res.status(500).json({ message: '신청 현황을 조회할 수 없습니다.' });
+    }
+  });
+
+  // 신청자 이름 수정 API
+  app.patch('/api/applications/:id/name', strictLimiter, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { newName, phone } = req.body;
+      
+      if (!newName || !phone) {
+        return res.status(400).json({ message: '새 이름과 전화번호를 모두 입력해주세요.' });
+      }
+
+      // 신청자 확인 (ID와 전화번호로 본인 확인)
+      const application = await storage.getApplicationById(id);
+      if (!application) {
+        return res.status(404).json({ message: '신청 정보를 찾을 수 없습니다.' });
+      }
+
+      // 전화번호 일치 확인
+      const normalizePhone = (phone: string) => phone.replace(/[^0-9]/g, '');
+      if (normalizePhone(application.phone) !== normalizePhone(phone)) {
+        return res.status(403).json({ message: '전화번호가 일치하지 않습니다.' });
+      }
+
+      await storage.updateApplicationName(id, newName);
+      
+      res.json({ 
+        success: true, 
+        message: '이름이 성공적으로 수정되었습니다.',
+        newName 
+      });
+    } catch (error) {
+      console.error('Update application name error:', error);
+      res.status(500).json({ message: '이름 수정 중 오류가 발생했습니다.' });
     }
   });
 
