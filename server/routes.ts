@@ -144,7 +144,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/auth/me', (req, res) => {
     if (req.session?.user) {
-      res.json({ user: req.session.user });
+      res.json(req.session.user);
     } else {
       res.status(401).json({ message: '로그인되지 않음' });
     }
