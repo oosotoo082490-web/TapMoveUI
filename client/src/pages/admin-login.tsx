@@ -64,7 +64,10 @@ export default function AdminLoginPage() {
           title: "로그인 성공",
           description: "관리자 대시보드로 이동합니다.",
         });
-        setLocation("/admin/dashboard");
+        // 강제 페이지 이동
+        setTimeout(() => {
+          window.location.href = "/admin/dashboard";
+        }, 500);
       } else {
         toast({
           title: "접근 권한 없음",
