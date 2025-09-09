@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocation } from "wouter";
@@ -25,6 +25,7 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -58,16 +59,20 @@ export default function AdminLoginPage() {
       const response = await apiRequest("POST", "/api/auth/login", data);
       return response.json();
     },
-    onSuccess: (data: any) => {
+    onSuccess: async (data: any) => {
       if (data.success && data.user?.role === "admin") {
+        // 쿼리 캐시 무효화
+        await queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+        
         toast({
           title: "로그인 성공",
           description: "관리자 대시보드로 이동합니다.",
         });
-        // 강제 페이지 이동
+        
+        // 페이지 이동
         setTimeout(() => {
-          window.location.href = "/admin/dashboard";
-        }, 500);
+          setLocation("/admin/dashboard");
+        }, 100);
       } else {
         toast({
           title: "접근 권한 없음",

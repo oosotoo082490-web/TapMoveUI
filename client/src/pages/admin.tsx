@@ -38,8 +38,16 @@ export default function Admin() {
   });
 
   useEffect(() => {
-    if (!userLoading && (!user || user.role !== "admin")) {
+    // 로딩이 완전히 끝나고 명확히 인증 실패일 때만 리다이렉트
+    if (!userLoading && user && user.role !== "admin") {
+      console.log("Admin check failed - not admin role:", { user, userLoading });
       setLocation("/admin/login");
+    } else if (!userLoading && !user) {
+      // 사용자 정보가 없을 때만 리다이렉트 (약간의 지연 후)
+      setTimeout(() => {
+        console.log("Admin check failed - no user:", { user, userLoading });
+        setLocation("/admin/login");
+      }, 1000);
     }
   }, [user, userLoading, setLocation]);
 
