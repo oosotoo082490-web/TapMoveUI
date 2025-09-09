@@ -66,20 +66,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.post('/api/auth/login', strictLimiter, async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { username, password } = req.body;
       
-      if (!email || !password) {
-        return res.status(400).json({ message: '이메일과 비밀번호를 입력해주세요.' });
+      if (!username || !password) {
+        return res.status(400).json({ message: '아이디와 비밀번호를 입력해주세요.' });
       }
 
-      const user = await storage.verifyUser(email, password);
+      const user = await storage.verifyUserByUsername(username, password);
       if (!user) {
-        return res.status(401).json({ message: '잘못된 이메일 또는 비밀번호입니다.' });
+        return res.status(401).json({ message: '아이디 또는 비밀번호가 올바르지 않습니다.' });
       }
 
       req.session.user = {
         id: user.id,
-        email: user.email,
+        username: user.username,
+        email: user.email || '',
         name: user.name,
         role: user.role
       };
@@ -88,6 +89,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: true, 
         user: { 
           id: user.id, 
+          username: user.username,
           email: user.email, 
           name: user.name, 
           role: user.role 

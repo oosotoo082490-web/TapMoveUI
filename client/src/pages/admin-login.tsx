@@ -14,7 +14,7 @@ import { z } from "zod";
 import Navigation from "@/components/Navigation";
 
 const loginSchema = z.object({
-  email: z.string().email("올바른 이메일 주소를 입력해주세요"),
+  username: z.string().min(1, "아이디를 입력해주세요"),
   password: z.string().min(1, "비밀번호를 입력해주세요"),
 });
 
@@ -23,6 +23,7 @@ type LoginData = z.infer<typeof loginSchema>;
 export default function AdminLoginPage() {
   const [, setLocation] = useLocation();
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,10 +33,21 @@ export default function AdminLoginPage() {
   const form = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
+
+  // 페이지 로드 시 저장된 정보 불러오기
+  useEffect(() => {
+    const savedUsername = localStorage.getItem('tapmove_admin_username');
+    const savedRememberMe = localStorage.getItem('tapmove_admin_remember') === 'true';
+    
+    if (savedUsername && savedRememberMe) {
+      form.setValue('username', savedUsername);
+      setRememberMe(true);
+    }
+  }, [form]);
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => {
@@ -60,13 +72,22 @@ export default function AdminLoginPage() {
     onError: (error: any) => {
       toast({
         title: "로그인 실패",
-        description: error.message || "이메일 또는 비밀번호를 확인해주세요.",
+        description: error.message || "아이디 또는 비밀번호가 올바르지 않습니다.",
         variant: "destructive",
       });
     },
   });
 
   const onSubmit = (data: LoginData) => {
+    // 기억하기 설정에 따라 로컬스토리지에 저장
+    if (rememberMe) {
+      localStorage.setItem('tapmove_admin_username', data.username);
+      localStorage.setItem('tapmove_admin_remember', 'true');
+    } else {
+      localStorage.removeItem('tapmove_admin_username');
+      localStorage.removeItem('tapmove_admin_remember');
+    }
+    
     loginMutation.mutate(data);
   };
 
@@ -87,17 +108,17 @@ export default function AdminLoginPage() {
           <CardContent>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div>
-                <Label htmlFor="email">이메일 주소</Label>
+                <Label htmlFor="username">아이디</Label>
                 <Input
-                  data-testid="input-admin-email"
-                  id="email"
-                  type="email"
-                  {...form.register("email")}
+                  data-testid="input-admin-username"
+                  id="username"
+                  {...form.register("username")}
                   className="mt-2"
+                  placeholder="tap_admin"
                 />
-                {form.formState.errors.email && (
+                {form.formState.errors.username && (
                   <p className="text-sm text-red-600 mt-1">
-                    {form.formState.errors.email.message}
+                    {form.formState.errors.username.message}
                   </p>
                 )}
               </div>
@@ -130,6 +151,19 @@ export default function AdminLoginPage() {
                     {form.formState.errors.password.message}
                   </p>
                 )}
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="remember"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <Label htmlFor="remember" className="text-sm text-gray-600 cursor-pointer">
+                  아이디 기억하기
+                </Label>
               </div>
 
               <div className="flex gap-3">

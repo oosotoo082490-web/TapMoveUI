@@ -135,17 +135,6 @@ export function initializeDatabase() {
     );
   `);
 
-  // Insert default admin user if not exists
-  const adminExists = sqlite.prepare("SELECT * FROM users WHERE email = 'admin@tapmove.com'").get();
-  if (!adminExists) {
-    const hashedPassword = bcrypt.hashSync('admin123!', 10);
-    sqlite.prepare(`
-      INSERT INTO users (email, password, name, role)
-      VALUES ('admin@tapmove.com', ?, 'TAPMOVE 관리자', 'admin')
-    `).run(hashedPassword);
-    console.log('Default admin user created: admin@tapmove.com / admin123!');
-  }
-
   // Insert default settings if not exists
   const settingsExists = sqlite.prepare("SELECT * FROM settings LIMIT 1").get();
   if (!settingsExists) {
@@ -171,8 +160,8 @@ export function initializeDatabase() {
   }
 
   // Create admin user if not exists
-  const adminExists = sqlite.prepare("SELECT * FROM users WHERE role = 'admin' LIMIT 1").get();
-  if (!adminExists) {
+  const adminUserExists = sqlite.prepare("SELECT * FROM users WHERE role = 'admin' LIMIT 1").get();
+  if (!adminUserExists) {
     const hashedPassword = bcrypt.hashSync('admin123!', 10);
     const adminId = randomUUID();
     sqlite.prepare(`
