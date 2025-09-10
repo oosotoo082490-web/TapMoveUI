@@ -92,10 +92,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const user = await storage.verifyUserByUsername(username, password);
       if (!user) {
         console.log('Login failed: Invalid credentials for username:', username);
-        return res.status(401).json({ 
-          message: '아이디 또는 비밀번호가 올바르지 않습니다.',
-          error: 'INVALID_CREDENTIALS'
-        });
+        
+        // 더 구체적인 실패 원인 분석
+        const userExists = await storage.getUserByUsername(username);
+        if (!userExists) {
+          console.log('Login failure reason: User not found');
+          return res.status(401).json({ 
+            message: '존재하지 않는 사용자입니다.',
+            error: 'USER_NOT_FOUND'
+          });
+        } else {
+          console.log('Login failure reason: Invalid password');
+          return res.status(401).json({ 
+            message: '비밀번호가 올바르지 않습니다. 최근에 비밀번호를 변경했다면 새 비밀번호를 사용해주세요.',
+            error: 'INVALID_PASSWORD'
+          });
+        }
       }
 
       console.log('User verified successfully:', { userId: user.id, username: user.username });
@@ -135,6 +147,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { currentPassword, newPassword } = req.body;
       
+      console.log('Password change attempt:', { 
+        userId: req.session.user!.id, 
+        username: req.session.user!.username,
+        sessionID: req.sessionID 
+      });
+      
       if (!currentPassword || !newPassword) {
         return res.status(400).json({ message: '현재 비밀번호와 새 비밀번호를 입력해주세요.' });
       }
@@ -152,15 +170,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       const user = await storage.verifyUserByUsername(username, currentPassword);
       if (!user) {
+        console.log('Current password verification failed for user:', username);
         return res.status(401).json({ message: '현재 비밀번호가 올바르지 않습니다.' });
       }
 
       // 비밀번호 변경
       await storage.updateUserPassword(userId, newPassword);
+      console.log('Password updated successfully for user:', username);
 
-      res.json({ 
-        success: true, 
-        message: '비밀번호가 성공적으로 변경되었습니다.' 
+      // 🔥 CRITICAL: 비밀번호 변경 후 즉시 세션 무효화
+      // 보안상 모든 세션을 무효화하고 재로그인을 요구해야 함
+      req.session.destroy((err) => {
+        if (err) {
+          console.error('Session destroy error after password change:', err);
+          return res.status(500).json({ message: '비밀번호는 변경되었으나 세션 처리 중 오류가 발생했습니다. 다시 로그인해주세요.' });
+        }
+        
+        console.log('Session destroyed after password change, forcing re-login');
+        res.clearCookie('connect.sid');
+        res.json({ 
+          success: true, 
+          message: '비밀번호가 성공적으로 변경되었습니다. 보안을 위해 다시 로그인해주세요.',
+          requireReLogin: true // 클라이언트에 재로그인 필요함을 알림
+        });
       });
     } catch (error) {
       console.error('Password change error:', error);
