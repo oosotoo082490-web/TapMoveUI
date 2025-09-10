@@ -195,8 +195,7 @@ export interface IStorage {
   getApplicationById(id: string): Promise<Application | undefined>;
   getApplicationByEmail(email: string): Promise<Application | undefined>;
   getApplicationByNameAndPhone(name: string, phone: string): Promise<Application | undefined>;
-  updateApplicationStatus(id: string, status: 'waiting' | 'confirmed' | 'rejected'): Promise<void>;
-  updateApplicationPaymentStatus(id: string, paymentStatus: 'unpaid' | 'paid' | 'failed'): Promise<void>;
+  updateApplicationStatus(id: string, status: 'waiting' | 'payment_confirmed' | 'confirmed' | 'rejected'): Promise<void>;
   updateApplicationName(id: string, newName: string): Promise<void>;
 
   // Reviews
@@ -258,8 +257,10 @@ export class SqliteStorage implements IStorage {
     
     const user: User = {
       id,
-      ...insertUser,
+      username: insertUser.username || null,
+      email: insertUser.email || null,
       password: hashedPassword,
+      name: insertUser.name,
       role: "user",
       createdAt: new Date(),
     };
@@ -392,6 +393,7 @@ export class SqliteStorage implements IStorage {
       id,
       orderNo,
       ...insertOrder,
+      orderType: insertOrder.orderType || "regular",
       customerType: insertOrder.customerType || "guest",
       shippingFee: insertOrder.shippingFee || 0,
       paymentStatus: "waiting",

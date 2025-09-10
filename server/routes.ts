@@ -37,29 +37,43 @@ const strictLimiter = rateLimit({
 export async function registerRoutes(app: Express): Promise<Server> {
   app.use(limiter);
 
-  // Session configuration
+  // Session configuration - Enhanced for better persistence
   app.use(session({
     secret: process.env.SESSION_SECRET || 'tapmove-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
+    rolling: true, // Reset expiration on each request
     cookie: {
       secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days for better persistence
+      sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Better CSRF protection
     }
   }));
 
-  // Authentication middleware
+  // Authentication middleware - Enhanced error messages
   function requireAuth(req: any, res: any, next: any) {
     if (!req.session?.user) {
-      return res.status(401).json({ message: '로그인이 필요합니다.' });
+      return res.status(401).json({ 
+        message: '세션이 만료되었습니다. 다시 로그인해주세요.',
+        error: 'SESSION_EXPIRED'
+      });
     }
     next();
   }
 
   function requireAdmin(req: any, res: any, next: any) {
-    if (!req.session?.user || req.session.user.role !== 'admin') {
-      return res.status(403).json({ message: '관리자 권한이 필요합니다.' });
+    if (!req.session?.user) {
+      return res.status(401).json({ 
+        message: '세션이 만료되었습니다. 다시 로그인해주세요.',
+        error: 'SESSION_EXPIRED'
+      });
+    }
+    if (req.session.user.role !== 'admin') {
+      return res.status(403).json({ 
+        message: '관리자 권한이 필요합니다.',
+        error: 'ADMIN_REQUIRED'
+      });
     }
     next();
   }
@@ -75,7 +89,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const user = await storage.verifyUserByUsername(username, password);
       if (!user) {
-        return res.status(401).json({ message: '아이디 또는 비밀번호가 올바르지 않습니다.' });
+        return res.status(401).json({ 
+          message: '아이디 또는 비밀번호가 올바르지 않습니다.',
+          error: 'INVALID_CREDENTIALS'
+        });
       }
 
       req.session.user = {
@@ -118,6 +135,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const username = req.session.user!.username;
 
       // 현재 비밀번호 확인
+      if (!username) {
+        return res.status(400).json({ message: '사용자 정보가 올바르지 않습니다.' });
+      }
       const user = await storage.verifyUserByUsername(username, currentPassword);
       if (!user) {
         return res.status(401).json({ message: '현재 비밀번호가 올바르지 않습니다.' });

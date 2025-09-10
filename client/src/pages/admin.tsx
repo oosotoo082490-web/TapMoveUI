@@ -46,22 +46,40 @@ export default function Admin() {
   const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
 
   // Check authentication
-  const { data: user, isLoading: userLoading } = useQuery<UserType>({
+  const { data: user, isLoading: userLoading, error: userError } = useQuery<UserType>({
     queryKey: ["/api/auth/me"],
+    retry: (failureCount, error: any) => {
+      // Don't retry on authentication errors
+      if (error?.status === 401 || error?.status === 403) {
+        return false;
+      }
+      return failureCount < 3;
+    },
   });
 
   useEffect(() => {
-    console.log("Auth check:", { user, userLoading });
+    console.log("Auth check:", { user, userLoading, userError });
     
     // 로딩이 완료되고 사용자가 없거나 관리자가 아닐 때만 리다이렉트
     if (!userLoading && (!user || user.role !== "admin")) {
       console.log("Admin access denied - redirecting to login");
+      
+      // Check if it's a session expired error
+      if (userError && (userError as any)?.status === 401) {
+        toast({
+          title: "세션 만료",
+          description: "세션이 만료되었습니다. 다시 로그인해주세요.",
+          variant: "destructive",
+          duration: 4000,
+        });
+      }
+      
       // 약간의 지연을 두어 Race condition 방지
       setTimeout(() => {
         setLocation("/admin/login");
       }, 100);
     }
-  }, [user, userLoading, setLocation]);
+  }, [user, userLoading, userError, setLocation, toast]);
 
   // Fetch data
   const { data: applications = [] } = useQuery<Application[]>({
