@@ -67,6 +67,7 @@ export default function AdminLoginPage() {
         toast({
           title: "로그인 성공",
           description: "관리자 대시보드로 이동합니다.",
+          duration: 2000,
         });
         
         // 페이지 이동
@@ -78,6 +79,7 @@ export default function AdminLoginPage() {
           title: "접근 권한 없음",
           description: "관리자 계정이 아닙니다.",
           variant: "destructive",
+          duration: 3000,
         });
       }
     },
@@ -86,6 +88,7 @@ export default function AdminLoginPage() {
         title: "로그인 실패",
         description: error.message || "아이디 또는 비밀번호가 올바르지 않습니다.",
         variant: "destructive",
+        duration: 3000,
       });
     },
   });
