@@ -40,9 +40,13 @@ export default function Admin() {
   useEffect(() => {
     console.log("Auth check:", { user, userLoading });
     
+    // 로딩이 완료되고 사용자가 없거나 관리자가 아닐 때만 리다이렉트
     if (!userLoading && (!user || user.role !== "admin")) {
       console.log("Admin access denied - redirecting to login");
-      setLocation("/admin/login");
+      // 약간의 지연을 두어 Race condition 방지
+      setTimeout(() => {
+        setLocation("/admin/login");
+      }, 100);
     }
   }, [user, userLoading, setLocation]);
 
@@ -107,15 +111,28 @@ export default function Admin() {
       });
       return response.json();
     },
-    onSuccess: () => {
-      toast({ title: "성공", description: "비밀번호가 변경되었습니다." });
+    onSuccess: async () => {
+      toast({ 
+        title: "성공", 
+        description: "비밀번호가 변경되었습니다. 보안을 위해 다시 로그인해주세요.",
+        duration: 3000 
+      });
       passwordForm.reset();
+      
+      // 비밀번호 변경 후 자동 로그아웃
+      setTimeout(async () => {
+        await apiRequest("POST", "/api/auth/logout", {});
+        // 모든 쿼리 캐시 무효화
+        queryClient.clear();
+        setLocation("/admin/login");
+      }, 2000);
     },
     onError: (error: any) => {
       toast({ 
         title: "오류", 
         description: error.message || "비밀번호 변경에 실패했습니다.", 
-        variant: "destructive" 
+        variant: "destructive",
+        duration: 3000
       });
     },
   });

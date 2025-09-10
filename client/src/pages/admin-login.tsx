@@ -61,8 +61,9 @@ export default function AdminLoginPage() {
     },
     onSuccess: async (data: any) => {
       if (data.success && data.user?.role === "admin") {
-        // 쿼리 캐시 무효화
+        // 모든 쿼리 캐시 무효화 및 새로 고침
         await queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+        await queryClient.refetchQueries({ queryKey: ["/api/auth/me"] });
         
         toast({
           title: "로그인 성공",
@@ -70,10 +71,10 @@ export default function AdminLoginPage() {
           duration: 2000,
         });
         
-        // 페이지 이동
+        // 페이지 이동 (더 긴 지연시간으로 캐시 새로고침 대기)
         setTimeout(() => {
           setLocation("/admin/dashboard");
-        }, 100);
+        }, 500);
       } else {
         toast({
           title: "접근 권한 없음",
