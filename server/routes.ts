@@ -89,17 +89,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: '아이디와 비밀번호를 입력해주세요.' });
       }
 
-      // 먼저 기존 세션을 완전히 정리
-      if (req.session) {
-        console.log('Destroying existing session before login');
-        await new Promise<void>((resolve) => {
-          req.session.destroy((err) => {
-            if (err) console.error('Session destroy error:', err);
-            resolve();
-          });
-        });
-      }
-
       const user = await storage.verifyUserByUsername(username, password);
       if (!user) {
         console.log('Login failed: Invalid credentials for username:', username);
@@ -111,47 +100,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log('User verified successfully:', { userId: user.id, username: user.username });
 
-      // 새로운 세션 생성 및 강제 저장
-      req.session.regenerate((err) => {
-        if (err) {
-          console.error('Session regeneration error:', err);
-          return res.status(500).json({ message: '세션 생성 오류가 발생했습니다.' });
+      // 세션에 사용자 정보 저장 (간단한 방식으로 변경)
+      req.session.user = {
+        id: user.id,
+        email: user.email || '',
+        name: user.name,
+        role: user.role,
+        username: user.username
+      };
+
+      console.log('Login successful:', { 
+        userId: user.id, 
+        sessionID: req.sessionID,
+        username: user.username 
+      });
+
+      res.json({ 
+        success: true, 
+        user: { 
+          id: user.id, 
+          username: user.username,
+          email: user.email, 
+          name: user.name, 
+          role: user.role 
         }
-
-        // 새 세션에 사용자 정보 저장
-        req.session.user = {
-          id: user.id,
-          email: user.email || '',
-          name: user.name,
-          role: user.role,
-          username: user.username
-        };
-
-        // 세션 저장 강제 실행
-        req.session.save((err) => {
-          if (err) {
-            console.error('Session save error:', err);
-            return res.status(500).json({ message: '세션 저장 오류가 발생했습니다.' });
-          }
-
-          console.log('Login successful:', { 
-            userId: user.id, 
-            sessionID: req.sessionID,
-            username: user.username 
-          });
-
-          res.json({ 
-            success: true, 
-            user: { 
-              id: user.id, 
-              username: user.username,
-              email: user.email, 
-              name: user.name, 
-              role: user.role 
-            },
-            sessionID: req.sessionID // 디버깅용
-          });
-        });
       });
     } catch (error) {
       console.error('Login error:', error);

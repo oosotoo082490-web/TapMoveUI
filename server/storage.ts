@@ -160,7 +160,7 @@ export function initializeDatabase() {
     console.log('Sample product created');
   }
 
-  // Create admin user if not exists
+  // Force reset admin user password to admin123!
   const adminUserExists = sqlite.prepare("SELECT * FROM users WHERE role = 'admin' LIMIT 1").get();
   if (!adminUserExists) {
     const hashedPassword = bcrypt.hashSync('admin123!', 10);
@@ -169,14 +169,14 @@ export function initializeDatabase() {
       INSERT INTO users (id, username, email, password, name, role)
       VALUES (?, ?, ?, ?, ?, ?)
     `).run(adminId, 'oosotoo', 'admin@tapmove.com', hashedPassword, '관리자', 'admin');
-    console.log('Admin account created: oosotoo');
+    console.log('Admin account created: oosotoo with password admin123!');
   } else {
-    // Update existing admin account with new password
-    const newHashedPassword = bcrypt.hashSync('admin123!', 10);
+    // Always reset admin password to admin123! on server restart
+    const resetHashedPassword = bcrypt.hashSync('admin123!', 10);
     sqlite.prepare(`
-      UPDATE users SET username = ?, password = ? WHERE role = 'admin'
-    `).run('oosotoo', newHashedPassword);
-    console.log('Admin account updated: oosotoo with new password');
+      UPDATE users SET username = ?, password = ?, email = ? WHERE role = 'admin'
+    `).run('oosotoo', resetHashedPassword, 'admin@tapmove.com');
+    console.log('Admin account password RESET to admin123! - username: oosotoo');
   }
 }
 
