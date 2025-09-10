@@ -12,7 +12,7 @@ import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Users, UserCheck, Clock, CheckCircle, Settings, LogOut, Search, Eye } from "lucide-react";
+import { Users, UserCheck, Clock, CheckCircle, Settings, LogOut, Search, Eye, EyeOff } from "lucide-react";
 import type { Application, Review, Order, User } from "@shared/schema";
 
 const passwordChangeSchema = z.object({
@@ -31,6 +31,8 @@ export default function Admin() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Check authentication
   const { data: user, isLoading: userLoading } = useQuery<User>({
@@ -380,7 +382,25 @@ export default function Admin() {
                           <FormItem>
                             <FormLabel>새 비밀번호</FormLabel>
                             <FormControl>
-                              <Input type="password" {...field} />
+                              <div className="relative">
+                                <Input 
+                                  type={showNewPassword ? "text" : "password"} 
+                                  {...field} 
+                                />
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+                                  onClick={() => setShowNewPassword(!showNewPassword)}
+                                >
+                                  {showNewPassword ? (
+                                    <EyeOff className="h-4 w-4" />
+                                  ) : (
+                                    <Eye className="h-4 w-4" />
+                                  )}
+                                </Button>
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -394,7 +414,25 @@ export default function Admin() {
                           <FormItem>
                             <FormLabel>비밀번호 확인</FormLabel>
                             <FormControl>
-                              <Input type="password" {...field} />
+                              <div className="relative">
+                                <Input 
+                                  type={showConfirmPassword ? "text" : "password"} 
+                                  {...field} 
+                                />
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+                                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                >
+                                  {showConfirmPassword ? (
+                                    <EyeOff className="h-4 w-4" />
+                                  ) : (
+                                    <Eye className="h-4 w-4" />
+                                  )}
+                                </Button>
+                              </div>
                             </FormControl>
                             <FormMessage />
                           </FormItem>
