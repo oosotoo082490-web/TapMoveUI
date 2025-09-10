@@ -136,34 +136,43 @@ export default function Admin() {
 
   const passwordChangeMutation = useMutation({
     mutationFn: async (data: PasswordChangeData) => {
+      console.log('Attempting password change...');
       const response = await apiRequest("POST", "/api/auth/change-password", {
         currentPassword: data.currentPassword,
         newPassword: data.newPassword,
       });
       return response.json();
     },
-    onSuccess: async () => {
+    onSuccess: async (data: any) => {
+      console.log('Password change successful:', { requireReLogin: data.requireReLogin });
+      
       toast({ 
         title: "성공", 
-        description: "비밀번호가 변경되었습니다. 보안을 위해 다시 로그인해주세요.",
+        description: data.message || "비밀번호가 변경되었습니다. 보안을 위해 다시 로그인해주세요.",
         duration: 3000 
       });
       passwordForm.reset();
       
-      // 비밀번호 변경 후 자동 로그아웃
-      setTimeout(async () => {
-        await apiRequest("POST", "/api/auth/logout", {});
-        // 모든 쿼리 캐시 무효화
+      // 서버에서 세션이 이미 무효화되었으므로 즉시 리다이렉트
+      if (data.requireReLogin) {
+        console.log('Server requires re-login, clearing client state and redirecting');
+        
+        // 모든 쿼리 캐시 완전 정리
         queryClient.clear();
-        setLocation("/admin/login");
-      }, 2000);
+        
+        // 즉시 로그인 페이지로 리다이렉트 (추가 로그아웃 호출 불필요)
+        setTimeout(() => {
+          setLocation("/admin/login");
+        }, 1500); // 토스트 메시지를 보여준 후 리다이렉트
+      }
     },
     onError: (error: any) => {
+      console.log('Password change failed:', error);
       toast({ 
         title: "오류", 
         description: error.message || "비밀번호 변경에 실패했습니다.", 
         variant: "destructive",
-        duration: 3000
+        duration: 4000
       });
     },
   });
