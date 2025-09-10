@@ -78,40 +78,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
     next();
   }
 
-  // Auth routes
+  // Auth routes - Enhanced with session cleanup
   app.post('/api/auth/login', strictLimiter, async (req, res) => {
     try {
+      console.log('Login attempt:', { username: req.body.username, sessionID: req.sessionID });
+      
       const { username, password } = req.body;
       
       if (!username || !password) {
         return res.status(400).json({ message: '아이디와 비밀번호를 입력해주세요.' });
       }
 
+      // 먼저 기존 세션을 완전히 정리
+      if (req.session) {
+        console.log('Destroying existing session before login');
+        await new Promise<void>((resolve) => {
+          req.session.destroy((err) => {
+            if (err) console.error('Session destroy error:', err);
+            resolve();
+          });
+        });
+      }
+
       const user = await storage.verifyUserByUsername(username, password);
       if (!user) {
+        console.log('Login failed: Invalid credentials for username:', username);
         return res.status(401).json({ 
           message: '아이디 또는 비밀번호가 올바르지 않습니다.',
           error: 'INVALID_CREDENTIALS'
         });
       }
 
-      req.session.user = {
-        id: user.id,
-        email: user.email || '',
-        name: user.name,
-        role: user.role,
-        username: user.username
-      };
+      console.log('User verified successfully:', { userId: user.id, username: user.username });
 
-      res.json({ 
-        success: true, 
-        user: { 
-          id: user.id, 
-          username: user.username,
-          email: user.email, 
-          name: user.name, 
-          role: user.role 
-        } 
+      // 새로운 세션 생성 및 강제 저장
+      req.session.regenerate((err) => {
+        if (err) {
+          console.error('Session regeneration error:', err);
+          return res.status(500).json({ message: '세션 생성 오류가 발생했습니다.' });
+        }
+
+        // 새 세션에 사용자 정보 저장
+        req.session.user = {
+          id: user.id,
+          email: user.email || '',
+          name: user.name,
+          role: user.role,
+          username: user.username
+        };
+
+        // 세션 저장 강제 실행
+        req.session.save((err) => {
+          if (err) {
+            console.error('Session save error:', err);
+            return res.status(500).json({ message: '세션 저장 오류가 발생했습니다.' });
+          }
+
+          console.log('Login successful:', { 
+            userId: user.id, 
+            sessionID: req.sessionID,
+            username: user.username 
+          });
+
+          res.json({ 
+            success: true, 
+            user: { 
+              id: user.id, 
+              username: user.username,
+              email: user.email, 
+              name: user.name, 
+              role: user.role 
+            },
+            sessionID: req.sessionID // 디버깅용
+          });
+        });
       });
     } catch (error) {
       console.error('Login error:', error);
@@ -157,16 +197,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post('/api/auth/logout', (req, res) => {
-    req.session.destroy(() => {
+    console.log('Logout request:', { sessionID: req.sessionID, user: req.session?.user?.username });
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Logout session destroy error:', err);
+        return res.status(500).json({ message: '로그아웃 처리 중 오류가 발생했습니다.' });
+      }
+      console.log('Logout successful');
+      res.clearCookie('connect.sid'); // 세션 쿠키 명시적 삭제
       res.json({ success: true });
     });
   });
 
   app.get('/api/auth/me', (req, res) => {
+    console.log('Auth check:', { 
+      sessionID: req.sessionID, 
+      hasSession: !!req.session, 
+      hasUser: !!req.session?.user,
+      username: req.session?.user?.username 
+    });
+    
     if (req.session?.user) {
       res.json(req.session.user);
     } else {
-      res.status(401).json({ message: '로그인되지 않음' });
+      res.status(401).json({ 
+        message: '로그인되지 않음',
+        error: 'NOT_AUTHENTICATED' 
+      });
     }
   });
 

@@ -39,11 +39,14 @@ export default function AdminLoginPage() {
     },
   });
 
-  // 페이지 로드 시 저장된 정보 불러오기
+  // 페이지 로드 시 저장된 정보 불러오기 및 캐시 정리
   useEffect(() => {
-    // 이전 캐시 정리
-    localStorage.removeItem('tapmove_admin_username');
-    localStorage.removeItem('tapmove_admin_remember');
+    // 모든 인증 관련 캐시 완전 정리
+    console.log('Clearing all auth caches on login page load');
+    queryClient.removeQueries({ queryKey: ["/api/auth/me"] });
+    queryClient.removeQueries({ queryKey: ["/api/applications"] });
+    queryClient.removeQueries({ queryKey: ["/api/orders"] });
+    queryClient.removeQueries({ queryKey: ["/api/reviews/all"] });
     
     const savedUsername = localStorage.getItem('tapmove_admin_username');
     const savedRememberMe = localStorage.getItem('tapmove_admin_remember') === 'true';
@@ -52,18 +55,42 @@ export default function AdminLoginPage() {
       form.setValue('username', savedUsername);
       setRememberMe(true);
     }
-  }, [form]);
+  }, [form, queryClient]);
 
   const loginMutation = useMutation({
     mutationFn: async (data: LoginData) => {
+      console.log('Starting login request for username:', data.username);
+      
+      // 로그인 전에 모든 캐시 정리
+      queryClient.clear();
+      
       const response = await apiRequest("POST", "/api/auth/login", data);
-      return response.json();
+      const result = await response.json();
+      
+      console.log('Login response received:', { 
+        success: result.success, 
+        sessionID: result.sessionID,
+        username: result.user?.username 
+      });
+      
+      return result;
     },
     onSuccess: async (data: any) => {
       if (data.success && data.user?.role === "admin") {
-        // 모든 쿼리 캐시 무효화 및 새로 고침
+        console.log('Login successful, refreshing auth state');
+        
+        // 모든 쿼리 캐시 완전 재설정
+        queryClient.clear();
         await queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
-        await queryClient.refetchQueries({ queryKey: ["/api/auth/me"] });
+        
+        // 아이디 저장 처리
+        if (rememberMe) {
+          localStorage.setItem('tapmove_admin_username', data.user.username || '');
+          localStorage.setItem('tapmove_admin_remember', 'true');
+        } else {
+          localStorage.removeItem('tapmove_admin_username');
+          localStorage.removeItem('tapmove_admin_remember');
+        }
         
         toast({
           title: "로그인 성공",
@@ -71,7 +98,7 @@ export default function AdminLoginPage() {
           duration: 2000,
         });
         
-        // 페이지 이동 (더 긴 지연시간으로 캐시 새로고침 대기)
+        // 충분한 지연시간으로 세션 안정화 대기
         setTimeout(() => {
           setLocation("/admin/dashboard");
         }, 500);
@@ -85,25 +112,31 @@ export default function AdminLoginPage() {
       }
     },
     onError: (error: any) => {
+      console.log('Login failed:', error);
+      
+      // 로그인 실패 시 모든 상태 정리
+      queryClient.clear();
+      form.reset({ username: form.getValues('username'), password: '' }); // 비밀번호만 초기화
+      
+      // 에러 타입에 따른 맞춤 메시지
+      let errorMessage = "로그인에 실패했습니다.";
+      if (error.message?.includes("아이디 또는 비밀번호")) {
+        errorMessage = "아이디 또는 비밀번호가 올바르지 않습니다.";
+      } else if (error.message?.includes("세션")) {
+        errorMessage = "세션 처리 중 오류가 발생했습니다. 다시 시도해주세요.";
+      }
+      
       toast({
         title: "로그인 실패",
-        description: error.message || "아이디 또는 비밀번호가 올바르지 않습니다.",
+        description: errorMessage,
         variant: "destructive",
-        duration: 3000,
+        duration: 4000,
       });
     },
   });
 
   const onSubmit = (data: LoginData) => {
-    // 기억하기 설정에 따라 로컬스토리지에 저장
-    if (rememberMe) {
-      localStorage.setItem('tapmove_admin_username', data.username);
-      localStorage.setItem('tapmove_admin_remember', 'true');
-    } else {
-      localStorage.removeItem('tapmove_admin_username');
-      localStorage.removeItem('tapmove_admin_remember');
-    }
-    
+    console.log('Form submitted, attempting login for:', data.username);
     loginMutation.mutate(data);
   };
 
