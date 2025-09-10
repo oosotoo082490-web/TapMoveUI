@@ -12,8 +12,18 @@ import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Users, UserCheck, Clock, CheckCircle, Settings, LogOut, Search, Eye, EyeOff } from "lucide-react";
-import type { Application, Review, Order, User } from "@shared/schema";
+import { Users, UserCheck, Clock, CheckCircle, Settings, LogOut, Search, Eye, EyeOff, Download, FileText, Calendar, MapPin, User, Shirt } from "lucide-react";
+import type { Application, Review, Order } from "@shared/schema";
+
+// User type from schema
+type UserType = {
+  id: string;
+  username: string | null;
+  email: string | null;
+  name: string;
+  role: "admin" | "user";
+  createdAt: Date;
+};
 
 const passwordChangeSchema = z.object({
   currentPassword: z.string().min(1, "현재 비밀번호를 입력해주세요"),
@@ -33,9 +43,10 @@ export default function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [selectedApplication, setSelectedApplication] = useState<string | null>(null);
 
   // Check authentication
-  const { data: user, isLoading: userLoading } = useQuery<User>({
+  const { data: user, isLoading: userLoading } = useQuery<UserType>({
     queryKey: ["/api/auth/me"],
   });
 
@@ -175,6 +186,79 @@ export default function Admin() {
     passwordChangeMutation.mutate(data);
   };
 
+  // Excel download function
+  const downloadExcel = () => {
+    import('xlsx').then((XLSX) => {
+      const worksheet = XLSX.utils.json_to_sheet(
+        applications.map(app => ({
+          '이름': app.name,
+          '생년월일': app.birthdate,
+          '이메일': app.email,
+          '연락처': app.phone,
+          '주소': app.address,
+          '입금자명': app.depositorName,
+          '유니폼 사이즈': app.uniformSize || '미선택',
+          '강습 계획': app.classPlan === 'plan' ? '예' : '아니오',
+          '유아': app.classTypeInfant ? 'O' : '',
+          '초등': app.classTypeElementary ? 'O' : '',
+          '중고등': app.classTypeMiddleHigh ? 'O' : '',
+          '성인': app.classTypeAdult ? 'O' : '',
+          '시니어': app.classTypeSenior ? 'O' : '',
+          '재활': app.classTypeRehab ? 'O' : '',
+          '신청 상태': getStatusText(app.status),
+          '관리자 메모': app.adminMemo || '',
+          '신청일시': new Date(app.createdAt).toLocaleString('ko-KR'),
+        }))
+      );
+      
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, '신청자 목록');
+      
+      const today = new Date().toISOString().split('T')[0];
+      XLSX.writeFile(workbook, `TAPMOVE_신청자목록_${today}.xlsx`);
+      
+      toast({
+        title: "다운로드 완료",
+        description: "엑셀 파일이 다운로드되었습니다.",
+        duration: 2000,
+      });
+    });
+  };
+
+  // Helper function for status text
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'waiting': return '신청 확인';
+      case 'payment_confirmed': return '입금 확인';
+      case 'confirmed': return '최종 신청 완료';
+      case 'rejected': return '취소됨';
+      default: return '대기중';
+    }
+  };
+
+  // Helper function for status badge variant
+  const getStatusVariant = (status: string) => {
+    switch (status) {
+      case 'waiting': return 'secondary';
+      case 'payment_confirmed': return 'outline';
+      case 'confirmed': return 'default';
+      case 'rejected': return 'destructive';
+      default: return 'secondary';
+    }
+  };
+
+  // Helper function for class types
+  const getClassTypes = (app: any) => {
+    const types = [];
+    if (app.classTypeInfant) types.push('유아');
+    if (app.classTypeElementary) types.push('초등');
+    if (app.classTypeMiddleHigh) types.push('중고등');
+    if (app.classTypeAdult) types.push('성인');
+    if (app.classTypeSenior) types.push('시니어');
+    if (app.classTypeRehab) types.push('재활');
+    return types.length > 0 ? types.join(', ') : '미선택';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -264,69 +348,140 @@ export default function Admin() {
             {/* Applications Table */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle className="flex items-center justify-between flex-wrap gap-2">
                   <span>신청자 목록</span>
-                  <Badge variant="secondary">{filteredApplications.length}명</Badge>
+                  <div className="flex items-center space-x-2">
+                    <Badge variant="secondary">{filteredApplications.length}명</Badge>
+                    {applications.length > 0 && (
+                      <Button 
+                        onClick={downloadExcel}
+                        size="sm"
+                        className="flex items-center space-x-2"
+                      >
+                        <Download className="h-4 w-4" />
+                        <span>엑셀로 다운로드</span>
+                      </Button>
+                    )}
+                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {filteredApplications.map((application) => (
-                    <div key={application.id} className="bg-gray-50 rounded-lg p-4">
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-                        <div>
-                          <p className="font-medium text-gray-900">{application.name}</p>
-                          <p className="text-sm text-gray-500">{application.phone}</p>
+                    <div key={application.id} className="bg-gray-50 rounded-lg p-4 lg:p-6">
+                      {/* Mobile/Desktop Responsive Layout */}
+                      <div className="space-y-4">
+                        {/* Header Row */}
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                          <div className="flex items-center space-x-2">
+                            <User className="h-4 w-4 text-gray-500" />
+                            <h3 className="font-medium text-gray-900">{application.name}</h3>
+                            <Badge variant={getStatusVariant(application.status)}>
+                              {getStatusText(application.status)}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Select
+                              value={application.status}
+                              onValueChange={(newStatus) => 
+                                updateApplicationMutation.mutate({ id: application.id, status: newStatus })
+                              }
+                            >
+                              <SelectTrigger className="w-36">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="waiting">신청 확인</SelectItem>
+                                <SelectItem value="payment_confirmed">입금 확인</SelectItem>
+                                <SelectItem value="confirmed">최종 신청 완료</SelectItem>
+                                <SelectItem value="rejected">취소됨</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => 
+                                setSelectedApplication(
+                                  selectedApplication === application.id ? null : application.id
+                                )
+                              }
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-sm text-gray-600">{application.email}</p>
-                          <p className="text-xs text-gray-500">
-                            {new Date(application.createdAt).toLocaleDateString('ko-KR')}
-                          </p>
+
+                        {/* Basic Info Row */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                          <div className="space-y-1">
+                            <p className="text-gray-500">연락처</p>
+                            <p className="font-medium">{application.phone}</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-gray-500">이메일</p>
+                            <p className="font-medium">{application.email}</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-gray-500">신청일시</p>
+                            <p className="font-medium">
+                              {new Date(application.createdAt).toLocaleString('ko-KR')}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <Badge 
-                            variant={
-                              application.status === "confirmed" ? "default" : 
-                              application.status === "waiting" ? "secondary" : 
-                              "destructive"
-                            }
-                          >
-                            {application.status === "confirmed" ? "최종 확정" : 
-                             application.status === "waiting" ? "입금 확인 대기" : 
-                             application.status === "rejected" ? "반려" : "대기"}
-                          </Badge>
-                        </div>
-                        <div className="flex space-x-2">
-                          <Select
-                            value={application.status}
-                            onValueChange={(newStatus) => 
-                              updateApplicationMutation.mutate({ id: application.id, status: newStatus })
-                            }
-                          >
-                            <SelectTrigger className="w-32">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="waiting">대기중</SelectItem>
-                              <SelectItem value="confirmed">최종 확정</SelectItem>
-                              <SelectItem value="rejected">반려</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              // Show application details
-                              toast({
-                                title: "신청자 정보",
-                                description: `${application.name} (${application.phone})의 상세 정보를 확인합니다.`,
-                              });
-                            }}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </div>
+
+                        {/* Detailed Info (Collapsible) */}
+                        {selectedApplication === application.id && (
+                          <div className="border-t border-gray-200 pt-4 space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                              <div className="space-y-1">
+                                <div className="flex items-center space-x-1">
+                                  <Calendar className="h-3 w-3 text-gray-400" />
+                                  <p className="text-gray-500">생년월일</p>
+                                </div>
+                                <p className="font-medium">{application.birthdate}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="flex items-center space-x-1">
+                                  <MapPin className="h-3 w-3 text-gray-400" />
+                                  <p className="text-gray-500">주소</p>
+                                </div>
+                                <p className="font-medium">{application.address}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-gray-500">입금자명</p>
+                                <p className="font-medium">{application.depositorName}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <div className="flex items-center space-x-1">
+                                  <Shirt className="h-3 w-3 text-gray-400" />
+                                  <p className="text-gray-500">유니폼 사이즈</p>
+                                </div>
+                                <p className="font-medium">{application.uniformSize || '미선택'}</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-gray-500">강습 계획</p>
+                                <p className="font-medium">
+                                  {application.classPlan === 'plan' ? '예' : '아니오'}
+                                </p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-gray-500">대상 연령층</p>
+                                <p className="font-medium">{getClassTypes(application)}</p>
+                              </div>
+                            </div>
+                            {application.adminMemo && (
+                              <div className="space-y-1">
+                                <div className="flex items-center space-x-1">
+                                  <FileText className="h-3 w-3 text-gray-400" />
+                                  <p className="text-gray-500">관리자 메모</p>
+                                </div>
+                                <p className="font-medium bg-yellow-50 p-2 rounded border">
+                                  {application.adminMemo}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}

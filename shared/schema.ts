@@ -32,7 +32,7 @@ export const applications = sqliteTable("applications", {
   classTypeSenior: integer("class_type_senior", { mode: "boolean" }).default(false),
   classTypeRehab: integer("class_type_rehab", { mode: "boolean" }).default(false),
   privacyAgreement: integer("privacy_agreement", { mode: "boolean" }).notNull().default(true),
-  status: text("status", { enum: ["waiting", "confirmed", "rejected"] }).default("waiting").notNull(),
+  status: text("status", { enum: ["waiting", "payment_confirmed", "confirmed", "rejected"] }).default("waiting").notNull(),
   // paymentStatus: text("payment_status", { enum: ["unpaid", "paid", "failed"] }).default("unpaid").notNull(),
   adminMemo: text("admin_memo"),
   createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(unixepoch())`).notNull(),
